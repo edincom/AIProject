@@ -1,0 +1,120 @@
+DOCUMENT STRUCTURE
+============================================================
+```json
+{
+  "title": "Grand Atlas 2024",
+  "chapters": [
+    {
+      "number": "1",
+      "title": "Points chauds",
+      "subsections": [
+        "La guerre en Ukraine : la Russie peut-elle gagner ?",
+        "L’Indopacifique, théâtre des rivalités mondiales",
+        "Taïwan : des élections à haut risque",
+        "Turquie : la victoire d’Erdogan",
+        "Le Caucase sous tensions",
+        "Syrie, une guerre inachevée ?",
+        "Le Kosovo : un anniversaire sous tension",
+        "Un conflit israélo-palestinien loin d’être marginalisé",
+        "Iran, entre répression et isolement",
+        "L’instabilité gagne-t-elle l’Afrique ?",
+        "Un arc de crise sahélien"
+      ]
+    },
+    {
+      "number": "2",
+      "title": "Les grands enjeux de 2024",
+      "subsections": [
+        "L’OTAN, le retour, 75 ans après sa naissance",
+        "Les États-Unis, de retour dans les affaires du monde",
+        "Une Amérique latine plus stable politiquement ?",
+        "Les démocraties au risque de la désinformation",
+        "La dissuasion nucléaire a-t-elle encore un sens ?",
+        "Éradiquer la faim, un désir sans fin",
+        "Des guerres pour les ressources",
+        "Le droit à l’avortement menacé dans le monde ?",
+        "Résorber les inégalités : une gageure",
+        "2024 : Paris accueille les Jeux olympiques",
+        "Les JO, instruments du soft power des États"
+      ]
+    },
+    {
+      "number": "3",
+      "title": "Retour sur l’histoire",
+      "subsections": [
+        "Il y a 230 ans, l’esclavage est aboli",
+        "Il y a 210 ans, un nouvel ordre pour l’Europe",
+        "Il y a 200 ans, la fin de l’Empire colonial espagnol",
+        "Il y a 130 ans, la renaissance des Jeux olympiques",
+        "Il y a 80 ans, Paris libéré",
+        "Il y a 55 ans, on a marché sur la Lune",
+        "Il y a 25 ans, la naissance de l’euro",
+        "Il y a 10 ans, l’annexion de la Crimée par la Russie"
+      ]
+    },
+    {
+      "number": "4",
+      "title": "Et demain ?",
+      "subsections": [
+        "10 milliards d’humains en 2050",
+        "L’humanité concentrée dans les pays du Sud",
+        "Faire reculer la mort",
+        "De l’urgence d’une transition énergétique",
+        "Vivre la ville différemment",
+        "Un monde sans voitures",
+        "Cultiver autrement",
+        "Une agriculture plus bio",
+        "Vers une disparition et migration des forêts ?",
+        "Protéger la mer et les océans",
+        "La géoingénierie : une solution au réchauffement ?",
+        "L’Inde, première puissance démographique : atout ou fardeau ?",
+        "Un moment crucial pour l’Europe spatiale"
+      ]
+    },
+    {
+      "number": "5",
+      "title": "Dossier spécial",
+      "subsections": [
+        "Crises, gérer l’urgence ?",
+        "Crises et risques croissants",
+        "Catastrophes naturelles : de l’aléa au risque",
+        "La forêt en crise",
+        "Les risques liés à l’eau",
+        "Des risques épidémiques croissants",
+        "Des inégalités face aux risques",
+        "Des risques amplifiés par le réchauffement climatique",
+        "La France face aux risques : quelle(s) politique(s) ?",
+        "La biodiversité menacée par l’économie du sexe",
+        "Réchauffement climatique, la porte ouverte aux épidémies"
+      ]
+    }
+  ],
+  "additional_sections": [
+    "Édito",
+    "Préface",
+    "Postface",
+    "Annexes",
+    "À vous de jouer",
+    "Sources et crédits"
+  ]
+}
+```
+
+MAIN THEMES
+============================================================
+```json
+{
+  "main_themes": [
+    "Latin American Independence Movements",
+    "Environmental Technologies and Risks",
+    "Access to Knowledge and Culture"
+  ],
+  "key_topics": [
+    "Historical Events and Figures in Latin American Independence",
+    "Environmental Impact and Future Generations",
+    "Digital Libraries and Access to Information"
+  ],
+  "document_type": "textbook",
+  "summary": "The document covers a range of topics including the historical events and key figures involved in the independence movements of Latin American countries, the potential risks and unknowns of certain environmental technologies, and the importance of accessible knowledge and culture through digital libraries."
+}
+```
