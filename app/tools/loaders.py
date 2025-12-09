@@ -4,6 +4,7 @@ from langchain_community.docstore.document import Document
 from langchain_core.messages import HumanMessage
 from app.config.settings import PDF_PATH, VISION_MODEL
 from langchain_mistralai import ChatMistralAI
+from langchain_community.document_loaders import PyMuPDFLoader
 
 vision_llm = ChatMistralAI(model=VISION_MODEL, temperature=0)
 
@@ -47,3 +48,11 @@ def caption_images():
 
     # pdf.close()
     # return image_docs
+
+
+
+def load_pdf():
+    loader = PyMuPDFLoader(PDF_PATH)
+    docs = loader.load()
+    print(f"Loaded {len(docs)} pages")
+    return docs
