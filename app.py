@@ -1,6 +1,6 @@
 # app.py
 from flask import Flask, render_template, request, redirect, url_for, jsonify, Response, stream_with_context
-from app.backend.ai import ai_answer_stream
+from app.backend.ai import ai_answer_stream, generate_test_question, grade_answer
 import json
 
 app = Flask(__name__, template_folder="app/templates")
@@ -70,6 +70,58 @@ def chat_api():
         import traceback
         traceback.print_exc()
         return jsonify({"reply": "An error occurred with AI backend."}), 500
+
+
+@app.route('/test_api', methods=['POST'])
+def test_api():
+    """Handle test mode - generate question and grade answer"""
+    try:
+        data = request.get_json() or {}
+        action = data.get("action", "")  # "generate" or "grade"
+        
+        if action == "generate":
+            # Generate a test question based on criteria
+            criteria = data.get("criteria", "")
+            
+            if not criteria:
+                return jsonify({"error": "Please specify test criteria"}), 400
+            
+            # Generate question using RAG
+            question = generate_test_question(criteria)
+            
+            return jsonify({
+                "question": question,
+                "success": True
+            })
+        
+        elif action == "grade":
+            # Grade the student's answer
+            question = data.get("question", "")
+            answer = data.get("answer", "")
+            rubric = data.get("rubric", "")
+            username = data.get("username", "Anonymous")
+            
+            if not all([question, answer, rubric]):
+                return jsonify({"error": "Missing required fields"}), 400
+            
+            # Grade the answer
+            grading_result = grade_answer(question, answer, rubric, username)
+            
+            return jsonify({
+                "grading": grading_result,
+                "success": True
+            })
+        
+        else:
+            return jsonify({"error": "Invalid action"}), 400
+    
+    except Exception as e:
+        print("An error occurred in /test_api:", e)
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, threaded=True)
