@@ -27,8 +27,6 @@ persona_prompt = ChatPromptTemplate.from_messages([
      "Question: {question}\n\nContexte:\n{context}")
 ])
 
-# Non-streaming chain
-persona_chain = persona_prompt | llm
 
 # Streaming chain
 streaming_persona_chain = persona_prompt | streaming_llm
