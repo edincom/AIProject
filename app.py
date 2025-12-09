@@ -25,7 +25,7 @@ def chat_api():
     try:
         data = request.get_json() or {}
         message = data.get("message", "")
-        mode = data.get("mode", "teach")  # default to teach
+        mode = data.get("mode", "teach")
 
         # Ensure message is a string
         if not isinstance(message, str):
@@ -35,11 +35,11 @@ def chat_api():
         if not message:
             return jsonify({"reply": "Please enter a message."})
 
-        # Prepare input for AI backend
-        inputs = {"question": message, "mode": mode}
-
-        # Call AI backend
-        response = ai_answer(inputs)  # <-- make sure ai_answer handles "mode"
+        # FIXED: Pass the message as a dictionary with 'question' key
+        inputs = {"question": message}
+        
+        # Call AI backend - ai_answer expects a dict with 'question' key
+        response = ai_answer(inputs)
         
         # Convert to string if response is AIMessage or other object
         if hasattr(response, "content"):
@@ -51,6 +51,8 @@ def chat_api():
 
     except Exception as e:
         print("An error occurred in /chat_api:", e)
+        import traceback
+        traceback.print_exc()
         return jsonify({"reply": "An error occurred with AI backend."}), 500
 
 if __name__ == '__main__':
