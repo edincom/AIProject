@@ -10,12 +10,11 @@
     <option value="test">Test</option>
 </select>
 
-
 <div id="chatbox" style="border:1px solid #ccc; padding:10px; height:400px; overflow-y:auto;"></div>
 
 <form id="chat-form">
     <input type="text" id="user-input" autocomplete="off" required placeholder="Type your message...">
-    <button type="submit">Send</button>
+    <button type="submit" id="send-btn">Send</button>
 </form>
 
 <script>
@@ -23,6 +22,7 @@
     const input = document.getElementById('user-input');
     const box = document.getElementById('chatbox');
     const modeSelect = document.getElementById('mode');
+    const sendBtn = document.getElementById('send-btn');
 
     // Escape HTML characters to prevent breaking the chatbox
     function escapeHtml(text) {
@@ -36,32 +36,83 @@
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const text = input.value.trim();
-        const mode = modeSelect.value;  // "teach" or "test"
+        const mode = modeSelect.value;
         if (!text) return;
+        
+        // Disable input while processing
+        input.disabled = true;
+        sendBtn.disabled = true;
         input.value = "";
 
         // Display user message
         box.innerHTML += `<p><strong>You:</strong> ${escapeHtml(text)}</p>`;
         box.scrollTop = box.scrollHeight;
 
+        // Create a new paragraph for the AI response
+        const aiResponseP = document.createElement('p');
+        aiResponseP.innerHTML = '<strong>AI:</strong> ';
+        box.appendChild(aiResponseP);
+
+        // Create a span to hold the streaming text
+        const aiTextSpan = document.createElement('span');
+        aiResponseP.appendChild(aiTextSpan);
+
         try {
-            const res = await fetch("/chat_api", {
+            const response = await fetch("/chat_api", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({message: text, mode: mode}) // match Flask backend
+                body: JSON.stringify({message: text, mode: mode})
             });
 
-            if (!res.ok) {
-                box.innerHTML += `<p style="color:red;"><strong>Error:</strong> Failed to get AI response</p>`;
+            if (!response.ok) {
+                aiTextSpan.innerHTML = `<span style="color:red;">Failed to get AI response</span>`;
                 return;
             }
 
-            const data = await res.json();
-            box.innerHTML += `<p><strong>AI:</strong> ${escapeHtml(data.reply)}</p>`;
-            box.scrollTop = box.scrollHeight;
+            // Handle Server-Sent Events (SSE) streaming
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let buffer = '';
+
+            while (true) {
+                const {done, value} = await reader.read();
+                
+                if (done) break;
+                
+                // Decode the chunk
+                buffer += decoder.decode(value, {stream: true});
+                
+                // Process complete messages (separated by \n\n)
+                const messages = buffer.split('\n\n');
+                buffer = messages.pop(); // Keep incomplete message in buffer
+                
+                for (const message of messages) {
+                    if (message.startsWith('data: ')) {
+                        try {
+                            const data = JSON.parse(message.substring(6));
+                            
+                            if (data.error) {
+                                aiTextSpan.innerHTML += `<span style="color:red;">${escapeHtml(data.error)}</span>`;
+                            } else if (data.token) {
+                                // Append each token as it arrives
+                                aiTextSpan.textContent += data.token;
+                                // Auto-scroll to bottom
+                                box.scrollTop = box.scrollHeight;
+                            }
+                        } catch (err) {
+                            console.error('Parse error:', err, message);
+                        }
+                    }
+                }
+            }
 
         } catch (err) {
-            box.innerHTML += `<p style="color:red;"><strong>Error:</strong> ${escapeHtml(err.message)}</p>`;
+            aiTextSpan.innerHTML = `<span style="color:red;">${escapeHtml(err.message)}</span>`;
+        } finally {
+            // Re-enable input
+            input.disabled = false;
+            sendBtn.disabled = false;
+            input.focus();
         }
     });
 </script>

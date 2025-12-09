@@ -3,7 +3,6 @@ from app.chains.persona_chain import persona_chain
 from app.chains.grading_chain import grading_chain
 
 def rag_lookup(retriever):
-
     def lookup(inputs):
         if "answer" in inputs:
             inputs["context"] = ""
@@ -18,6 +17,7 @@ def rag_lookup(retriever):
 
 
 def build_router(retriever):
+    """Build non-streaming router"""
     rag_chain = rag_lookup(retriever)
 
     def is_teach_mode(inputs):
