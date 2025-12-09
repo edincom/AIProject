@@ -1,2 +1,6 @@
 .env
 init.py
+.pyc
+app/backend/__pycache__/ai.cpython-311.pyc
+app/chains/__pycache__/persona_chain.cpython-311.pyc
+app/chains/__pycache__/rag_router.cpython-311.pyc
