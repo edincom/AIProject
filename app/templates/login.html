@@ -1,59 +1,240 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+    <title>StudyBot AI - Connexion</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: #f0f2f5;
+            overflow: hidden;
+            position: relative;
         }
 
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 20s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0) scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: translateY(-100px) translateX(50px) scale(1.2);
+                opacity: 0.6;
+            }
+        }
+
+        /* Login Container */
         .login-container {
-            background-color: #fff;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem;
+            border-radius: 30px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
             text-align: center;
+            max-width: 450px;
+            width: 90%;
+            position: relative;
+            z-index: 1;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            color: #555;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
         }
 
         input[type="text"] {
             width: 100%;
-            padding: 0.5rem;
-            margin: 0.5rem 0 1rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 1rem 1.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            outline: none;
+            background: white;
         }
 
-        button {
-            padding: 0.5rem 1rem;
-            border: none;
-            background-color: #007bff;
+        input[type="text"]:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            border-radius: 4px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            margin-top: 1rem;
         }
 
-        button:hover {
-            background-color: #0056b3;
+        button[type="submit"]:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        .features {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .feature-icon {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 500px) {
+            .login-container {
+                padding: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .logo {
+                font-size: 3rem;
+            }
         }
     </style>
 </head>
 <body>
-
-    <div class="login-container">
-        <h2>Login</h2>
-        <form action="#" method="POST">
-            <input type="text" name="username" placeholder="Enter username" required>
-            <br>
-            <button type="submit">Login</button>
-        </form>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="particle" style="width: 100px; height: 100px; top: 10%; left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="width: 150px; height: 150px; top: 60%; left: 80%; animation-delay: 2s;"></div>
+        <div class="particle" style="width: 80px; height: 80px; top: 80%; left: 20%; animation-delay: 4s;"></div>
+        <div class="particle" style="width: 120px; height: 120px; top: 30%; left: 70%; animation-delay: 6s;"></div>
+        <div class="particle" style="width: 90px; height: 90px; top: 50%; left: 15%; animation-delay: 8s;"></div>
     </div>
 
+    <!-- Login Container -->
+    <div class="login-container">
+        <div class="logo">🤖</div>
+        <h2>StudyBot AI</h2>
+        <p class="subtitle">Votre assistant d'apprentissage intelligent</p>
+        
+        <form action="{{ url_for('login') }}" method="POST">
+            <div class="input-group">
+                <label for="username">Nom d'utilisateur</label>
+                <input type="text" id="username" name="username" placeholder="Entrez votre nom" required autofocus>
+            </div>
+            
+            <button type="submit">Commencer l'apprentissage 🚀</button>
+        </form>
+
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">📚</div>
+                <span>Mode enseignement personnalisé</span>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">✅</div>
+                <span>Mode test interactif</span>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🤖</div>
+                <span>Intelligence artificielle avancée</span>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
