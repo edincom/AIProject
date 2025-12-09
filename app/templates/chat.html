@@ -1,0 +1,69 @@
+<!-- templates/chat.html -->
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Welcome {{ username }}</h2>
+
+<label for="mode">Mode:</label>
+<select id="mode">
+    <option value="teach" selected>Teach</option>
+    <option value="test">Test</option>
+</select>
+
+
+<div id="chatbox" style="border:1px solid #ccc; padding:10px; height:400px; overflow-y:auto;"></div>
+
+<form id="chat-form">
+    <input type="text" id="user-input" autocomplete="off" required placeholder="Type your message...">
+    <button type="submit">Send</button>
+</form>
+
+<script>
+    const form = document.getElementById('chat-form');
+    const input = document.getElementById('user-input');
+    const box = document.getElementById('chatbox');
+    const modeSelect = document.getElementById('mode');
+
+    // Escape HTML characters to prevent breaking the chatbox
+    function escapeHtml(text) {
+        return text.replace(/&/g, "&amp;")
+                   .replace(/</g, "&lt;")
+                   .replace(/>/g, "&gt;")
+                   .replace(/"/g, "&quot;")
+                   .replace(/'/g, "&#039;");
+    }
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const text = input.value.trim();
+        const mode = modeSelect.value;  // "teach" or "test"
+        if (!text) return;
+        input.value = "";
+
+        // Display user message
+        box.innerHTML += `<p><strong>You:</strong> ${escapeHtml(text)}</p>`;
+        box.scrollTop = box.scrollHeight;
+
+        try {
+            const res = await fetch("/chat_api", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({message: text, mode: mode}) // match Flask backend
+            });
+
+            if (!res.ok) {
+                box.innerHTML += `<p style="color:red;"><strong>Error:</strong> Failed to get AI response</p>`;
+                return;
+            }
+
+            const data = await res.json();
+            box.innerHTML += `<p><strong>AI:</strong> ${escapeHtml(data.reply)}</p>`;
+            box.scrollTop = box.scrollHeight;
+
+        } catch (err) {
+            box.innerHTML += `<p style="color:red;"><strong>Error:</strong> ${escapeHtml(err.message)}</p>`;
+        }
+    });
+</script>
+
+{% endblock %}
