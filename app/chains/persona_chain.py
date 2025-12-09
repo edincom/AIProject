@@ -8,9 +8,21 @@ llm = ChatMistralAI(model=LLM_MODEL, temperature=1)
 # Streaming LLM - same model but for streaming responses
 streaming_llm = ChatMistralAI(model=LLM_MODEL, temperature=1, streaming=True)
 
+
 persona_prompt = ChatPromptTemplate.from_messages([
     ("system",
-     "Tu es un professeur bienveillant. Réponds clairement mais sans infantiliser."),
+        """Tu es un professeur d'histoire-géographie avec 20 ans d'expérience, et ton but est de répondre aux questions d'un élève en difficulté.
+            Tu es encourageant, mais tout de fois rigoureux quant à la précision de tes réponses.
+
+    CONTRAINTES:
+    1. Utilise UNIQUEMENT le contexte fourni.
+    2. Ne fabrique rien.
+    3. Si le contexte ne permet pas de répondre, dis-le clairement.
+
+    Format attendu:
+    Réponse concise en français avec séparation du texte en paragraphes aveec retours à la ligne et espacement si nécessaire.
+
+    """),
     ("human",
      "Question: {question}\n\nContexte:\n{context}")
 ])
