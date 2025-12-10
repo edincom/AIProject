@@ -11,30 +11,74 @@ from app.tools.loaders import caption_images
 from app.tools.rag import split_docs
 from app.chains.persona_chain import streaming_persona_chain
 from app.chains.test_chain import generate_question_chain, test_chain
+from app.config.settings import FAISS_PATH
 from app.chains.theme_chain import theme_llm
-from app.chains.theme_chain import extract_chapters_and_themes
+from app.tools.database import save_teach_interaction
+
 
 print("Initializing AI backend…")
 
 docs = load_pdf()
-
-#Theme of the content
-
-structure, themes, retriever_theme = extract_chapters_and_themes(docs, theme_llm)
-
 image_docs = caption_images()
 chunks = split_docs(docs)
 all_docs = chunks  # + image_docs if you want to include images
-retriever = get_retriever(all_docs)
-print("Retriever initialized")
+retriever = get_retriever(all_docs, FAISS_PATH)
+print("Information retriever initialized")
 
 
-def ai_answer_stream(inputs):
+def get_relevant_chapter(question):
+    """Find which chapter is most relevant to the question"""
+    try:
+        with open("document_analysis.txt", "r", encoding="utf-8") as f:
+            content = f.read()
+        
+        # Find JSON content using markers
+        start = content.find("```json")
+        if start != -1:
+            start = content.find("\n", start) + 1
+            end = content.find("```", start)
+            structure_text = content[start:end].strip()
+        else:
+            # Fallback: extract between headers
+            structure_section = content.split("DOCUMENT STRUCTURE")[1].split("MAIN THEMES")[0]
+            structure_text = structure_section.replace("=" * 60, "").strip()
+        
+        structure = json.loads(structure_text)
+        
+        # Ask LLM to match question to chapter
+        from langchain_core.prompts import ChatPromptTemplate
+        
+        chapter_prompt = ChatPromptTemplate.from_messages([
+            ("system", "Tu es un assistant qui identifie à quel chapitre correspond une question."),
+            ("human", """Question: {question}
+
+            Chapitres: {chapters}
+
+            Réponds avec: "Chapitre X: Titre" ou "Chapitre général".""")
+        ])
+        
+        chain = chapter_prompt | theme_llm
+        result = chain.invoke({
+            "question": question,
+            "chapters": json.dumps(structure.get("chapters", []), indent=2, ensure_ascii=False)
+        })
+        
+        return result.content.strip()
+        
+    except Exception as e:
+        print(f"Error identifying chapter: {e}")
+        import traceback
+        traceback.print_exc()
+        return "Chapitre général"
+
+def ai_answer_stream(inputs, username="Guest"):
     """
-    Stream answer from the RAG/chat system token by token
+    Stream answer from the RAG/chat system token by token.
+    Saves the interaction to the database after streaming completes.
     
     Args:
         inputs: dict with 'question' key containing the user's question
+        username: str - The student's username (default: "Guest")
     
     Yields:
         str: Individual tokens/chunks of the response
@@ -56,7 +100,14 @@ def ai_answer_stream(inputs):
     
     question = question.strip()
     
+    # Variables to collect data for database
+    chapter_context = ""
+    full_answer = ""
+    
     try:
+        # Step 0: Find the relevant chapter
+        chapter_context = get_relevant_chapter(question)
+
         # Step 1: Retrieve context using RAG (non-streaming)
         docs = retriever.invoke(question)
         context = "\n\n".join(d.page_content for d in docs)
@@ -64,6 +115,7 @@ def ai_answer_stream(inputs):
         # Step 2: Stream the LLM response with context
         stream_inputs = {
             "question": question,
+            "chapter_context": chapter_context,
             "context": context
         }
         
@@ -73,16 +125,27 @@ def ai_answer_stream(inputs):
             if hasattr(chunk, 'content'):
                 content = chunk.content
                 if content:  # Only yield non-empty content
+                    full_answer += content
                     yield content
             elif isinstance(chunk, str):
                 if chunk:  # Only yield non-empty strings
+                    full_answer += chunk
                     yield chunk
+        
+        # Step 3: Save interaction to database after streaming completes
+        if full_answer:  # Only save if we got a response
+            save_teach_interaction(username, chapter_context, question, full_answer)
                     
     except Exception as e:
+        error_msg = f"Error: {str(e)}"
         print(f"Error in ai_answer_stream: {e}")
         import traceback
         traceback.print_exc()
-        yield f"Error: {str(e)}"
+        yield error_msg
+        
+        # Save error interaction to database
+        if chapter_context or question:
+            save_teach_interaction(username, chapter_context or "Error", question, error_msg)
 
 
 def generate_test_question(criteria):

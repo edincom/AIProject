@@ -1,11 +1,12 @@
-from langchain_mistralai import ChatMistralAI, MistralAIEmbeddings
-from langchain_community.document_loaders import PyMuPDFLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.vectorstores import FAISS
+# from dotenv import load_dotenv
+# load_dotenv()  # Load API key from .env, only when testing as a single file
+
+
+from langchain_mistralai import ChatMistralAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-import json
 from app.tools.loaders import load_pdf
+import os
 
 
 theme_llm = ChatMistralAI(
@@ -15,8 +16,6 @@ theme_llm = ChatMistralAI(
 
 docs = load_pdf()
 
-
-#EXTRACT TABLE OF CONTENTS & STRUCTURE
 
 def extract_chapters_and_themes(docs, llm):
     """
@@ -55,13 +54,12 @@ def extract_chapters_and_themes(docs, llm):
     
     return toc_result
 
-# 4. EXTRACT THEMES FROM FULL DOCUMENT
 
-#In the case of Atlas.pdf, it is not really necessary to use this function since it already has a clear table of content.
 
 def extract_themes_from_full_doc(docs, llm):
     """
     Extract main themes by analyzing the entire document
+    In the case of Atlas.pdf, it is not really necessary to use this function since it already has a clear table of content.
     """
     
     # Sample pages throughout the document
@@ -90,86 +88,14 @@ def extract_themes_from_full_doc(docs, llm):
     return themes_result
 
 
-# ============================================================
-# 5. CREATE RAG SYSTEM FOR DETAILED QUERIES
-# ============================================================
-
-def create_rag_system(docs):
-    """
-    Create a RAG system to answer specific questions about chapters
-    """
-    print("\n📚 Building vector store...")
-    
-    text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1000,
-        chunk_overlap=100,
-    )
-    
-    splits = text_splitter.split_documents(docs)
-    print(f"✅ Created {len(splits)} chunks")
-    
-    embeddings = MistralAIEmbeddings(model="mistral-embed")
-    vectorstore = FAISS.from_documents(splits, embeddings)
-    retriever = vectorstore.as_retriever(search_kwargs={"k": 5})
-    
-    return retriever
-
-
-# ============================================================
-# 6. QUERY SPECIFIC CHAPTERS
-# ============================================================
-
-def query_chapter_details(retriever, llm, chapter_name):
-    """
-    Get detailed information about a specific chapter
-    """
-    
-    # Retrieve relevant chunks
-    docs = retriever.invoke(f"What is covered in {chapter_name}?")
-    context = "\n\n".join([doc.page_content for doc in docs])
-    
-    detail_prompt = ChatPromptTemplate.from_messages([
-        ("system", "You are analyzing a document chapter. Provide a detailed summary of the content."),
-        ("user", """Based on this context about {chapter}:
-
-        {context}
-
-        Provide:
-        1. Main topics covered
-        2. Key concepts
-        3. Important details or findings""")
-            ])
-    
-    chain = detail_prompt | llm | StrOutputParser()
-    result = chain.invoke({"chapter": chapter_name, "context": context})
-    
-    return result
-
-def extracting_themes_and_chapter(docs, llm):
-    """
-    Main function to extract all chapters and themes
-    """
-    
-    # Extract structure
-    structure = extract_chapters_and_themes(docs, llm)
-
-
-    # Extract themes
-    themes = extract_themes_from_full_doc(docs, llm)
-
-    # Create RAG system for detailed queries
-    retriever = create_rag_system(docs)
-
-    
-    return structure, themes, retriever
-
-
-import os
-
-def analyze_if_needed():
+# Theme extraction + file creation
+def themes_and_chapters(docs, llm):
     if not os.path.exists("document_analysis.txt"):
-        structure, themes, retriever = extracting_themes_and_chapter()
+        print("Running theme extraction for the first time...")
+        structure = extract_chapters_and_themes(docs, llm)
+        themes = extract_themes_from_full_doc(docs, llm)
         
+        # Save to file
         with open("document_analysis.txt", "w", encoding="utf-8") as f:
             f.write("DOCUMENT STRUCTURE\n")
             f.write("="*60 + "\n")
@@ -177,6 +103,14 @@ def analyze_if_needed():
             f.write("MAIN THEMES\n")
             f.write("="*60 + "\n")
             f.write(themes + "\n")
-        
-        print("\n💾 Results saved to 'document_analysis.txt'")
+        print("💾 Results saved to 'document_analysis.txt'")
+        return structure, themes
+    else:
+        print("Loading cached theme analysis...")
+        structure = extract_chapters_and_themes(docs, llm)
+        themes = extract_themes_from_full_doc(docs, llm)
+        return structure, themes
+    
 
+
+themes_and_chapters(docs, theme_llm)

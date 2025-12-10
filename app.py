@@ -28,6 +28,7 @@ def chat_api():
         data = request.get_json() or {}
         message = data.get("message", "")
         mode = data.get("mode", "teach")
+        username = data.get("username", "Guest")  # Get username from request
 
         # Ensure message is a string
         if not isinstance(message, str):
@@ -44,11 +45,9 @@ def chat_api():
         def generate():
             try:
                 token_count = 0
-                for chunk in ai_answer_stream(inputs):
+                # Pass username to ai_answer_stream
+                for chunk in ai_answer_stream(inputs, username=username):
                     token_count += 1
-                    # Debug: print what we're sending
-                    # print(f"Sending token #{token_count}: {repr(chunk)[:100]}")
-                    # Send each chunk as a JSON object
                     yield f"data: {json.dumps({'token': chunk})}\n\n"
                 print(f"Streaming complete. Total tokens: {token_count}")
             except Exception as e:
