@@ -19,6 +19,12 @@ persona_prompt = ChatPromptTemplate.from_messages([
     Format attendu:
     Réponse concise en français avec séparation du texte en paragraphes aveec retours à la ligne et espacement si nécessaire.
 
+    Ne mentionne pas que tu te bases sur un contexte à l'élève, répond juste à la question.
+
+    Si la réponse n'est mentionné nulle part, dis à l'élève de se référer à son professeur.
+
+    Si la question est non pertinente, dis à l'élève que la question n'est pas pertinente par rapport au cours.
+
     """),
     ("human",
      "Question: {question}\n\nContexte:\n{context}")

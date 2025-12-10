@@ -46,7 +46,7 @@ def chat_api():
                 for chunk in ai_answer_stream(inputs):
                     token_count += 1
                     # Debug: print what we're sending
-                    print(f"Sending token #{token_count}: {repr(chunk)[:100]}")
+                    # print(f"Sending token #{token_count}: {repr(chunk)[:100]}")
                     # Send each chunk as a JSON object
                     yield f"data: {json.dumps({'token': chunk})}\n\n"
                 print(f"Streaming complete. Total tokens: {token_count}")

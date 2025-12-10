@@ -11,10 +11,17 @@ from app.tools.loaders import caption_images
 from app.tools.rag import split_docs
 from app.chains.persona_chain import streaming_persona_chain
 from app.chains.test_chain import generate_question_chain, test_chain
+from app.chains.theme_chain import theme_llm
+from app.chains.theme_chain import extract_chapters_and_themes
 
 print("Initializing AI backend…")
 
 docs = load_pdf()
+
+#Theme of the content
+
+structure, themes, retriever_theme = extract_chapters_and_themes(docs, theme_llm)
+
 image_docs = caption_images()
 chunks = split_docs(docs)
 all_docs = chunks  # + image_docs if you want to include images
