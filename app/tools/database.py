@@ -10,6 +10,7 @@ def init_database():
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     
+    # Table for test results (graded answers)
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS student_results (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -19,6 +20,18 @@ def init_database():
         grade REAL,
         scores TEXT,
         advice TEXT,
+        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+    ''')
+
+    # Table for teaching mode interactions (ungraded Q&A)
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS student_teach (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        student_name TEXT,
+        chapter TEXT,
+        question TEXT,
+        answer TEXT,
         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
     )
     ''')
@@ -37,8 +50,6 @@ def save_result(student_name, question, answer, grading_json):
         answer: str - Student's answer
         grading_json: dict - Grading result with grade, scores, advice
     """
-    # Ensure database exists
-    init_database()
     
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
@@ -62,6 +73,60 @@ def save_result(student_name, question, answer, grading_json):
     conn.close()
     print(f"Result saved for {student_name}")
 
+
+def save_teach_interaction(student_name, chapter, question, answer):
+    """
+    Save a teaching mode interaction to the database.
+    
+    Args:
+        student_name: str - Student's username
+        chapter: str - The chapter the question relates to
+        question: str - The student's question
+        answer: str - The AI's answer
+    """
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    
+    cursor.execute('''
+        INSERT INTO student_teach (student_name, chapter, question, answer)
+        VALUES (?, ?, ?, ?)
+    ''', (
+        student_name,
+        chapter,
+        question,
+        answer
+    ))
+    
+    conn.commit()
+    conn.close()
+    print(f"Teaching interaction saved for {student_name}")
+
+def get_student_chapter_interactions(student_name, chapter):
+    """
+    Retrieve all teaching interactions for a specific student in a specific chapter.
+    
+    Args:
+        student_name: str - Student's username
+        chapter: str - The chapter name to filter by
+    
+    Returns:
+        list of tuples: All teaching interactions for the student in that chapter
+    """
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    
+    cursor.execute('''
+        SELECT id, question, answer, timestamp
+        FROM student_teach
+        WHERE student_name = ? AND chapter = ?
+        ORDER BY timestamp DESC
+    ''', (student_name, chapter))
+    
+    results = cursor.fetchall()
+    conn.close()
+    
+    return results
+
 def get_student_results(student_name):
     """
     Retrieve all test results for a specific student.
@@ -72,7 +137,6 @@ def get_student_results(student_name):
     Returns:
         list of tuples: All test results for the student
     """
-    init_database()
     
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
@@ -96,7 +160,6 @@ def get_all_results():
     Returns:
         list of tuples: All test results
     """
-    init_database()
     
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
