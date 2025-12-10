@@ -576,6 +576,7 @@
         let currentMode = 'teach';
         let testState = 'idle'; // idle, waiting_for_question, waiting_for_answer
         let currentQuestion = '';
+        let modeChangeLocked = false;
         
         // Store conversations separately for each mode
         let teachMessages = [];
@@ -590,6 +591,11 @@
         // Mode toggle
         modeOptions.forEach(option => {
             option.addEventListener('click', () => {
+                if (modeChangeLocked && option.dataset.mode !== currentMode) {
+                    alert('⚠️ Vous devez d\'abord terminer le test en cours avant de changer de mode.');
+                    return;
+                }
+
                 // Save current conversation before switching
                 saveCurrentConversation();
                 
@@ -820,6 +826,7 @@
                 if (data.success) {
                     currentQuestion = data.question;
                     testState = 'waiting_for_answer';
+                    modeChangeLocked = true;
 
                     // Display the question
                     const questionDiv = createMessageContainer('ai');
@@ -885,6 +892,7 @@
                     
                     // Reset test state
                     testState = 'idle';
+                    modeChangeLocked = false;
                     currentQuestion = '';
                     userInput.placeholder = "Entrez un nouveau sujet pour un autre test...";
                 } else {

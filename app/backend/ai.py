@@ -78,7 +78,7 @@ def ai_answer_stream(inputs):
         yield f"Error: {str(e)}"
 
 
-def generate_test_question(criteria, historic):
+def generate_test_question(criteria):
     """
     Generate a test question using document context (RAG) and student criteria.
 
@@ -134,7 +134,7 @@ def grade_answer(question, answer, rubric, username="Anonymous"):
         # Define the scoring template
         scores_text = (
             "- Pertinence : Est-ce que l'étudiant répond bien à la question posée /30;\n"
-            "- Faits non correctes : Y a-t-il des faits incorrects /30;\n"
+            "- Faits non corrects : Y a-t-il des faits incorrects /30;\n"
             "- Faits manquants : Tous les faits attendus sont-ils présents /30;\n"
             "- Structure : La réponse est-elle bien structurée /10;"
         )
