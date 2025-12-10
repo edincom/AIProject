@@ -112,5 +112,24 @@ def get_all_results():
     
     return results
 
+
+def get_student_average_grade(student_name):
+    conn = sqlite3.connect('student_results.db')
+    cursor = conn.cursor()
+    
+    cursor.execute('''
+        SELECT AVG(grade) 
+        FROM student_results 
+        WHERE student_name = ?
+    ''', (student_name,))
+    
+    result = cursor.fetchone()[0]
+    conn.close()
+    
+    return result if result is not None else 0.0
+
+
+
+
 # Initialize database on import
 init_database()

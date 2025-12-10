@@ -78,9 +78,12 @@ def ai_answer_stream(inputs):
         yield f"Error: {str(e)}"
 
 
-def generate_test_question(criteria):
+def generate_test_question(criteria, historic):
     """
     Generate a test question using document context (RAG) and student criteria.
+
+    The student can choose whether the question is completely random (within the given subject), or the question is based
+    on the questions he poorly answered previously, as all the questions are stored in a database.
     
     Args:
         criteria: str - The topic/criteria the student wants to be tested on
@@ -88,6 +91,7 @@ def generate_test_question(criteria):
     Returns:
         str: Generated question
     """
+
     try:
         # Step 1: Retrieve relevant context using RAG
         docs = retriever.invoke(criteria)
