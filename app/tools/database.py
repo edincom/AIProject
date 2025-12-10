@@ -127,6 +127,22 @@ def get_student_chapter_interactions(student_name, chapter):
     
     return results
 
+def get_student_chapter_interactions(student_name, chapter):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    
+    cursor.execute('''
+        SELECT id, question, answer, timestamp
+        FROM student_teach
+        WHERE student_name = ? AND chapter = ?
+        ORDER BY timestamp DESC
+    ''', (student_name, chapter))
+    
+    results = cursor.fetchall()
+    conn.close()
+    
+    return results
+
 def get_student_results(student_name):
     """
     Retrieve all test results for a specific student.
@@ -191,6 +207,38 @@ def get_student_average_grade(student_name):
     
     return result if result is not None else 0.0
 
+def get_student_chapter_interactions_grouped(student_name):
+    """
+    Get all teaching interactions grouped by chapter for a student.
+    
+    Returns:
+        dict: {chapter_name: [{"question": "...", "answer": "..."}, ...]}
+    """
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    
+    cursor.execute('''
+        SELECT chapter, question, answer, timestamp
+        FROM student_teach
+        WHERE student_name = ?
+        ORDER BY timestamp ASC
+    ''', (student_name,))
+    
+    results = cursor.fetchall()
+    conn.close()
+    
+    chapters = {}
+    for row in results:
+        chapter, question, answer, timestamp = row
+        if chapter not in chapters:
+            chapters[chapter] = []
+        chapters[chapter].append({
+            "question": question,
+            "answer": answer,
+            "timestamp": timestamp
+        })
+    
+    return chapters
 
 
 

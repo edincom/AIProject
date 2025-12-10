@@ -2,6 +2,7 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, Response, stream_with_context
 from app.backend.ai import ai_answer_stream, generate_test_question, grade_answer
 import json
+from app.tools.database import get_student_chapter_interactions_grouped
 
 app = Flask(__name__, template_folder="app/templates")
 
@@ -69,6 +70,16 @@ def chat_api():
         import traceback
         traceback.print_exc()
         return jsonify({"reply": "An error occurred with AI backend."}), 500
+    
+
+@app.route('/get_chapter_history', methods=['GET'])
+def get_chapter_history():
+    """Get all chapters a student has asked questions about"""
+    
+    username = request.args.get('username', 'Guest')
+    chapters = get_student_chapter_interactions_grouped(username)
+    
+    return jsonify({"chapters": chapters})
 
 
 @app.route('/test_api', methods=['POST'])
