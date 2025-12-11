@@ -718,15 +718,19 @@
             }));
             
             if (currentMode === 'teach') {
-                teachMessages += messages;
+                teachMessages = teachMessages.concat(messages);
+                console.log('💾 Saved teach messages:', teachMessages);
             } else {
-                testMessages += messages;
+                testMessages = testMessages.concat(messages);
+                console.log('💾 Saved test messages:', testMessages);
             }
         }
         
         function loadConversation() {
             chatMessages.innerHTML = '';
             const messages = currentMode === 'teach' ? teachMessages : testMessages;
+            
+            console.log(`📖 Loading ${currentMode} conversation:`, messages);
             
             if (messages.length === 0) {
                 showWelcomeMessage();
@@ -771,6 +775,9 @@
         async function sendMessage() {
             const message = userInput.value.trim();
             if (!message) return;
+
+            console.log(`📤 Sending message in ${currentMode} mode:`, message);
+            console.log(`📚 Current ${currentMode} history:`, currentMode === 'teach' ? teachMessages : testMessages);
 
             const welcomeMsg = document.querySelector('.welcome-message');
             if (welcomeMsg) {
@@ -857,6 +864,9 @@
                 sendBtn.disabled = false;
                 userInput.disabled = false;
                 userInput.focus();
+                // Save the new messages to history
+                saveCurrentConversation();
+                console.log(`✅ Updated ${currentMode} history:`, teachMessages);
             }
         }
 
@@ -970,6 +980,9 @@
                 sendBtn.disabled = false;
                 userInput.disabled = false;
                 userInput.focus();
+                // Save the new messages to history
+                saveCurrentConversation();
+                console.log(`✅ Updated ${currentMode} history:`, testMessages);
             }
         }
 
