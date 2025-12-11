@@ -5,7 +5,7 @@ from app.tools.database import get_user_history
 import json
 from app.tools.database import get_student_chapter_interactions_grouped
 
-app = Flask(__name__, template_folder="app/templates")
+app = Flask(__name__, template_folder="app/templates", static_folder="app/static")
 
 @app.route('/')
 def index():
