@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,10 +39,13 @@
         }
 
         @keyframes float {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: translateY(0) translateX(0) scale(1);
                 opacity: 0.3;
             }
+
             50% {
                 transform: translateY(-100px) translateX(50px) scale(1.2);
                 opacity: 0.6;
@@ -76,8 +80,15 @@
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
         }
 
         .user-info {
@@ -221,7 +232,7 @@
             background: rgba(255, 255, 255, 0.1);
             color: white;
         }
-        
+
         .btn-clear-chat {
             margin-left: auto;
             padding: 0.7rem 1.5rem;
@@ -234,7 +245,7 @@
             font-weight: 600;
             font-size: 0.9rem;
         }
-        
+
         .btn-clear-chat:hover {
             background: rgba(255, 87, 87, 0.3);
             border-color: rgba(255, 87, 87, 0.5);
@@ -287,6 +298,7 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -513,12 +525,25 @@
             animation: bounce 1.4s infinite ease-in-out;
         }
 
-        .loading span:nth-child(1) { animation-delay: -0.32s; }
-        .loading span:nth-child(2) { animation-delay: -0.16s; }
+        .loading span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .loading span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
 
         @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1); }
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0);
+            }
+
+            40% {
+                transform: scale(1);
+            }
         }
 
         .error-message {
@@ -571,6 +596,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="bg-animation">
         <div class="particle" style="width: 100px; height: 100px; top: 10%; left: 10%; animation-delay: 0s;"></div>
@@ -607,7 +633,8 @@
                 <div class="chat-messages" id="chatMessages">
                     <div class="welcome-message">
                         <h2>👋 Bonjour <span id="welcome-username">{{ username }}</span> !</h2>
-                        <p id="welcome-text">Je suis votre assistant d'apprentissage IA. Posez-moi des questions et je serai ravi de vous aider !</p>
+                        <p id="welcome-text">Je suis votre assistant d'apprentissage IA. Posez-moi des questions et je
+                            serai ravi de vous aider !</p>
                     </div>
                 </div>
 
@@ -628,9 +655,10 @@
         let currentQuestion = '';
         let teachMessages = [];
         let testMessages = [];
+        let chapterConversations = {}; // {chapterName: [messages]}
         let chapterHistories = {};
         let currentChapter = null;
-        
+
         const chatMessages = document.getElementById('chatMessages');
         const userInput = document.getElementById('user-input');
         const sendBtn = document.getElementById('sendBtn');
@@ -642,7 +670,7 @@
             try {
                 const response = await fetch(`/get_chapter_history?username=${encodeURIComponent(username)}`);
                 const data = await response.json();
-                
+
                 chapterHistories = data.chapters || {};
                 renderChapterList();
             } catch (error) {
@@ -652,7 +680,7 @@
 
         function renderChapterList() {
             chapterList.innerHTML = '';
-            
+
             const chapters = Object.keys(chapterHistories);
             if (chapters.length === 0) {
                 chapterList.innerHTML = '<p style="color: #999; font-size: 0.9rem;">Aucun historique</p>';
@@ -678,15 +706,15 @@
         function loadChapterConversation(chapter) {
             currentChapter = chapter;
             renderChapterList();
-            
+
             chatMessages.innerHTML = '';
             const interactions = chapterHistories[chapter] || [];
-            
+
             interactions.forEach(interaction => {
                 addMessage(interaction.question, 'user');
                 addMessage(interaction.answer, 'ai');
             });
-            
+
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
@@ -698,7 +726,7 @@
                 currentMode = option.dataset.mode;
                 testState = 'idle';
                 currentQuestion = '';
-                
+
                 if (currentMode === 'test') {
                     welcomeText.textContent = "Mode test : Entrez un sujet pour générer une question d'évaluation.";
                     userInput.placeholder = "Ex: La Seconde Guerre mondiale";
@@ -706,32 +734,29 @@
                     welcomeText.textContent = "Je suis votre assistant d'apprentissage IA. Posez-moi des questions et je serai ravi de vous aider !";
                     userInput.placeholder = "Posez votre question...";
                 }
-                
+
                 loadConversation();
             });
         });
-        
+
         function saveCurrentConversation() {
+            if (!currentChapter) return;
+
             const messages = Array.from(chatMessages.children).map(child => ({
                 html: child.outerHTML,
                 classes: child.className
             }));
-            
-            if (currentMode === 'teach') {
-                teachMessages = teachMessages.concat(messages);
-                console.log('💾 Saved teach messages:', teachMessages);
-            } else {
-                testMessages = testMessages.concat(messages);
-                console.log('💾 Saved test messages:', testMessages);
-            }
+
+            chapterConversations[currentChapter] = messages;
+            console.log(`💾 Saved to chapter "${currentChapter}":`, messages);
         }
-        
+
         function loadConversation() {
             chatMessages.innerHTML = '';
-            const messages = currentMode === 'teach' ? teachMessages : testMessages;
-            
-            console.log(`📖 Loading ${currentMode} conversation:`, messages);
-            
+            const messages = currentChapter ? chapterConversations[currentChapter] || [] : [];
+
+            console.log(`📖 Loading chapter "${currentChapter}":`, messages);
+
             if (messages.length === 0) {
                 showWelcomeMessage();
             } else {
@@ -741,22 +766,22 @@
                     chatMessages.appendChild(tempDiv.firstChild);
                 });
             }
-            
+
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
-        
+
         function showWelcomeMessage() {
             const welcomeDiv = document.createElement('div');
             welcomeDiv.className = 'welcome-message';
             welcomeDiv.innerHTML = `
                 <h2>👋 Bonjour <span id="welcome-username">${username}</span> !</h2>
-                <p id="welcome-text">${currentMode === 'test' 
-                    ? "Mode test : Entrez un sujet pour générer une question d'évaluation." 
+                <p id="welcome-text">${currentMode === 'test'
+                    ? "Mode test : Entrez un sujet pour générer une question d'évaluation."
                     : "Je suis votre assistant d'apprentissage IA. Posez-moi des questions et je serai ravi de vous aider !"}</p>
             `;
             chatMessages.appendChild(welcomeDiv);
         }
-        
+
         function clearCurrentConversation() {
             if (currentMode === 'teach') {
                 teachMessages = [];
@@ -767,7 +792,7 @@
             loadConversation();
         }
 
-        userInput.addEventListener('input', function() {
+        userInput.addEventListener('input', function () {
             this.style.height = 'auto';
             this.style.height = (this.scrollHeight) + 'px';
         });
@@ -829,19 +854,19 @@
                 let buffer = '';
 
                 while (true) {
-                    const {done, value} = await reader.read();
-                    
+                    const { done, value } = await reader.read();
+
                     if (done) break;
-                    
-                    buffer += decoder.decode(value, {stream: true});
+
+                    buffer += decoder.decode(value, { stream: true });
                     const messages = buffer.split('\n\n');
                     buffer = messages.pop();
-                    
+
                     for (const message of messages) {
                         if (message.startsWith('data: ')) {
                             try {
                                 const data = JSON.parse(message.substring(6));
-                                
+
                                 if (data.error) {
                                     aiContentDiv.innerHTML = `<span style="color:red;">${escapeHtml(data.error)}</span>`;
                                 } else if (data.token) {
@@ -989,9 +1014,9 @@
         function displayGradingResult(grading) {
             const resultDiv = createMessageContainer('ai');
             const resultContent = resultDiv.querySelector('.message-content');
-            
+
             const scores = grading.scores || {};
-            
+
             resultContent.innerHTML = `
                 <div class="grade-result">
                     <div class="grade-header">
@@ -1030,25 +1055,25 @@
                     </div>
                 </div>
             `;
-            
+
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
         function createMessageContainer(type) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${type}`;
-            
+
             const avatar = document.createElement('div');
             avatar.className = 'message-avatar';
             avatar.textContent = type === 'user' ? '👤' : '🤖';
-            
+
             const content = document.createElement('div');
             content.className = 'message-content';
-            
+
             messageDiv.appendChild(avatar);
             messageDiv.appendChild(content);
             chatMessages.appendChild(messageDiv);
-            
+
             chatMessages.scrollTop = chatMessages.scrollHeight;
             return messageDiv;
         }
@@ -1067,13 +1092,13 @@
         }
 
         sendBtn.addEventListener('click', sendMessage);
-        
+
         document.getElementById('clearChatBtn').addEventListener('click', () => {
             if (confirm('Êtes-vous sûr de vouloir effacer cette conversation ?')) {
                 clearCurrentConversation();
             }
         });
-        
+
         userInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter' && !e.shiftKey && !sendBtn.disabled) {
                 e.preventDefault();
@@ -1085,4 +1110,5 @@
         userInput.focus();
     </script>
 </body>
+
 </html>
