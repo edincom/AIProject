@@ -726,6 +726,7 @@
             });
         }
 
+        // Update loadChapterConversation to load into current mode AND set chapter context
         function loadChapterConversation(chapter) {
             currentChapter = chapter;
             renderChapterList();
@@ -737,6 +738,9 @@
                 addMessage(interaction.question, 'user');
                 addMessage(interaction.answer, 'ai');
             });
+
+            // Save this loaded conversation to the current mode's memory
+            saveCurrentConversation();
 
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
@@ -768,23 +772,36 @@
             });
         });
 
+        // Update saveCurrentConversation to save both by chapter AND by mode
         function saveCurrentConversation() {
-            if (!currentChapter) return;
-
             const messages = Array.from(chatMessages.children).map(child => ({
                 html: child.outerHTML,
                 classes: child.className
             }));
 
-            chapterConversations[currentChapter] = messages;
-            console.log(`💾 Saved to chapter "${currentChapter}":`, messages);
+            // Save by chapter (for chapter history sidebar)
+            if (currentChapter) {
+                chapterConversations[currentChapter] = messages;
+                console.log(`💾 Saved to chapter "${currentChapter}":`, messages);
+            }
+
+            // Save by mode (for mode switching)
+            if (currentMode === 'teach') {
+                teachMessages = messages;
+            } else {
+                testMessages = messages;
+            }
         }
 
+
+        // Update loadConversation to prioritize mode-based loading
         function loadConversation() {
             chatMessages.innerHTML = '';
-            const messages = currentChapter ? chapterConversations[currentChapter] || [] : [];
 
-            console.log(`📖 Loading chapter "${currentChapter}":`, messages);
+            // Load based on current mode (this preserves conversation when switching modes)
+            const messages = currentMode === 'teach' ? teachMessages : testMessages;
+
+            console.log(`📖 Loading ${currentMode} mode conversation:`, messages);
 
             if (messages.length === 0) {
                 showWelcomeMessage();
@@ -798,7 +815,6 @@
 
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
-
         function showWelcomeMessage() {
             const welcomeDiv = document.createElement('div');
             welcomeDiv.className = 'welcome-message';
