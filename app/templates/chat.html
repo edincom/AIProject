@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +21,6 @@
             overflow-x: hidden;
         }
 
-        /* Animated background particles */
         .bg-animation {
             position: fixed;
             width: 100%;
@@ -39,17 +39,19 @@
         }
 
         @keyframes float {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: translateY(0) translateX(0) scale(1);
                 opacity: 0.3;
             }
+
             50% {
                 transform: translateY(-100px) translateX(50px) scale(1.2);
                 opacity: 0.6;
             }
         }
 
-        /* Navbar */
         .navbar {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -78,8 +80,15 @@
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
         }
 
         .user-info {
@@ -106,20 +115,75 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
-        /* Main Container */
         .container {
             flex: 1;
             display: flex;
-            flex-direction: column;
-            max-width: 1200px;
+            max-width: 1400px;
             width: 100%;
             margin: 2rem auto;
             padding: 0 1rem;
             position: relative;
             z-index: 1;
+            gap: 1rem;
         }
 
-        /* Mode Selector */
+        .sidebar {
+            width: 300px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 1.5rem;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .sidebar h3 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .chapter-item {
+            padding: 1rem;
+            background: white;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .chapter-item:hover {
+            transform: translateX(5px);
+            border-color: #667eea;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .chapter-item.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .chapter-title {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            font-size: 0.95rem;
+        }
+
+        .chapter-count {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
         .mode-selector {
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
@@ -168,7 +232,7 @@
             background: rgba(255, 255, 255, 0.1);
             color: white;
         }
-        
+
         .btn-clear-chat {
             margin-left: auto;
             padding: 0.7rem 1.5rem;
@@ -181,14 +245,13 @@
             font-weight: 600;
             font-size: 0.9rem;
         }
-        
+
         .btn-clear-chat:hover {
             background: rgba(255, 87, 87, 0.3);
             border-color: rgba(255, 87, 87, 0.5);
             transform: translateY(-2px);
         }
 
-        /* Chat Container */
         .chat-container {
             flex: 1;
             background: rgba(255, 255, 255, 0.95);
@@ -200,7 +263,6 @@
             min-height: 500px;
         }
 
-        /* Chat Messages */
         .chat-messages {
             flex: 1;
             padding: 2rem;
@@ -236,6 +298,7 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -286,7 +349,6 @@
             border: 1px solid #e0e0e0;
         }
 
-        /* Test Mode Specific */
         .test-question-box {
             background: #fff3cd;
             border-left: 4px solid #ffc107;
@@ -376,7 +438,6 @@
             line-height: 1.6;
         }
 
-        /* Welcome Message */
         .welcome-message {
             text-align: center;
             padding: 3rem 2rem;
@@ -392,7 +453,6 @@
             background-clip: text;
         }
 
-        /* Chat Input */
         .chat-input {
             padding: 1.5rem;
             background: white;
@@ -452,7 +512,6 @@
             cursor: not-allowed;
         }
 
-        /* Loading Animation */
         .loading {
             display: inline-flex;
             gap: 0.3rem;
@@ -466,15 +525,27 @@
             animation: bounce 1.4s infinite ease-in-out;
         }
 
-        .loading span:nth-child(1) { animation-delay: -0.32s; }
-        .loading span:nth-child(2) { animation-delay: -0.16s; }
-
-        @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1); }
+        .loading span:nth-child(1) {
+            animation-delay: -0.32s;
         }
 
-        /* Error Message */
+        .loading span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0);
+            }
+
+            40% {
+                transform: scale(1);
+            }
+        }
+
         .error-message {
             background: #fee;
             color: #c33;
@@ -483,7 +554,6 @@
             border-left: 4px solid #c33;
         }
 
-        /* Test Mode States */
         .test-state {
             display: none;
         }
@@ -492,7 +562,6 @@
             display: block;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .navbar {
                 padding: 1rem;
@@ -500,6 +569,12 @@
 
             .container {
                 margin: 1rem auto;
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                max-height: 200px;
             }
 
             .message {
@@ -521,8 +596,8 @@
         }
     </style>
 </head>
+
 <body>
-    <!-- Animated Background -->
     <div class="bg-animation">
         <div class="particle" style="width: 100px; height: 100px; top: 10%; left: 10%; animation-delay: 0s;"></div>
         <div class="particle" style="width: 150px; height: 150px; top: 60%; left: 80%; animation-delay: 2s;"></div>
@@ -530,7 +605,6 @@
         <div class="particle" style="width: 120px; height: 120px; top: 30%; left: 70%; animation-delay: 6s;"></div>
     </div>
 
-    <!-- Navbar -->
     <nav class="navbar">
         <div class="logo">StudyBot AI</div>
         <div class="user-info">
@@ -539,65 +613,138 @@
         </div>
     </nav>
 
-    <!-- Main Container -->
     <div class="container">
-        <!-- Mode Selector -->
-        <div class="mode-selector">
-            <label>Mode d'apprentissage :</label>
-            <div class="mode-toggle">
-                <button class="mode-option active" data-mode="teach">📚 Enseigner</button>
-                <button class="mode-option" data-mode="test">✅ Tester</button>
-            </div>
-            <button class="btn-clear-chat" id="clearChatBtn">🗑️ Effacer la conversation</button>
+        <div class="sidebar">
+            <h3>📚 Historique par chapitre</h3>
+            <div id="chapterList"></div>
         </div>
 
-        <!-- Chat Container -->
-        <div class="chat-container">
-            <div class="chat-messages" id="chatMessages">
-                <div class="welcome-message">
-                    <h2>👋 Bonjour <span id="welcome-username">{{ username }}</span> !</h2>
-                    <p id="welcome-text">Je suis votre assistant d'apprentissage IA. Posez-moi des questions et je serai ravi de vous aider !</p>
+        <div class="main-content">
+            <div class="mode-selector">
+                <label>Mode d'apprentissage :</label>
+                <div class="mode-toggle">
+                    <button class="mode-option active" data-mode="teach">📚 Enseigner</button>
+                    <button class="mode-option" data-mode="test">✅ Tester</button>
                 </div>
+                <button class="btn-clear-chat" id="clearChatBtn">🗑️ Effacer la conversation</button>
             </div>
 
-            <div class="chat-input">
-                <div class="input-wrapper">
-                    <textarea id="user-input" placeholder="Posez votre question..." rows="1"></textarea>
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="welcome-message">
+                        <h2>👋 Bonjour <span id="welcome-username">{{ username }}</span> !</h2>
+                        <p id="welcome-text">Je suis votre assistant d'apprentissage IA. Posez-moi des questions et je
+                            serai ravi de vous aider !</p>
+                    </div>
                 </div>
-                <button class="btn-send" id="sendBtn">Envoyer</button>
+
+                <div class="chat-input">
+                    <div class="input-wrapper">
+                        <textarea id="user-input" placeholder="Posez votre question..." rows="1"></textarea>
+                    </div>
+                    <button class="btn-send" id="sendBtn">Envoyer</button>
+                </div>
             </div>
         </div>
 
         <div style="margin-top: 2rem; text-align: center;">
-            <button onclick="loadHistory()" style="padding: 0.8rem 2rem; background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 25px; color: white; cursor: pointer; font-weight: 600; font-size: 1rem; transition: all 0.3s;">
+            <button onclick="loadHistory()"
+                style="padding: 0.8rem 2rem; background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 25px; color: white; cursor: pointer; font-weight: 600; font-size: 1rem; transition: all 0.3s;">
                 📜 Voir mon historique
             </button>
-</div>
+        </div>
 
-<div id="history" style="margin-top:20px; color:white;"></div>
+        <!-- Modal overlay -->
+        <div id="historyModal"
+            style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000; overflow-y:auto;">
+            <div style="position:relative; max-width:900px; margin:2rem auto; padding:2rem;">
+                <button onclick="closeHistory()"
+                    style="position:absolute; top:1rem; right:1rem; background:white; border:none; border-radius:50%; width:40px; height:40px; cursor:pointer; font-size:1.5rem; box-shadow:0 2px 10px rgba(0,0,0,0.2);">×</button>
+                <div id="history"></div>
+            </div>
+        </div>
+
+        <div id="history" style="margin-top:20px; color:white;"></div>
 
     </div>
 
     <script>
-        // Get username from the template
         const username = "{{ username }}";
-        
         let currentMode = 'teach';
-        let testState = 'idle'; // idle, waiting_for_question, waiting_for_answer
+        let testState = 'idle';
         let currentQuestion = '';
         let modeChangeLocked = false;
-        
+
         // Store conversations separately for each mode
         let teachMessages = [];
         let testMessages = [];
-        
+        let chapterConversations = {}; // {chapterName: [messages]}
+        let chapterHistories = {};
+        let currentChapter = null;
+
         const chatMessages = document.getElementById('chatMessages');
         const userInput = document.getElementById('user-input');
         const sendBtn = document.getElementById('sendBtn');
         const modeOptions = document.querySelectorAll('.mode-option');
         const welcomeText = document.getElementById('welcome-text');
+        const chapterList = document.getElementById('chapterList');
 
-        // Mode toggle
+        async function loadChapterHistory() {
+            try {
+                const response = await fetch(`/get_chapter_history?username=${encodeURIComponent(username)}`);
+                const data = await response.json();
+
+                chapterHistories = data.chapters || {};
+                renderChapterList();
+            } catch (error) {
+                console.error('Error loading chapter history:', error);
+            }
+        }
+
+        function renderChapterList() {
+            chapterList.innerHTML = '';
+
+            const chapters = Object.keys(chapterHistories);
+            if (chapters.length === 0) {
+                chapterList.innerHTML = '<p style="color: #999; font-size: 0.9rem;">Aucun historique</p>';
+                return;
+            }
+
+            chapters.forEach(chapter => {
+                const count = chapterHistories[chapter].length;
+                const item = document.createElement('div');
+                item.className = 'chapter-item';
+                if (chapter === currentChapter) {
+                    item.classList.add('active');
+                }
+                item.innerHTML = `
+                    <div class="chapter-title">${escapeHtml(chapter)}</div>
+                    <div class="chapter-count">${count} interaction${count > 1 ? 's' : ''}</div>
+                `;
+                item.onclick = () => loadChapterConversation(chapter);
+                chapterList.appendChild(item);
+            });
+        }
+
+        // Update loadChapterConversation to load into current mode AND set chapter context
+        function loadChapterConversation(chapter) {
+            currentChapter = chapter;
+            renderChapterList();
+
+            chatMessages.innerHTML = '';
+            const interactions = chapterHistories[chapter] || [];
+
+            interactions.forEach(interaction => {
+                addMessage(interaction.question, 'user');
+                addMessage(interaction.answer, 'ai');
+            });
+
+            // Save this loaded conversation to the current mode's memory
+            saveCurrentConversation();
+
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
         modeOptions.forEach(option => {
             option.addEventListener('click', () => {
                 if (modeChangeLocked && option.dataset.mode !== currentMode) {
@@ -607,14 +754,12 @@
 
                 // Save current conversation before switching
                 saveCurrentConversation();
-                
                 modeOptions.forEach(opt => opt.classList.remove('active'));
                 option.classList.add('active');
                 currentMode = option.dataset.mode;
                 testState = 'idle';
                 currentQuestion = '';
-                
-                // Update welcome message
+
                 if (currentMode === 'test') {
                     welcomeText.textContent = "Mode test : Entrez un sujet pour générer une question d'évaluation.";
                     userInput.placeholder = "Ex: La Seconde Guerre mondiale";
@@ -622,88 +767,91 @@
                     welcomeText.textContent = "Je suis votre assistant d'apprentissage IA. Posez-moi des questions et je serai ravi de vous aider !";
                     userInput.placeholder = "Posez votre question...";
                 }
-                
-                // Load conversation for new mode
+
                 loadConversation();
             });
         });
-        
-        // Save current conversation to memory
+
+        // Update saveCurrentConversation to save both by chapter AND by mode
         function saveCurrentConversation() {
             const messages = Array.from(chatMessages.children).map(child => ({
                 html: child.outerHTML,
                 classes: child.className
             }));
-            
+
+            // Save by chapter (for chapter history sidebar)
+            if (currentChapter) {
+                chapterConversations[currentChapter] = messages;
+                console.log(`💾 Saved to chapter "${currentChapter}":`, messages);
+            }
+
+            // Save by mode (for mode switching)
             if (currentMode === 'teach') {
                 teachMessages = messages;
             } else {
                 testMessages = messages;
             }
         }
-        
-        // Load conversation from memory
+
+
+        // Update loadConversation to prioritize mode-based loading
         function loadConversation() {
-            // Clear current messages
             chatMessages.innerHTML = '';
-            
+
+            // Load based on current mode (this preserves conversation when switching modes)
             const messages = currentMode === 'teach' ? teachMessages : testMessages;
-            
+
+            console.log(`📖 Loading ${currentMode} mode conversation:`, messages);
+
             if (messages.length === 0) {
-                // Show welcome message if no conversation exists
                 showWelcomeMessage();
             } else {
-                // Restore saved messages
                 messages.forEach(msg => {
                     const tempDiv = document.createElement('div');
                     tempDiv.innerHTML = msg.html;
                     chatMessages.appendChild(tempDiv.firstChild);
                 });
             }
-            
-            // Scroll to bottom
+
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
-        
-        // Show welcome message
         function showWelcomeMessage() {
             const welcomeDiv = document.createElement('div');
             welcomeDiv.className = 'welcome-message';
             welcomeDiv.innerHTML = `
                 <h2>👋 Bonjour <span id="welcome-username">${username}</span> !</h2>
-                <p id="welcome-text">${currentMode === 'test' 
-                    ? "Mode test : Entrez un sujet pour générer une question d'évaluation." 
+                <p id="welcome-text">${currentMode === 'test'
+                    ? "Mode test : Entrez un sujet pour générer une question d'évaluation."
                     : "Je suis votre assistant d'apprentissage IA. Posez-moi des questions et je serai ravi de vous aider !"}</p>
             `;
             chatMessages.appendChild(welcomeDiv);
         }
-        
-        // Optional: Clear current mode conversation (can be called from UI)
+
         function clearCurrentConversation() {
             if (currentMode === 'teach') {
                 teachMessages = [];
             } else {
                 testMessages = [];
             }
+            currentChapter = null;
             loadConversation();
         }
 
-        // Auto-resize textarea
-        userInput.addEventListener('input', function() {
+        userInput.addEventListener('input', function () {
             this.style.height = 'auto';
             this.style.height = (this.scrollHeight) + 'px';
         });
 
-        // Send message handler
         async function sendMessage() {
             const message = userInput.value.trim();
             if (!message) return;
 
-            // Remove welcome message if it exists (only from DOM, not from saved state)
+            console.log(`📤 Sending message in ${currentMode} mode:`, message);
+            console.log(`📚 Current ${currentMode} history:`, currentMode === 'teach' ? teachMessages : testMessages);
+
             const welcomeMsg = document.querySelector('.welcome-message');
             if (welcomeMsg) {
                 welcomeMsg.remove();
-                // Also remove from saved messages
                 if (currentMode === 'teach') {
                     teachMessages = teachMessages.filter(msg => !msg.classes.includes('welcome-message'));
                 } else {
@@ -721,14 +869,11 @@
             userInput.style.height = 'auto';
         }
 
-        // TEACH MODE: Ask questions to teacher
         async function handleTeachMode(message) {
-            // Add user message
             addMessage(message, 'user');
             sendBtn.disabled = true;
             userInput.disabled = true;
 
-            // Create AI message container for streaming
             const aiMessageDiv = createMessageContainer('ai');
             const aiContentDiv = aiMessageDiv.querySelector('.message-content');
 
@@ -740,7 +885,8 @@
                     },
                     body: JSON.stringify({
                         message: message,
-                        mode: 'teach'
+                        mode: 'teach',
+                        username: username
                     })
                 });
 
@@ -748,33 +894,28 @@
                     throw new Error('Erreur de connexion avec le serveur');
                 }
 
-                // Handle Server-Sent Events (SSE) streaming
                 const reader = response.body.getReader();
                 const decoder = new TextDecoder();
                 let buffer = '';
 
                 while (true) {
-                    const {done, value} = await reader.read();
-                    
+                    const { done, value } = await reader.read();
+
                     if (done) break;
-                    
-                    buffer += decoder.decode(value, {stream: true});
-                    
-                    // Process complete messages (separated by \n\n)
+
+                    buffer += decoder.decode(value, { stream: true });
                     const messages = buffer.split('\n\n');
-                    buffer = messages.pop(); // Keep incomplete message in buffer
-                    
+                    buffer = messages.pop();
+
                     for (const message of messages) {
                         if (message.startsWith('data: ')) {
                             try {
                                 const data = JSON.parse(message.substring(6));
-                                
+
                                 if (data.error) {
                                     aiContentDiv.innerHTML = `<span style="color:red;">${escapeHtml(data.error)}</span>`;
                                 } else if (data.token) {
-                                    // Append each token as it arrives
                                     aiContentDiv.textContent += data.token;
-                                    // Auto-scroll to bottom
                                     chatMessages.scrollTop = chatMessages.scrollHeight;
                                 }
                             } catch (err) {
@@ -784,6 +925,8 @@
                     }
                 }
 
+                await loadChapterHistory();
+
             } catch (error) {
                 aiContentDiv.innerHTML = `<span style="color:red;">Désolé, une erreur est survenue. Veuillez réessayer.</span>`;
                 console.error('Error:', error);
@@ -791,16 +934,16 @@
                 sendBtn.disabled = false;
                 userInput.disabled = false;
                 userInput.focus();
+                // Save the new messages to history
+                saveCurrentConversation();
+                console.log(`✅ Updated ${currentMode} history:`, teachMessages);
             }
         }
 
-        // TEST MODE: Generate questions and grade answers
         async function handleTestMode(message) {
             if (testState === 'idle') {
-                // Step 1: Generate a question
                 await generateQuestion(message);
             } else if (testState === 'waiting_for_answer') {
-                // Step 2: Grade the answer
                 await gradeAnswer(message);
             }
         }
@@ -810,7 +953,6 @@
             sendBtn.disabled = true;
             userInput.disabled = true;
 
-            // Show loading
             const loadingDiv = createMessageContainer('ai');
             const loadingContent = loadingDiv.querySelector('.message-content');
             loadingContent.innerHTML = '<div class="loading"><span></span><span></span><span></span></div> Génération de la question...';
@@ -828,8 +970,6 @@
                 });
 
                 const data = await response.json();
-
-                // Remove loading message
                 loadingDiv.remove();
 
                 if (data.success) {
@@ -837,7 +977,6 @@
                     testState = 'waiting_for_answer';
                     modeChangeLocked = true;
 
-                    // Display the question
                     const questionDiv = createMessageContainer('ai');
                     const questionContent = questionDiv.querySelector('.message-content');
                     questionContent.innerHTML = `
@@ -871,7 +1010,6 @@
             sendBtn.disabled = true;
             userInput.disabled = true;
 
-            // Show loading
             const loadingDiv = createMessageContainer('ai');
             const loadingContent = loadingDiv.querySelector('.message-content');
             loadingContent.innerHTML = '<div class="loading"><span></span><span></span><span></span></div> Évaluation en cours...';
@@ -892,14 +1030,10 @@
                 });
 
                 const data = await response.json();
-
-                // Remove loading message
                 loadingDiv.remove();
 
                 if (data.success) {
                     displayGradingResult(data.grading);
-                    
-                    // Reset test state
                     testState = 'idle';
                     modeChangeLocked = false;
                     currentQuestion = '';
@@ -918,15 +1052,18 @@
                 sendBtn.disabled = false;
                 userInput.disabled = false;
                 userInput.focus();
+                // Save the new messages to history
+                saveCurrentConversation();
+                console.log(`✅ Updated ${currentMode} history:`, testMessages);
             }
         }
 
         function displayGradingResult(grading) {
             const resultDiv = createMessageContainer('ai');
             const resultContent = resultDiv.querySelector('.message-content');
-            
+
             const scores = grading.scores || {};
-            
+
             resultContent.innerHTML = `
                 <div class="grade-result">
                     <div class="grade-header">
@@ -965,25 +1102,25 @@
                     </div>
                 </div>
             `;
-            
+
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
         function createMessageContainer(type) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${type}`;
-            
+
             const avatar = document.createElement('div');
             avatar.className = 'message-avatar';
             avatar.textContent = type === 'user' ? '👤' : '🤖';
-            
+
             const content = document.createElement('div');
             content.className = 'message-content';
-            
+
             messageDiv.appendChild(avatar);
             messageDiv.appendChild(content);
             chatMessages.appendChild(messageDiv);
-            
+
             chatMessages.scrollTop = chatMessages.scrollHeight;
             return messageDiv;
         }
@@ -1001,15 +1138,14 @@
             return div.innerHTML;
         }
 
-        // Event listeners
         sendBtn.addEventListener('click', sendMessage);
-        
+
         document.getElementById('clearChatBtn').addEventListener('click', () => {
             if (confirm('Êtes-vous sûr de vouloir effacer cette conversation ?')) {
                 clearCurrentConversation();
             }
         });
-        
+
         userInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter' && !e.shiftKey && !sendBtn.disabled) {
                 e.preventDefault();
@@ -1017,69 +1153,70 @@
             }
         });
 
-        // Focus input on load
+        loadChapterHistory();
         userInput.focus();
 
         async function loadHistory() {
-        // Utilise la variable username déjà définie
-        const historyDiv = document.getElementById("history");
+            const modal = document.getElementById('historyModal');
+            const historyDiv = document.getElementById("history");
 
-        historyDiv.innerHTML = "<p style='color:white; text-align:center;'>Chargement...</p>";
+            modal.style.display = 'block';
+            historyDiv.innerHTML = "<p style='color:white; text-align:center;'>Chargement...</p>";
 
-        try {
-            const response = await fetch(`/history?username=${encodeURIComponent(username)}`);
-            const data = await response.json();
+            try {
+                const response = await fetch(`/history?username=${encodeURIComponent(username)}`);
+                const data = await response.json();
 
-            if (data.error) {
-                historyDiv.innerHTML = `<p style="color:#ff6b6b; background:rgba(255,255,255,0.1); padding:1rem; border-radius:10px; text-align:center;">Erreur : ${escapeHtml(data.error)}</p>`;
-                return;
-            }
+                if (data.error) {
+                    historyDiv.innerHTML = `<p style="color:#ff6b6b; background:rgba(255,255,255,0.1); padding:1rem; border-radius:10px; text-align:center;">Erreur : ${escapeHtml(data.error)}</p>`;
+                    return;
+                }
 
-            if (!data.history || data.history.length === 0) {
-                historyDiv.innerHTML = "<p style='color:white; background:rgba(255,255,255,0.1); padding:1rem; border-radius:10px; text-align:center;'>Aucun historique disponible.</p>";
-                return;
-            }
+                if (!data.history || data.history.length === 0) {
+                    historyDiv.innerHTML = "<p style='color:white; background:rgba(255,255,255,0.1); padding:1rem; border-radius:10px; text-align:center;'>Aucun historique disponible.</p>";
+                    return;
+                }
 
-            let html = "<h3 style='color:white; text-align:center; margin-bottom:1.5rem; font-size:1.8rem;'>📜 Historique des questions</h3>";
-            html += "<div style='background:rgba(255,255,255,0.95); padding:2rem; border-radius:20px; box-shadow:0 10px 40px rgba(0,0,0,0.3);'>";
+                let html = "<h3 style='color:white; text-align:center; margin-bottom:1.5rem; font-size:1.8rem;'>📜 Historique des questions</h3>";
+                html += "<div style='background:rgba(255,255,255,0.95); padding:2rem; border-radius:20px; box-shadow:0 10px 40px rgba(0,0,0,0.3);'>";
 
-            data.history.forEach((item, index) => {
-                const gradeColor = item.grade >= 75 ? '#4caf50' : item.grade >= 50 ? '#ff9800' : '#f44336';
-                html += `
-                    <div style='margin-bottom:1.5rem; padding:1.5rem; background:#f8f9fa; border-radius:15px; border-left:5px solid ${gradeColor}; box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
-                        <div style='display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;'>
-                            <span style='font-weight:bold; color:#667eea; font-size:1.1rem;'>Question ${index + 1}</span>
-                            <span style='background:${gradeColor}; color:white; padding:0.5rem 1rem; border-radius:20px; font-weight:bold; font-size:1.2rem;'>${item.grade}%</span>
-                        </div>
-                        <div style='margin-bottom:0.8rem;'>
-                            <strong style='color:#333;'>Question :</strong> 
-                            <p style='color:#555; margin:0.5rem 0; line-height:1.6;'>${escapeHtml(item.question)}</p>
-                        </div>
-                        <div style='margin-bottom:0.8rem;'>
-                            <strong style='color:#333;'>Réponse :</strong> 
-                            <p style='color:#555; margin:0.5rem 0; line-height:1.6;'>${escapeHtml(item.answer)}</p>
-                        </div>
-                        ${item.advice ? `
-                            <div style='background:#e3f2fd; padding:1rem; border-radius:8px; margin-top:1rem;'>
-                                <strong style='color:#1976d2;'>💡 Conseils :</strong>
-                                <p style='color:#1976d2; margin:0.5rem 0; line-height:1.6;'>${escapeHtml(item.advice)}</p>
-                            </div>
-                        ` : ''}
-                        <button onclick="retest(${item.id})" style='margin-top:1rem; padding:0.7rem 1.5rem; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:white; border:none; border-radius:25px; cursor:pointer; font-weight:600; transition:all 0.3s; box-shadow:0 4px 15px rgba(102,126,234,0.4);' onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(102,126,234,0.6)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(102,126,234,0.4)'">
-                            🔁 Refaire cette question
-                        </button>
+                data.history.forEach((item, index) => {
+                    const gradeColor = item.grade >= 75 ? '#4caf50' : item.grade >= 50 ? '#ff9800' : '#f44336';
+                    html += `
+                <div style='margin-bottom:1.5rem; padding:1.5rem; background:#f8f9fa; border-radius:15px; border-left:5px solid ${gradeColor}; box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
+                    <div style='display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;'>
+                        <span style='font-weight:bold; color:#667eea; font-size:1.1rem;'>Question ${index + 1}</span>
+                        <span style='background:${gradeColor}; color:white; padding:0.5rem 1rem; border-radius:20px; font-weight:bold; font-size:1.2rem;'>${item.grade}%</span>
                     </div>
-                `;
-            });
+                    <div style='margin-bottom:0.8rem;'>
+                        <strong style='color:#333;'>Question :</strong> 
+                        <p style='color:#555; margin:0.5rem 0; line-height:1.6;'>${escapeHtml(item.question)}</p>
+                    </div>
+                    <div style='margin-bottom:0.8rem;'>
+                        <strong style='color:#333;'>Réponse :</strong> 
+                        <p style='color:#555; margin:0.5rem 0; line-height:1.6;'>${escapeHtml(item.answer)}</p>
+                    </div>
+                    ${item.advice ? `
+                        <div style='background:#e3f2fd; padding:1rem; border-radius:8px; margin-top:1rem;'>
+                            <strong style='color:#1976d2;'>💡 Conseils :</strong>
+                            <p style='color:#1976d2; margin:0.5rem 0; line-height:1.6;'>${escapeHtml(item.advice)}</p>
+                        </div>
+                    ` : ''}
+                    <button onclick="retest(${item.id}); closeHistory();" style='margin-top:1rem; padding:0.7rem 1.5rem; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:white; border:none; border-radius:25px; cursor:pointer; font-weight:600; transition:all 0.3s; box-shadow:0 4px 15px rgba(102,126,234,0.4);'>
+                        🔁 Refaire cette question
+                    </button>
+                </div>
+            `;
+                });
 
-            html += "</div>";
-            historyDiv.innerHTML = html;
+                html += "</div>";
+                historyDiv.innerHTML = html;
 
-        } catch (err) {
-            console.error(err);
-            historyDiv.innerHTML = "<p style='color:#ff6b6b; background:rgba(255,255,255,0.1); padding:1rem; border-radius:10px; text-align:center;'>Erreur de connexion.</p>";
+            } catch (err) {
+                console.error(err);
+                historyDiv.innerHTML = "<p style='color:#ff6b6b; background:rgba(255,255,255,0.1); padding:1rem; border-radius:10px; text-align:center;'>Erreur de connexion.</p>";
+            }
         }
-    }
 
         // Remplacez la fonction retest() par :
         async function retest(id) {
@@ -1127,6 +1264,13 @@
             }
         }
 
+        function closeHistory() {
+            document.getElementById('historyModal').style.display = 'none';
+        }
+
+
+
     </script>
 </body>
+
 </html>

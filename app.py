@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify, R
 from app.backend.ai import ai_answer_stream, generate_test_question, grade_answer
 from app.tools.database import get_user_history
 import json
+from app.tools.database import get_student_chapter_interactions_grouped
 
 app = Flask(__name__, template_folder="app/templates")
 
@@ -28,6 +29,8 @@ def chat_api():
         data = request.get_json() or {}
         message = data.get("message", "")
         mode = data.get("mode", "teach")
+        username = data.get("username", "Guest")
+        chapter = data.get("chapter", None)  # Get chapter from request
 
         # Ensure message is a string
         if not isinstance(message, str):
@@ -44,11 +47,9 @@ def chat_api():
         def generate():
             try:
                 token_count = 0
-                for chunk in ai_answer_stream(inputs):
+                # Pass username and chapter to ai_answer_stream
+                for chunk in ai_answer_stream(inputs, username=username, chapter=chapter):
                     token_count += 1
-                    # Debug: print what we're sending
-                    print(f"Sending token #{token_count}: {repr(chunk)[:100]}")
-                    # Send each chunk as a JSON object
                     yield f"data: {json.dumps({'token': chunk})}\n\n"
                 print(f"Streaming complete. Total tokens: {token_count}")
             except Exception as e:
@@ -71,6 +72,16 @@ def chat_api():
         import traceback
         traceback.print_exc()
         return jsonify({"reply": "An error occurred with AI backend."}), 500
+    
+
+@app.route('/get_chapter_history', methods=['GET'])
+def get_chapter_history():
+    """Get all chapters a student has asked questions about"""
+    
+    username = request.args.get('username', 'Guest')
+    chapters = get_student_chapter_interactions_grouped(username)
+    
+    return jsonify({"chapters": chapters})
 
 
 @app.route('/test_api', methods=['POST'])
