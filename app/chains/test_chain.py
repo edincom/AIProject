@@ -31,7 +31,7 @@ test_prompt = ChatPromptTemplate.from_messages([
      "- Question\n"
      "- Answer\n"
      "- grade (0-100)\n"
-     "- scores (object with Pertinence, Faits non correctes, Faits manquants, Structure)\n"
+     "- scores (object with Pertinence, Faits non corrects, Faits manquants, Structure)\n"
      "- advice (string with improvement suggestions)\n"
      "No extra text or Markdown, ONLY JSON.")
 ])

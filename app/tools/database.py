@@ -130,6 +130,53 @@ def get_student_average_grade(student_name):
 
 
 
+def get_user_history(username, min_score=None):
+    """
+    Retrieve a user's full test history.
+    Optionally filter by minimum grade.
+    """
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+
+        if min_score is not None:
+            cursor.execute("""
+                SELECT id, student_name, question, answer, grade, scores, advice
+                FROM student_results
+                WHERE student_name = ? AND grade <= ?
+            """, (username, min_score))
+        else:
+            cursor.execute("""
+                SELECT id, student_name, question, answer, grade, scores, advice
+                FROM student_results
+                WHERE student_name = ?
+            """, (username,))
+
+        print("Executing query for user history")
+        rows = cursor.fetchall()
+        print(f"Fetched {len(rows)} records for user {username}")
+        conn.close()
+
+        history = []
+        for row in rows:
+            history.append({
+                "id": row[0],
+                "student_name": row[1],
+                "question": row[2],
+                "answer": row[3],
+                "grade": row[4],
+                "advice": row[6],
+            })
+
+        return history
+
+    except Exception as e:
+        print("Error loading user history:", e)
+        return []
+
+
+
+
 
 # Initialize database on import
 init_database()

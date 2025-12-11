@@ -567,6 +567,15 @@
                 <button class="btn-send" id="sendBtn">Envoyer</button>
             </div>
         </div>
+
+        <div style="margin-top: 2rem; text-align: center;">
+            <button onclick="loadHistory()" style="padding: 0.8rem 2rem; background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 25px; color: white; cursor: pointer; font-weight: 600; font-size: 1rem; transition: all 0.3s;">
+                📜 Voir mon historique
+            </button>
+</div>
+
+<div id="history" style="margin-top:20px; color:white;"></div>
+
     </div>
 
     <script>
@@ -576,6 +585,7 @@
         let currentMode = 'teach';
         let testState = 'idle'; // idle, waiting_for_question, waiting_for_answer
         let currentQuestion = '';
+        let modeChangeLocked = false;
         
         // Store conversations separately for each mode
         let teachMessages = [];
@@ -590,6 +600,11 @@
         // Mode toggle
         modeOptions.forEach(option => {
             option.addEventListener('click', () => {
+                if (modeChangeLocked && option.dataset.mode !== currentMode) {
+                    alert('⚠️ Vous devez d\'abord terminer le test en cours avant de changer de mode.');
+                    return;
+                }
+
                 // Save current conversation before switching
                 saveCurrentConversation();
                 
@@ -820,6 +835,7 @@
                 if (data.success) {
                     currentQuestion = data.question;
                     testState = 'waiting_for_answer';
+                    modeChangeLocked = true;
 
                     // Display the question
                     const questionDiv = createMessageContainer('ai');
@@ -885,6 +901,7 @@
                     
                     // Reset test state
                     testState = 'idle';
+                    modeChangeLocked = false;
                     currentQuestion = '';
                     userInput.placeholder = "Entrez un nouveau sujet pour un autre test...";
                 } else {
@@ -1002,6 +1019,114 @@
 
         // Focus input on load
         userInput.focus();
+
+        async function loadHistory() {
+        // Utilise la variable username déjà définie
+        const historyDiv = document.getElementById("history");
+
+        historyDiv.innerHTML = "<p style='color:white; text-align:center;'>Chargement...</p>";
+
+        try {
+            const response = await fetch(`/history?username=${encodeURIComponent(username)}`);
+            const data = await response.json();
+
+            if (data.error) {
+                historyDiv.innerHTML = `<p style="color:#ff6b6b; background:rgba(255,255,255,0.1); padding:1rem; border-radius:10px; text-align:center;">Erreur : ${escapeHtml(data.error)}</p>`;
+                return;
+            }
+
+            if (!data.history || data.history.length === 0) {
+                historyDiv.innerHTML = "<p style='color:white; background:rgba(255,255,255,0.1); padding:1rem; border-radius:10px; text-align:center;'>Aucun historique disponible.</p>";
+                return;
+            }
+
+            let html = "<h3 style='color:white; text-align:center; margin-bottom:1.5rem; font-size:1.8rem;'>📜 Historique des questions</h3>";
+            html += "<div style='background:rgba(255,255,255,0.95); padding:2rem; border-radius:20px; box-shadow:0 10px 40px rgba(0,0,0,0.3);'>";
+
+            data.history.forEach((item, index) => {
+                const gradeColor = item.grade >= 75 ? '#4caf50' : item.grade >= 50 ? '#ff9800' : '#f44336';
+                html += `
+                    <div style='margin-bottom:1.5rem; padding:1.5rem; background:#f8f9fa; border-radius:15px; border-left:5px solid ${gradeColor}; box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
+                        <div style='display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;'>
+                            <span style='font-weight:bold; color:#667eea; font-size:1.1rem;'>Question ${index + 1}</span>
+                            <span style='background:${gradeColor}; color:white; padding:0.5rem 1rem; border-radius:20px; font-weight:bold; font-size:1.2rem;'>${item.grade}%</span>
+                        </div>
+                        <div style='margin-bottom:0.8rem;'>
+                            <strong style='color:#333;'>Question :</strong> 
+                            <p style='color:#555; margin:0.5rem 0; line-height:1.6;'>${escapeHtml(item.question)}</p>
+                        </div>
+                        <div style='margin-bottom:0.8rem;'>
+                            <strong style='color:#333;'>Réponse :</strong> 
+                            <p style='color:#555; margin:0.5rem 0; line-height:1.6;'>${escapeHtml(item.answer)}</p>
+                        </div>
+                        ${item.advice ? `
+                            <div style='background:#e3f2fd; padding:1rem; border-radius:8px; margin-top:1rem;'>
+                                <strong style='color:#1976d2;'>💡 Conseils :</strong>
+                                <p style='color:#1976d2; margin:0.5rem 0; line-height:1.6;'>${escapeHtml(item.advice)}</p>
+                            </div>
+                        ` : ''}
+                        <button onclick="retest(${item.id})" style='margin-top:1rem; padding:0.7rem 1.5rem; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:white; border:none; border-radius:25px; cursor:pointer; font-weight:600; transition:all 0.3s; box-shadow:0 4px 15px rgba(102,126,234,0.4);' onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(102,126,234,0.6)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(102,126,234,0.4)'">
+                            🔁 Refaire cette question
+                        </button>
+                    </div>
+                `;
+            });
+
+            html += "</div>";
+            historyDiv.innerHTML = html;
+
+        } catch (err) {
+            console.error(err);
+            historyDiv.innerHTML = "<p style='color:#ff6b6b; background:rgba(255,255,255,0.1); padding:1rem; border-radius:10px; text-align:center;'>Erreur de connexion.</p>";
+        }
+    }
+
+        // Remplacez la fonction retest() par :
+        async function retest(id) {
+            try {
+                const response = await fetch(`/retest?question_id=${id}&username=${encodeURIComponent(username)}`);
+                const data = await response.json();
+
+                if (data.error) {
+                    alert("Erreur : " + data.error);
+                    return;
+                }
+
+                // Passe en mode test
+                currentMode = "test";
+                modeOptions.forEach(opt => opt.classList.remove('active'));
+                document.querySelector('[data-mode="test"]').classList.add('active');
+
+                // Efface la conversation actuelle
+                chatMessages.innerHTML = '';
+
+                // Affiche la question récupérée
+                currentQuestion = data.question;
+                testState = 'waiting_for_answer';
+                modeChangeLocked = true;
+
+                const questionDiv = createMessageContainer('ai');
+                const questionContent = questionDiv.querySelector('.message-content');
+                questionContent.innerHTML = `
+                    <div class="test-question-box">
+                        <h3>📝 Question d'évaluation (Re-test)</h3>
+                        <p>${escapeHtml(data.question)}</p>
+                    </div>
+                    <p style="margin-top: 1rem; color: #666;">Veuillez répondre à cette question dans le champ de saisie ci-dessous.</p>
+                `;
+
+                userInput.placeholder = "Écrivez votre réponse ici...";
+                userInput.focus();
+
+                // Scroll vers le haut pour voir la question
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            } catch (err) {
+                console.error(err);
+                alert("Erreur de connexion.");
+            }
+        }
+
     </script>
 </body>
 </html>
