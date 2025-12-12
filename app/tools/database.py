@@ -115,32 +115,57 @@ def get_student_chapter_interactions(student_name, chapter):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     
-    cursor.execute('''
-        SELECT id, question, answer, timestamp
-        FROM student_teach
-        WHERE student_name = ? AND chapter = ?
-        ORDER BY timestamp DESC
-    ''', (student_name, chapter))
+    if chapter is None:
+        # Get all interactions, ordered by most recent
+        cursor.execute('''
+            SELECT id, chapter, question, answer, timestamp
+            FROM student_teach
+            WHERE student_name = ?
+            ORDER BY timestamp DESC
+        ''', (student_name,))
+    else:
+        cursor.execute('''
+            SELECT id, chapter, question, answer, timestamp
+            FROM student_teach
+            WHERE student_name = ? AND chapter = ?
+            ORDER BY timestamp DESC
+        ''', (student_name, chapter))
     
     results = cursor.fetchall()
     conn.close()
     
     return results
 
-def get_student_chapter_interactions(student_name, chapter):
+def get_student_chapter_interactions(student_name, chapter=None):
+    
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     
-    cursor.execute('''
-        SELECT id, question, answer, timestamp
-        FROM student_teach
-        WHERE student_name = ? AND chapter = ?
-        ORDER BY timestamp DESC
-    ''', (student_name, chapter))
+    # Simplified debug - just show which call this is
+    if chapter is None:
+        print(f"🔍 CALL 1: Fetching ALL chapters for '{student_name}' (for follow-up detection)")
+    else:
+        print(f"🔍 CALL 2: Fetching chapter '{chapter}' for '{student_name}' (for conversation history)")
+    
+    if chapter is None:
+        cursor.execute('''
+            SELECT id, chapter, question, answer, timestamp
+            FROM student_teach
+            WHERE student_name = ?
+            ORDER BY timestamp DESC
+        ''', (student_name,))
+    else:
+        cursor.execute('''
+            SELECT id, chapter, question, answer, timestamp
+            FROM student_teach
+            WHERE student_name = ? AND chapter = ?
+            ORDER BY timestamp DESC
+        ''', (student_name, chapter))
     
     results = cursor.fetchall()
-    conn.close()
+    print(f"   ✅ Returned {len(results)} results")
     
+    conn.close()
     return results
 
 def get_student_results(student_name):
@@ -284,7 +309,6 @@ def get_user_history(username, min_score=None):
     except Exception as e:
         print("Error loading user history:", e)
         return []
-
 
 
 

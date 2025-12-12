@@ -30,7 +30,7 @@ async function loadChapterHistory() {
 
 function renderChapterList() {
     chapterList.innerHTML = '';
-    const chapters = Object.keys(chapterHistories);
+    const chapters = Object.keys(chapterHistories).filter(ch => ch !== "Chapitre général");
     if (chapters.length === 0) {
         chapterList.innerHTML = '<p style="color: #999; font-size: 0.9rem;">Aucun historique</p>';
         return;
