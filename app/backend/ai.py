@@ -185,125 +185,169 @@ def generate_test_question(criteria):
         criteria: str - The topic/criteria the student wants to be tested on
     
     Returns:
-        str: Generated question
+        dict : with the following keys :
+            - question: str - The generated question
+            - expected_answer: str - The model answer
+            - key_points: list - List of key points the answer should cover
+            - context_used: str - The document context used for generation
     """
-
     try:
-        # Step 1: Retrieve relevant context using RAG
+        # Step 1: Retrieve relevant context via RAG
         docs = retriever.invoke(criteria)
         context_text = "\n\n".join([doc.page_content for doc in docs])
-        
-        # Step 2: Generate question using the context
+
+        # Step 2: Call chain
         result = generate_question_chain.invoke({
             "criteria": criteria,
             "context": context_text
         })
-        
-        # Extract the question from the result
-        if hasattr(result, 'content'):
-            question = result.content.strip()
-        else:
-            question = str(result).strip()
-        
-        return question
-        
-    except Exception as e:
-        print(f"Error in generate_test_question: {e}")
-        import traceback
-        traceback.print_exc()
-        return f"Error generating question: {str(e)}"
-    
-def grade_answer(question, answer, rubric, username="Anonymous"):
-    """
-    Grade a student's answer and save to database.
-    
-    Args:
-        question: str - The question that was asked
-        answer: str - The student's answer
-        rubric: str - The grading rubric/criteria
-        username: str - The student's username
-    
-    Returns:
-        dict: Grading result with grade, scores, and advice
-    """
-    try:
-        # Define the scoring template
-        scores_text = (
-            "- Pertinence : Est-ce que l'étudiant répond bien à la question posée /30;\n"
-            "- Faits non corrects : Y a-t-il des faits incorrects /30;\n"
-            "- Faits manquants : Tous les faits attendus sont-ils présents /30;\n"
-            "- Structure : La réponse est-elle bien structurée /10;"
-        )
-        
-        # Invoke the test chain
-        result = test_chain.invoke({
-            "grading_rubric": rubric,
-            "question": question,
-            "answer": answer,
-            "scores_text": scores_text
-        })
-        
-        # Extract content from result
-        if hasattr(result, 'content'):
-            raw_output = result.content.strip()
-        else:
-            raw_output = str(result).strip()
-        
-        # Clean up markdown formatting if present
+
+        raw_output = result.content if hasattr(result, "content") else str(result)
+        raw_output = raw_output.strip()
+
+        # Remove markdown fences if present
         if raw_output.startswith("```"):
             lines = raw_output.split("\n")
-            # Remove first and last lines if they're markdown fences
             if lines[0].startswith("```"):
                 lines = lines[1:]
             if lines and lines[-1].startswith("```"):
                 lines = lines[:-1]
-            raw_output = "\n".join(lines)
-        
-        # Parse JSON
+            raw_output = "\n".join(lines).strip()
+
+        # Try direct JSON parse
+        try:
+            parsed = json.loads(raw_output)
+        except json.JSONDecodeError:
+            # Heuristic: try to find first {...} substring and parse that
+            import re
+            m = re.search(r'\{[\s\S]*\}', raw_output)
+            if m:
+                try:
+                    parsed = json.loads(m.group(0))
+                except Exception as e:
+                    print("JSON fallback parse failed:", e)
+                    parsed = None
+            else:
+                parsed = None
+
+        if not parsed:
+            print("Failed to parse JSON from LLM output. Raw output:")
+            print(raw_output)
+            return {
+                "question": "ERROR_GENERATING_QUESTION",
+                "expected_answer": "",
+                "key_points": [],
+                "context_used": context_text
+            }
+        # Normalize results
+        question = parsed.get("question", "").strip()
+        expected_answer = parsed.get("expected_answer", "").strip()
+        key_points = parsed.get("key_points") or []
+        if isinstance(key_points, str):
+            # try to split lines if LLM returned string list
+            key_points = [kp.strip() for kp in key_points.split("\n") if kp.strip()]
+        dict_questions = {
+            "question": question,
+            "expected_answer": expected_answer,
+            "key_points": key_points,
+            "context_used": context_text
+        }
+        print("Generated question:", dict_questions)
+
+        return dict_questions
+
+    except Exception as e:
+        print(f"Error in generate_test_question: {e}")
+        import traceback
+        traceback.print_exc()
+        return {
+            "question": "ERROR",
+            "expected_answer": "",
+            "key_points": [],
+            "context_used": ""
+        }
+
+
+    
+def grade_answer(question, answer, expected_answer, key_points, username="Anonymous"):
+    """
+    Grade a student's answer based on objective criteria:
+    - match with expected_answer
+    - coverage of key_points
+    - incorrect facts
+    - clarity/structure
+    """
+    try:
+        # Call the correction chain
+        result = test_chain.invoke({
+            "question": question,
+            "answer": answer,
+            "expected_answer": expected_answer,
+            "key_points": key_points
+        })
+        raw_output = result.content if hasattr(result, "content") else str(result)
+        raw_output = raw_output.strip()
+        # Remove ``` fences
+        if raw_output.startswith("```"):
+            lines = raw_output.split("\n")
+            if lines[0].startswith("```"):
+                lines = lines[1:]
+            if lines and lines[-1].startswith("```"):
+                lines = lines[:-1]
+            raw_output = "\n".join(lines).strip()
+
+        # Parse JSON normally
         try:
             grading_json = json.loads(raw_output)
-        except json.JSONDecodeError as je:
-            print(f"JSON decode error: {je}")
-            print(f"Raw output: {raw_output}")
-            # Return a default structure
-            grading_json = {
-                "Section": "Unknown",
-                "Question": question,
-                "Answer": answer,
-                "grade": 0,
-                "scores": {
-                    "Pertinence": 0,
-                    "Faits non correctes": 0,
-                    "Faits manquants": 0,
-                    "Structure": 0
-                },
-                "advice": "Error parsing grading result. Please try again."
-            }
-        
-        # Save to database
+        except json.JSONDecodeError:
+            # Fallback: extract JSON substring
+            import re
+            match = re.search(r'\{[\s\S]*\}', raw_output)
+            if match:
+                grading_json = json.loads(match.group(0))
+            else:
+                print("Failed JSON:", raw_output)
+                return {
+                    "Section": "Error",
+                    "Question": question,
+                    "Answer": answer,
+                    "expected_answer": expected_answer,
+                    "key_points": key_points,
+                    "grade": 0,
+                    "scores": {
+                        "Key Points": 0,
+                        "Expected Match": 0,
+                        "Incorrect Facts": 0,
+                        "Structure": 0
+                    },
+                    "advice": "Parsing error. Try again."
+                }
+
+        # Save to DB (your existing function)
         try:
             save_result(username, question, answer, grading_json)
-            print(f"Result saved for {username}")
-        except Exception as db_error:
-            print(f"Database error: {db_error}")
-            # Don't fail the grading if database save fails
+        except Exception as db_err:
+            print("Database error:", db_err)
         
+        print("Grading result:............................................................", grading_json)
         return grading_json
-        
+
     except Exception as e:
-        print(f"Error in grade_answer: {e}")
+        print("Error in grade_answer:", e)
         import traceback
         traceback.print_exc()
         return {
             "Section": "Error",
             "Question": question,
             "Answer": answer,
+            "expected_answer": expected_answer,
+            "key_points": key_points,
             "grade": 0,
             "scores": {
-                "Pertinence": 0,
-                "Faits non correctes": 0,
-                "Faits manquants": 0,
+                "Key Points": 0,
+                "Expected Match": 0,
+                "Incorrect Facts": 0,
                 "Structure": 0
             },
-            "advice": f"Error during grading: {str(e)}"
+            "advice": "Internal error."
         }

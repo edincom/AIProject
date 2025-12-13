@@ -2,6 +2,8 @@ const username = document.getElementById('username-display').textContent;
 let currentMode = 'teach';
 let testState = 'idle';
 let currentQuestion = '';
+let currentExpectedAnswer = '';
+let currentKeyPoints = [];
 let modeChangeLocked = false;
 
 let teachMessages = [];
@@ -258,6 +260,8 @@ async function generateQuestion(criteria) {
         loadingDiv.remove();
         if (data.success) {
             currentQuestion = data.question;
+            currentExpectedAnswer = data.expected_answer;
+            currentKeyPoints = data.key_points;
             testState = 'waiting_for_answer';
             modeChangeLocked = true;
             const questionDiv = createMessageContainer('ai');
@@ -303,14 +307,15 @@ async function gradeAnswer(answer) {
                 action: 'grade',
                 question: currentQuestion,
                 answer: answer,
-                rubric: "Évaluer la pertinence, l'exactitude et la structure de la réponse",
+                expected_answer: currentExpectedAnswer,
+                key_points: currentKeyPoints, 
                 username: username
             })
         });
         const data = await response.json();
         loadingDiv.remove();
         if (data.success) {
-            displayGradingResult(data.grading);
+            displayGradingResult(data.grading_result);
             testState = 'idle';
             modeChangeLocked = false;
             currentQuestion = '';
@@ -333,43 +338,42 @@ async function gradeAnswer(answer) {
     }
 }
 
-function displayGradingResult(grading) {
+function displayGradingResult(data) {
     const resultDiv = createMessageContainer('ai');
     const resultContent = resultDiv.querySelector('.message-content');
-    const scores = grading.scores || {};
+    const scores = data.scores || {};
+    
     resultContent.innerHTML = `
         <div class="grade-result">
             <div class="grade-header">
                 <div>
                     <div class="grade-label">Note finale</div>
-                    <div class="grade-score">${grading.grade}/100</div>
-                </div>
-                <div style="text-align: right;">
-                    <div class="grade-label">Section</div>
-                    <div style="font-weight: bold; color: #667eea;">${escapeHtml(grading.Section || 'N/A')}</div>
+                    <div class="grade-score">${data.grade}/100</div>
                 </div>
             </div>
+            
             <div class="score-breakdown">
                 <div class="score-item">
-                    <div class="score-item-label">Pertinence</div>
-                    <div class="score-item-value">${scores.Pertinence || 0}/30</div>
+                    <div class="score-item-label">Points Clés</div>
+                    <div class="score-item-value">${scores['Key Points'] || 0}/50</div>
                 </div>
                 <div class="score-item">
-                    <div class="score-item-label">Faits incorrects</div>
-                    <div class="score-item-value">${scores['Faits non correctes'] || 0}/30</div>
+                    <div class="score-item-label">Correspondance Attendue</div>
+                    <div class="score-item-value">${scores['Expected Match'] || 0}/30</div>
                 </div>
                 <div class="score-item">
-                    <div class="score-item-label">Faits manquants</div>
-                    <div class="score-item-value">${scores['Faits manquants'] || 0}/30</div>
+                    <div class="score-item-label">Faits Incorrects</div>
+                    <div class="score-item-value">${scores['Incorrect Facts'] || 0}/10</div>
                 </div>
                 <div class="score-item">
                     <div class="score-item-label">Structure</div>
                     <div class="score-item-value">${scores.Structure || 0}/10</div>
                 </div>
             </div>
+            
             <div class="advice-box">
                 <h4>💡 Conseils pour s'améliorer</h4>
-                <p>${escapeHtml(grading.advice || 'Aucun conseil disponible')}</p>
+                <p>${escapeHtml(data.advice || 'Aucun conseil disponible')}</p>
             </div>
         </div>
     `;

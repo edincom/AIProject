@@ -43,35 +43,48 @@ def init_database():
 def save_result(student_name, question, answer, grading_json):
     """
     Save a test result to the database.
-    
+
     Args:
-        student_name: str - Student's username
-        question: str - The question asked
-        answer: str - Student's answer
-        grading_json: dict - Grading result with grade, scores, advice
+        student_name: str
+        question: str or dict
+        answer: str or dict
+        grading_json: dict
     """
-    
+
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    
-    # Convert scores dict to JSON string
+
+    # ---- Normalize all fields to strings ----
+    def normalize(value):
+        if isinstance(value, (dict, list)):
+            return json.dumps(value, ensure_ascii=False)
+        elif value is None:
+            return ""
+        return str(value)
+
+    question_str = normalize(question)
+    answer_str = normalize(answer)
+    grade = grading_json.get("grade", 0)
     scores_str = json.dumps(grading_json.get("scores", {}), ensure_ascii=False)
-    
+    advice_str = normalize(grading_json.get("advice", ""))
+
+    # ---- INSERT ----
     cursor.execute('''
         INSERT INTO student_results (student_name, question, answer, grade, scores, advice)
         VALUES (?, ?, ?, ?, ?, ?)
     ''', (
         student_name,
-        question,
-        answer,
-        grading_json.get("grade", 0),
+        question_str,
+        answer_str,
+        grade,
         scores_str,
-        grading_json.get("advice", "")
+        advice_str
     ))
-    
+
     conn.commit()
     conn.close()
     print(f"Result saved for {student_name}")
+
 
 
 def save_teach_interaction(student_name, chapter, question, answer):

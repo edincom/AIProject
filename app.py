@@ -99,10 +99,13 @@ def test_api():
                 return jsonify({"error": "Please specify test criteria"}), 400
             
             # Generate question using RAG
-            question = generate_test_question(criteria)
-            
+            dict_question = generate_test_question(criteria)
+            question = dict_question["question"]
+
             return jsonify({
                 "question": question,
+                "expected_answer": dict_question["expected_answer"],
+                "key_points": dict_question["key_points"],
                 "success": True
             })
         
@@ -110,17 +113,15 @@ def test_api():
             # Grade the student's answer
             question = data.get("question", "")
             answer = data.get("answer", "")
-            rubric = data.get("rubric", "")
-            username = data.get("username", "Anonymous")
-            
-            if not all([question, answer, rubric]):
-                return jsonify({"error": "Missing required fields"}), 400
-            
+            expected_answer = data.get("expected_answer", "")
+            key_points = data.get("key_points", [])
+            username = data.get("username", "Anonymous")  
+
             # Grade the answer
-            grading_result = grade_answer(question, answer, rubric, username)
+            grading_result = grade_answer(question, answer, expected_answer, key_points, username)
             
             return jsonify({
-                "grading": grading_result,
+                "grading_result": grading_result,
                 "success": True
             })
         
