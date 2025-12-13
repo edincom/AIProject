@@ -84,7 +84,7 @@ INDICATEURS DE NON-SUIVI (NON) :
 -----------------------------------
 RÈGLE 2 — ATTRIBUTION DE CHAPITRE
 -----------------------------------
-- Si SUIVI: OUI → CHAPITRE: Reprends le chapitre de la conversation récente (fourni dans le contexte)
+- Si SUIVI: OUI → IGNORE cette règle, le code utilisera automatiquement le chapitre précédent
 - Si SUIVI: NON → analyse la question seule et sélectionne le chapitre le plus pertinent des chapitres disponibles.
 - Si aucun chapitre ne correspond → « Chapitre général ».
 
@@ -95,7 +95,7 @@ FORMAT DE SORTIE — STRICT, 3 LIGNES
 -----------------------------------
 SUIVI: OUI ou NON
 RAISON: phrase brève (10–20 mots) indiquant l'indicateur utilisé
-CHAPITRE: Chapitre X: Titre OU Chapitre général (écris le nom complet du chapitre, PAS "Même chapitre")
+CHAPITRE: Chapitre X: Titre OU Chapitre général (UNIQUEMENT si SUIVI: NON)
 -----------------------------------
 Aucune autre ligne. Aucun ajout, justification longue ou commentaire.
 -----------------------------------
@@ -103,10 +103,10 @@ Aucune autre ligne. Aucun ajout, justification longue ou commentaire.
 EXEMPLES INTERNES (NE PAS REPRODUIRE DANS LA SORTIE) :
 
 1. Conversation : « Napoléon a été exilé… » (Chapitre 5) — Question : « Et après, qu'a-t-il fait ? »
-→ SUIVI: OUI (pronom référentiel), CHAPITRE: Chapitre 5: [Titre exact]
+→ SUIVI: OUI (pronom référentiel), CHAPITRE sera ignoré (code utilise Chapitre 5)
 
 2. Conversation : « La 1ʳᵉ GM commence en 1914 » (Chapitre 3) — Question : « Et ça dure combien de temps ? »
-→ SUIVI: OUI (référence contextuelle), CHAPITRE: Chapitre 3: [Titre exact]
+→ SUIVI: OUI (référence contextuelle), CHAPITRE sera ignoré (code utilise Chapitre 3)
 
 3. Conversation : « L'Europe compte 27 États » (Chapitre 4) — Question : « Comment fonctionne la démocratie athénienne ? »
 → SUIVI: NON (changement de sujet), CHAPITRE: Chapitre 5: Retour sur l'histoire
@@ -164,6 +164,12 @@ Analyse et réponds strictement au format demandé.
                 detected_chapter = line.replace("CHAPITRE:", "").strip()
             elif line.startswith("RAISON:"):
                 reason = line.replace("RAISON:", "").strip()
+        
+        # CRITICAL FIX: If follow-up detected, use previous_chapter directly
+        # This ensures consistency - we don't rely on LLM to echo back the chapter
+        if "OUI" in is_followup.upper() and previous_chapter != "Aucun":
+            detected_chapter = previous_chapter
+            reason = f"Suite logique détectée → même chapitre: {previous_chapter}"
         
         # DEBUG: Print what the LLM decided
         print("\n" + "="*80)
