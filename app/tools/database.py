@@ -101,40 +101,6 @@ def save_teach_interaction(student_name, chapter, question, answer):
     conn.close()
     print(f"Teaching interaction saved for {student_name}")
 
-def get_student_chapter_interactions(student_name, chapter):
-    """
-    Retrieve all teaching interactions for a specific student in a specific chapter.
-    
-    Args:
-        student_name: str - Student's username
-        chapter: str - The chapter name to filter by
-    
-    Returns:
-        list of tuples: All teaching interactions for the student in that chapter
-    """
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    
-    if chapter is None:
-        # Get all interactions, ordered by most recent
-        cursor.execute('''
-            SELECT id, chapter, question, answer, timestamp
-            FROM student_teach
-            WHERE student_name = ?
-            ORDER BY timestamp DESC
-        ''', (student_name,))
-    else:
-        cursor.execute('''
-            SELECT id, chapter, question, answer, timestamp
-            FROM student_teach
-            WHERE student_name = ? AND chapter = ?
-            ORDER BY timestamp DESC
-        ''', (student_name, chapter))
-    
-    results = cursor.fetchall()
-    conn.close()
-    
-    return results
 
 def get_student_chapter_interactions(student_name, chapter=None):
     
