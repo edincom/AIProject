@@ -20,6 +20,8 @@ def init_database():
         grade REAL,
         scores TEXT,
         advice TEXT,
+        expected_answer TEXT,
+        key_points TEXT,
         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
     )
     ''')
@@ -40,7 +42,7 @@ def init_database():
     conn.close()
     print(f"Database initialized at {DB_PATH}")
 
-def save_result(student_name, question, answer, grading_json):
+def save_result(student_name, question, answer, grading_json, expected_answer, key_points):
     """
     Save a test result to the database.
 
@@ -49,6 +51,8 @@ def save_result(student_name, question, answer, grading_json):
         question: str or dict
         answer: str or dict
         grading_json: dict
+        expected_answer: str
+        key_points: list
     """
 
     conn = sqlite3.connect(DB_PATH)
@@ -67,18 +71,22 @@ def save_result(student_name, question, answer, grading_json):
     grade = grading_json.get("grade", 0)
     scores_str = json.dumps(grading_json.get("scores", {}), ensure_ascii=False)
     advice_str = normalize(grading_json.get("advice", ""))
+    expected_answer_str = normalize(expected_answer)
+    key_points_str = normalize(key_points)
 
     # ---- INSERT ----
     cursor.execute('''
-        INSERT INTO student_results (student_name, question, answer, grade, scores, advice)
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO student_results (student_name, question, answer, grade, scores, advice, expected_answer, key_points)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     ''', (
         student_name,
         question_str,
         answer_str,
         grade,
         scores_str,
-        advice_str
+        advice_str,
+        expected_answer_str,
+        key_points_str
     ))
 
     conn.commit()
@@ -289,6 +297,19 @@ def get_user_history(username, min_score=None):
         print("Error loading user history:", e)
         return []
 
+def get_question_retest(username, idq):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute('''
+        SELECT question, expected_answer, key_points
+        FROM student_results
+        WHERE student_name = ? AND id = ?
+    ''', (username, idq))
+    result = cursor.fetchone()
+    print(f"RESUUUUUUUUUULT DANS DB PY °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°Fetched retest question for id {idq}: {result}")
+    conn.close()
+
+    return result
 
 
 

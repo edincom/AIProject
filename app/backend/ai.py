@@ -463,7 +463,7 @@ def grade_answer(question, answer, expected_answer, key_points, username="Anonym
 
         # Save to DB (your existing function)
         try:
-            save_result(username, question, answer, grading_json)
+            save_result(username, question, answer, grading_json, expected_answer, key_points)
         except Exception as db_err:
             print("Database error:", db_err)
         
