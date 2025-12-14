@@ -128,18 +128,18 @@ Analyse et réponds strictement au format demandé.
         ])
 
         
-        # DEBUG: Print what we're sending to the LLM
-        print("\n" + "="*80)
-        print("🔍 CHAPTER DETECTION - INPUT:")
-        print("="*80)
-        print(f"Question: {question}")
-        print(f"Previous chapter: {previous_chapter}")
-        print(f"Has recent history: {bool(recent_history)}")
-        if recent_history:
-            print(f"Recent history count: {len(recent_history)}")
-            print("Recent conversation context:")
-            print(conversation_context)
-        print("="*80 + "\n")
+        # # DEBUG: Print what we're sending to the LLM
+        # print("\n" + "="*80)
+        # print("🔍 CHAPTER DETECTION - INPUT:")
+        # print("="*80)
+        # print(f"Question: {question}")
+        # print(f"Previous chapter: {previous_chapter}")
+        # print(f"Has recent history: {bool(recent_history)}")
+        # if recent_history:
+        #     print(f"Recent history count: {len(recent_history)}")
+        #     print("Recent conversation context:")
+        #     print(conversation_context)
+        # print("="*80 + "\n")
         
         chain = chapter_prompt | theme_llm
         result = chain.invoke({
