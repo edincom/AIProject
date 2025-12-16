@@ -306,10 +306,59 @@ def get_question_retest(username, idq):
         WHERE student_name = ? AND id = ?
     ''', (username, idq))
     result = cursor.fetchone()
-    print(f"RESUUUUUUUUUULT DANS DB PY °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°Fetched retest question for id {idq}: {result}")
     conn.close()
 
     return result
+
+
+def get_all_test_questions():
+    """
+    Retrieve all unique test questions from the database.
+    Returns questions with their metadata for FAISS indexing.
+    """
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    
+    # Get unique questions (avoid duplicates)
+    cursor.execute('''
+        SELECT DISTINCT question, expected_answer, key_points
+        FROM student_results
+        WHERE question IS NOT NULL 
+          AND question != ''
+          AND question != 'ERROR_GENERATING_QUESTION'
+          AND question != 'ERROR'
+        ORDER BY timestamp DESC
+    ''')
+    
+    results = cursor.fetchall()
+    conn.close()
+    
+    questions = []
+    seen_questions = set()
+    
+    for row in results:
+        question_text = row[0].strip()
+        
+        # Skip duplicates
+        if question_text in seen_questions:
+            continue
+        
+        seen_questions.add(question_text)
+        
+        try:
+            key_points_list = json.loads(row[2]) if row[2] else []
+        except:
+            key_points_list = []
+            
+        questions.append({
+            "question": question_text,
+            "expected_answer": row[1] or "",
+            "key_points": key_points_list
+        })
+    
+    print(f"📊 Retrieved {len(questions)} unique questions from database")
+    return questions
+
 
 
 

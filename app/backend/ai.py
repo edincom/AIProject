@@ -5,13 +5,13 @@ from dotenv import load_dotenv
 from app.tools.database import save_result
 load_dotenv()
 
-from app.tools.rag import get_retriever
+from app.tools.rag import add_question_to_faiss, get_questions_retriever, get_retriever
 from app.tools.loaders import load_pdf
 from app.tools.loaders import caption_images
 from app.tools.rag import split_docs
 from app.chains.persona_chain import streaming_persona_chain, persona_prompt
 from app.chains.test_chain import generate_question_chain, test_chain
-from app.config.settings import FAISS_PATH
+from app.config.settings import FAISS_PATH, FAISS_QUESTIONS_PATH
 from app.chains.theme_chain import theme_llm
 from app.tools.database import save_teach_interaction
 from langchain_core.prompts import ChatPromptTemplate
@@ -312,23 +312,51 @@ def ai_answer_stream(inputs, username="Guest", chapter=None):
             save_teach_interaction(username, chapter_context or "Error", question, error_msg)
 
 
-def generate_test_question(criteria):
+def generate_test_question(criteria, allow_reuse=True, similarity_threshold=0.75):
     """
-    Generate a test question using document context (RAG) and student criteria.
-
-    The student can choose whether the question is completely random (within the given subject), or the question is based
-    on the questions he poorly answered previously, as all the questions are stored in a database.
+    Generate a test question using document context (RAG).
+    Automatically reuses existing questions when possible.
     
     Args:
-        criteria: str - The topic/criteria the student wants to be tested on
+        criteria: str - The topic/criteria
+        allow_reuse: bool - Whether to search for existing questions
+        similarity_threshold: float - Minimum similarity (0-1)
     
     Returns:
-        dict : with the following keys :
-            - question: str - The generated question
-            - expected_answer: str - The model answer
-            - key_points: list - List of key points the answer should cover
-            - context_used: str - The document context used for generation
+        dict with keys: question, expected_answer, key_points, context_used
     """
+    
+    if allow_reuse:
+        print(f"\n🔍 Searching similar question (criteria: '{criteria}')")
+        
+        # Get retriever with automatic threshold filtering
+        questions_retriever = get_questions_retriever(
+            similarity_threshold=similarity_threshold,
+            k=1
+        )
+        
+        if questions_retriever:
+            # Search - retriever handles threshold automatically!
+            results = questions_retriever.invoke(criteria)
+            
+            if results:
+                # Found a match above threshold
+                doc = results[0]
+                print(f"♻️ Question réutilisée!")
+                print(f"   💚 Économie estimée : ~1800 tokens ≈ 6g CO2")
+                
+                return {
+                    'question': doc.page_content,
+                    'expected_answer': doc.metadata.get('expected_answer', ''),
+                    'key_points': doc.metadata.get('key_points', []),
+                    'context_used': ''
+                }
+            else:
+                print(f"❌ No match above {similarity_threshold:.0%} threshold")
+        else:
+            print("ℹ️ Questions FAISS not ready yet (need 5+ questions)")
+
+
     try:
         # Step 1: Retrieve relevant context via RAG
         docs = retriever.invoke(criteria)
@@ -390,8 +418,15 @@ def generate_test_question(criteria):
             "key_points": key_points,
             "context_used": context_text
         }
-        print("Generated question:", dict_questions)
 
+        if question and question not in ["ERROR_GENERATING_QUESTION", "ERROR"]:
+            try:
+                print("Adding to questions FAISS...")
+                add_question_to_faiss(dict_questions, FAISS_QUESTIONS_PATH)
+            except Exception as e:
+                print(f"⚠️ Failed to add to FAISS: {e}")
+        
+        print("Generated question:", dict_questions)
         return dict_questions
 
     except Exception as e:
