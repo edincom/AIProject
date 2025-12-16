@@ -490,6 +490,8 @@ async function retest(id) {
         document.querySelector('[data-mode="test"]').classList.add('active');
         chatMessages.innerHTML = '';
         currentQuestion = data.question;
+        currentExpectedAnswer = data.expected_answer;
+        currentKeyPoints = data.key_points;
         testState = 'waiting_for_answer';
         modeChangeLocked = true;
         const questionDiv = createMessageContainer('ai');

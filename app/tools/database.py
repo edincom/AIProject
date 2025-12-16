@@ -20,6 +20,8 @@ def init_database():
         grade REAL,
         scores TEXT,
         advice TEXT,
+        expected_answer TEXT,
+        key_points TEXT,
         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
     )
     ''')
@@ -40,7 +42,7 @@ def init_database():
     conn.close()
     print(f"Database initialized at {DB_PATH}")
 
-def save_result(student_name, question, answer, grading_json):
+def save_result(student_name, question, answer, grading_json, expected_answer, key_points):
     """
     Save a test result to the database.
 
@@ -49,6 +51,8 @@ def save_result(student_name, question, answer, grading_json):
         question: str or dict
         answer: str or dict
         grading_json: dict
+        expected_answer: str
+        key_points: list
     """
 
     conn = sqlite3.connect(DB_PATH)
@@ -67,18 +71,22 @@ def save_result(student_name, question, answer, grading_json):
     grade = grading_json.get("grade", 0)
     scores_str = json.dumps(grading_json.get("scores", {}), ensure_ascii=False)
     advice_str = normalize(grading_json.get("advice", ""))
+    expected_answer_str = normalize(expected_answer)
+    key_points_str = normalize(key_points)
 
     # ---- INSERT ----
     cursor.execute('''
-        INSERT INTO student_results (student_name, question, answer, grade, scores, advice)
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO student_results (student_name, question, answer, grade, scores, advice, expected_answer, key_points)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     ''', (
         student_name,
         question_str,
         answer_str,
         grade,
         scores_str,
-        advice_str
+        advice_str,
+        expected_answer_str,
+        key_points_str
     ))
 
     conn.commit()
@@ -288,6 +296,68 @@ def get_user_history(username, min_score=None):
     except Exception as e:
         print("Error loading user history:", e)
         return []
+
+def get_question_retest(username, idq):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute('''
+        SELECT question, expected_answer, key_points
+        FROM student_results
+        WHERE student_name = ? AND id = ?
+    ''', (username, idq))
+    result = cursor.fetchone()
+    conn.close()
+
+    return result
+
+
+def get_all_test_questions():
+    """
+    Retrieve all unique test questions from the database.
+    Returns questions with their metadata for FAISS indexing.
+    """
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    
+    # Get unique questions (avoid duplicates)
+    cursor.execute('''
+        SELECT DISTINCT question, expected_answer, key_points
+        FROM student_results
+        WHERE question IS NOT NULL 
+          AND question != ''
+          AND question != 'ERROR_GENERATING_QUESTION'
+          AND question != 'ERROR'
+        ORDER BY timestamp DESC
+    ''')
+    
+    results = cursor.fetchall()
+    conn.close()
+    
+    questions = []
+    seen_questions = set()
+    
+    for row in results:
+        question_text = row[0].strip()
+        
+        # Skip duplicates
+        if question_text in seen_questions:
+            continue
+        
+        seen_questions.add(question_text)
+        
+        try:
+            key_points_list = json.loads(row[2]) if row[2] else []
+        except:
+            key_points_list = []
+            
+        questions.append({
+            "question": question_text,
+            "expected_answer": row[1] or "",
+            "key_points": key_points_list
+        })
+    
+    print(f"📊 Retrieved {len(questions)} unique questions from database")
+    return questions
 
 
 
