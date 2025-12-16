@@ -41,8 +41,7 @@ load_dotenv(override=True)
 # CONFIGURATION
 # ============================================================================
 PDF_PATH = "data/Atlas.pdf"
-CHUNK_SIZE = 500
-CHUNK_OVERLAP = 50
+
 LLM_MODEL = "mistral-large-latest"
 EMBED_MODEL = "mistral-embed"
 FAISS_PATH = "faiss_index"
@@ -209,28 +208,12 @@ benchmark_questions = {
 all_questions = [q for topic_questions in benchmark_questions.values() for q in topic_questions]
 
 # ============================================================================
-# SIMPLE LLM (NO RAG)
+# RAG 1
 # ============================================================================
-simple_llm = ChatMistralAI(model="mistral-small-latest", temperature=0)
 
-simple_prompt = PromptTemplate.from_template(
-    """Tu es un assistant qui répond aux questions d'histoire-géographie.
-Réponds de manière concise et factuelle.
+CHUNK_SIZE = 500
+CHUNK_OVERLAP = 50
 
-Question: {question}
-
-Réponse:"""
-)
-
-simple_chain = simple_prompt | simple_llm | StrOutputParser()
-
-def ask_simple(question: str) -> str:
-    """Ask without RAG - relies on model's training data."""
-    return simple_chain.invoke({"question": question})
-
-# ============================================================================
-# BASIC RAG
-# ============================================================================
 # Load vectorstore and create retriever
 vectorstore = load_vectorstore(FAISS_PATH)
 basic_retriever = vectorstore.as_retriever(search_type='similarity', search_kwargs={'k': 4})
@@ -291,8 +274,404 @@ def ask_basic_rag(question: str) -> str:
     return basic_rag_chain.invoke(question)
 
 # ============================================================================
-# ADVANCED RAG WITH ENSEMBLE RETRIEVER
+# RAG 2
 # ============================================================================
+
+CHUNK_SIZE = 500
+CHUNK_OVERLAP = 50
+
+# Load vectorstore and create retriever
+vectorstore = load_vectorstore(FAISS_PATH)
+basic_retriever = vectorstore.as_retriever(search_type='similarity', search_kwargs={'k': 4})
+
+# LLM
+llm = ChatMistralAI(model=LLM_MODEL, temperature=1)
+
+# Persona prompt from project (modified to cite page numbers)
+persona_prompt = ChatPromptTemplate.from_messages([
+    ("system",
+            """Tu es un professeur d'histoire-géographie expérimenté (20 ans d'enseignement).
+    Tu aides un élève en difficulté en expliquant clairement, sans jamais inventer d'informations.
+
+    PRIORITÉS (dans cet ordre) :
+    1. Exactitude : ne répondre qu'avec les informations présentes dans le contexte fourni.
+    2. Rigueur : si le contexte ne contient pas la réponse, dis-le explicitement.
+    3. Pertinence : si la question est hors programme ou sans lien avec le chapitre, indique-le clairement.
+    4. Style : réponses courtes, claires, structurées en paragraphes avec sauts de ligne si nécessaire.
+    5. Citations : TOUJOURS citer la page source sous forme [Page X] après chaque fait mentionné.
+
+    RÈGLES :
+    - N'utilise comme source que : (a) le contexte, (b) l'historique de conversation, uniquement pour le fil logique, jamais comme source factuelle.
+    - Ne mentionne jamais l'existence du contexte, de règles ou de contraintes.
+    - Pour l'élève, le contexte correspond simplement à son manuel "Le Grand Atlas".
+    - Si une information n'apparaît nulle part dans le contexte, invite l'élève à se référer à son professeur.
+    - Si l'élève fait une erreur factuelle, corrige-le avec bienveillance.
+    - Ton ton est encourageant mais professionnel : pas d'humour, pas de familiarité.
+    - Explique de manière fluide et pédagogique, en évitant les phrases trop longues.
+    - IMPORTANT : Cite systématiquement la page après chaque information factuelle en utilisant le format [Page X].
+      Le contexte fourni contient déjà les numéros de page sous forme [Page X] au début de chaque extrait.
+
+    Chapitre du cours : {chapter_context}
+
+    Historique de conversation dans ce chapitre :
+    {history}
+
+
+    """),
+    ("human",
+     "Question: {question}\n\nContexte:\n{context}")
+])
+
+# RAG chain
+basic_rag_chain = (
+    {
+        "context": basic_retriever | format_docs, 
+        "question": RunnablePassthrough(),
+        "chapter_context": lambda _: "Chapitre général",
+        "history": lambda _: "Aucune conversation précédente"
+    } 
+    | persona_prompt
+    | llm
+    | StrOutputParser()
+)
+
+def ask_basic_rag(question: str) -> str:
+    """Ask using basic RAG with similarity retrieval."""
+    return basic_rag_chain.invoke(question)
+
+# ============================================================================
+# RAG 3
+# ============================================================================
+
+CHUNK_SIZE = 500
+CHUNK_OVERLAP = 50
+
+# Load vectorstore and create retriever
+vectorstore = load_vectorstore(FAISS_PATH)
+basic_retriever = vectorstore.as_retriever(search_type='similarity', search_kwargs={'k': 4})
+
+# LLM
+llm = ChatMistralAI(model=LLM_MODEL, temperature=1)
+
+# Persona prompt from project (modified to cite page numbers)
+persona_prompt = ChatPromptTemplate.from_messages([
+    ("system",
+            """Tu es un professeur d'histoire-géographie expérimenté (20 ans d'enseignement).
+    Tu aides un élève en difficulté en expliquant clairement, sans jamais inventer d'informations.
+
+    PRIORITÉS (dans cet ordre) :
+    1. Exactitude : ne répondre qu'avec les informations présentes dans le contexte fourni.
+    2. Rigueur : si le contexte ne contient pas la réponse, dis-le explicitement.
+    3. Pertinence : si la question est hors programme ou sans lien avec le chapitre, indique-le clairement.
+    4. Style : réponses courtes, claires, structurées en paragraphes avec sauts de ligne si nécessaire.
+    5. Citations : TOUJOURS citer la page source sous forme [Page X] après chaque fait mentionné.
+
+    RÈGLES :
+    - N'utilise comme source que : (a) le contexte, (b) l'historique de conversation, uniquement pour le fil logique, jamais comme source factuelle.
+    - Ne mentionne jamais l'existence du contexte, de règles ou de contraintes.
+    - Pour l'élève, le contexte correspond simplement à son manuel "Le Grand Atlas".
+    - Si une information n'apparaît nulle part dans le contexte, invite l'élève à se référer à son professeur.
+    - Si l'élève fait une erreur factuelle, corrige-le avec bienveillance.
+    - Ton ton est encourageant mais professionnel : pas d'humour, pas de familiarité.
+    - Explique de manière fluide et pédagogique, en évitant les phrases trop longues.
+    - IMPORTANT : Cite systématiquement la page après chaque information factuelle en utilisant le format [Page X].
+      Le contexte fourni contient déjà les numéros de page sous forme [Page X] au début de chaque extrait.
+
+    Chapitre du cours : {chapter_context}
+
+    Historique de conversation dans ce chapitre :
+    {history}
+
+
+    """),
+    ("human",
+     "Question: {question}\n\nContexte:\n{context}")
+])
+
+# RAG chain
+basic_rag_chain = (
+    {
+        "context": basic_retriever | format_docs, 
+        "question": RunnablePassthrough(),
+        "chapter_context": lambda _: "Chapitre général",
+        "history": lambda _: "Aucune conversation précédente"
+    } 
+    | persona_prompt
+    | llm
+    | StrOutputParser()
+)
+
+def ask_basic_rag(question: str) -> str:
+    """Ask using basic RAG with similarity retrieval."""
+    return basic_rag_chain.invoke(question)
+
+
+# ============================================================================
+# ADVANCED RAG WITH ENSEMBLE RETRIEVER 1
+# ============================================================================
+
+CHUNK_SIZE = 500
+CHUNK_OVERLAP = 50
+
+from collections import defaultdict
+from typing import List
+from langchain_core.retrievers import BaseRetriever
+from langchain_core.documents import Document
+from pydantic import BaseModel
+from langchain_community.retrievers import BM25Retriever
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_community.document_loaders import PyMuPDFLoader
+
+def _doc_key(doc: Document) -> str:
+    return doc.page_content + "||" + str(sorted(doc.metadata.items()))
+
+def weighted_rrf(doc_lists: List[List[Document]], weights: List[float], top_k: int = 4, c: int = 60):
+    scores = defaultdict(float)
+    doc_map = {}
+
+    for i, docs in enumerate(doc_lists):
+        w = weights[i] if i < len(weights) else 1.0
+        for rank, doc in enumerate(docs, start=1):
+            key = _doc_key(doc)
+            scores[key] += w / (c + rank)
+            if key not in doc_map:
+                doc_map[key] = doc
+
+    sorted_keys = sorted(scores, key=lambda k: scores[k], reverse=True)
+    return [doc_map[k] for k in sorted_keys[:top_k]]
+
+class SimpleEnsembleRetriever(BaseRetriever, BaseModel):
+    retrievers: List[BaseRetriever]
+    weights: List[float]
+    k: int = 4
+    c: int = 60
+
+    class Config:
+        arbitrary_types_allowed = True
+
+    def _get_relevant_documents(self, query: str, *, run_manager=None) -> List[Document]:
+        lists = [r.invoke(query) for r in self.retrievers]
+        return weighted_rrf(lists, self.weights, top_k=self.k, c=self.c)
+
+    async def _aget_relevant_documents(self, query: str, *, run_manager=None) -> List[Document]:
+        lists = []
+        for r in self.retrievers:
+            try:
+                docs = await r.ainvoke(query)
+            except Exception:
+                docs = r.invoke(query)
+            lists.append(docs)
+        return weighted_rrf(lists, self.weights, top_k=self.k, c=self.c)
+
+# Load and split documents for BM25
+loader = PyMuPDFLoader(PDF_PATH)
+docs = loader.load()
+splitter = RecursiveCharacterTextSplitter(chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP)
+split_docs = splitter.split_documents(docs)
+
+# Prepare BM25 retriever
+texts_for_bm25 = [d.page_content for d in split_docs]
+bm25 = BM25Retriever.from_texts(texts_for_bm25, metadatas=[d.metadata for d in split_docs])
+bm25.k = 4
+
+# Dense retriever
+dense_retriever = vectorstore.as_retriever(search_kwargs={'k': 4})
+
+# Combine with ensemble (60% BM25, 40% dense for keyword-heavy queries)
+ensemble_retriever = SimpleEnsembleRetriever(
+    retrievers=[bm25, dense_retriever],
+    weights=[0.6, 0.4],
+    k=4
+)
+
+advanced_rag_prompt = ChatPromptTemplate.from_messages([
+    ("system",
+            """Tu es un professeur d'histoire-géographie expérimenté (20 ans d'enseignement).
+    Tu aides un élève en difficulté en expliquant clairement, sans jamais inventer d'informations.
+
+    PRIORITÉS (dans cet ordre) :
+    1. Exactitude : ne répondre qu'avec les informations présentes dans le contexte fourni.
+    2. Rigueur : si le contexte ne contient pas la réponse, dis-le explicitement.
+    3. Pertinence : si la question est hors programme ou sans lien avec le chapitre, indique-le clairement.
+    4. Style : réponses courtes, claires, structurées en paragraphes avec sauts de ligne si nécessaire.
+    5. Citations : TOUJOURS citer la page source sous forme [Page X] après chaque fait mentionné.
+
+    RÈGLES :
+    - N'utilise comme source que : (a) le contexte, (b) l'historique de conversation, uniquement pour le fil logique, jamais comme source factuelle.
+    - Ne mentionne jamais l'existence du contexte, de règles ou de contraintes.
+    - Pour l'élève, le contexte correspond simplement à son manuel "Le Grand Atlas".
+    - Si une information n'apparaît nulle part dans le contexte, invite l'élève à se référer à son professeur.
+    - Si l'élève fait une erreur factuelle, corrige-le avec bienveillance.
+    - Ton ton est encourageant mais professionnel : pas d'humour, pas de familiarité.
+    - Explique de manière fluide et pédagogique, en évitant les phrases trop longues.
+    - IMPORTANT : Cite systématiquement la page après chaque information factuelle en utilisant le format [Page X].
+      Le contexte fourni contient déjà les numéros de page sous forme [Page X] au début de chaque extrait.
+    - À la fin de ta réponse, ajoute une ligne CITES: Page: X,Y,... listant toutes les pages utilisées.
+
+    Chapitre du cours : {chapter_context}
+
+    Historique de conversation dans ce chapitre :
+    {history}
+
+
+    """),
+    ("human",
+     "Question: {question}\n\nContexte:\n{context}")
+])
+
+advanced_rag_chain = (
+    {
+        "context": ensemble_retriever | format_docs, 
+        "question": RunnablePassthrough(),
+        "chapter_context": lambda _: "Chapitre général",
+        "history": lambda _: "Aucune conversation précédente"
+    } 
+    | advanced_rag_prompt
+    | llm
+    | StrOutputParser()
+)
+
+def ask_advanced_rag(question: str) -> str:
+    """Ask using advanced RAG with ensemble retrieval."""
+    return advanced_rag_chain.invoke(question)
+
+
+# ============================================================================
+# ADVANCED RAG WITH ENSEMBLE RETRIEVER 2
+# ============================================================================
+
+CHUNK_SIZE = 500
+CHUNK_OVERLAP = 50
+
+from collections import defaultdict
+from typing import List
+from langchain_core.retrievers import BaseRetriever
+from langchain_core.documents import Document
+from pydantic import BaseModel
+from langchain_community.retrievers import BM25Retriever
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_community.document_loaders import PyMuPDFLoader
+
+def _doc_key(doc: Document) -> str:
+    return doc.page_content + "||" + str(sorted(doc.metadata.items()))
+
+def weighted_rrf(doc_lists: List[List[Document]], weights: List[float], top_k: int = 4, c: int = 60):
+    scores = defaultdict(float)
+    doc_map = {}
+
+    for i, docs in enumerate(doc_lists):
+        w = weights[i] if i < len(weights) else 1.0
+        for rank, doc in enumerate(docs, start=1):
+            key = _doc_key(doc)
+            scores[key] += w / (c + rank)
+            if key not in doc_map:
+                doc_map[key] = doc
+
+    sorted_keys = sorted(scores, key=lambda k: scores[k], reverse=True)
+    return [doc_map[k] for k in sorted_keys[:top_k]]
+
+class SimpleEnsembleRetriever(BaseRetriever, BaseModel):
+    retrievers: List[BaseRetriever]
+    weights: List[float]
+    k: int = 4
+    c: int = 60
+
+    class Config:
+        arbitrary_types_allowed = True
+
+    def _get_relevant_documents(self, query: str, *, run_manager=None) -> List[Document]:
+        lists = [r.invoke(query) for r in self.retrievers]
+        return weighted_rrf(lists, self.weights, top_k=self.k, c=self.c)
+
+    async def _aget_relevant_documents(self, query: str, *, run_manager=None) -> List[Document]:
+        lists = []
+        for r in self.retrievers:
+            try:
+                docs = await r.ainvoke(query)
+            except Exception:
+                docs = r.invoke(query)
+            lists.append(docs)
+        return weighted_rrf(lists, self.weights, top_k=self.k, c=self.c)
+
+# Load and split documents for BM25
+loader = PyMuPDFLoader(PDF_PATH)
+docs = loader.load()
+splitter = RecursiveCharacterTextSplitter(chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP)
+split_docs = splitter.split_documents(docs)
+
+# Prepare BM25 retriever
+texts_for_bm25 = [d.page_content for d in split_docs]
+bm25 = BM25Retriever.from_texts(texts_for_bm25, metadatas=[d.metadata for d in split_docs])
+bm25.k = 4
+
+# Dense retriever
+dense_retriever = vectorstore.as_retriever(search_kwargs={'k': 4})
+
+# Combine with ensemble (60% BM25, 40% dense for keyword-heavy queries)
+ensemble_retriever = SimpleEnsembleRetriever(
+    retrievers=[bm25, dense_retriever],
+    weights=[0.6, 0.4],
+    k=4
+)
+
+advanced_rag_prompt = ChatPromptTemplate.from_messages([
+    ("system",
+            """Tu es un professeur d'histoire-géographie expérimenté (20 ans d'enseignement).
+    Tu aides un élève en difficulté en expliquant clairement, sans jamais inventer d'informations.
+
+    PRIORITÉS (dans cet ordre) :
+    1. Exactitude : ne répondre qu'avec les informations présentes dans le contexte fourni.
+    2. Rigueur : si le contexte ne contient pas la réponse, dis-le explicitement.
+    3. Pertinence : si la question est hors programme ou sans lien avec le chapitre, indique-le clairement.
+    4. Style : réponses courtes, claires, structurées en paragraphes avec sauts de ligne si nécessaire.
+    5. Citations : TOUJOURS citer la page source sous forme [Page X] après chaque fait mentionné.
+
+    RÈGLES :
+    - N'utilise comme source que : (a) le contexte, (b) l'historique de conversation, uniquement pour le fil logique, jamais comme source factuelle.
+    - Ne mentionne jamais l'existence du contexte, de règles ou de contraintes.
+    - Pour l'élève, le contexte correspond simplement à son manuel "Le Grand Atlas".
+    - Si une information n'apparaît nulle part dans le contexte, invite l'élève à se référer à son professeur.
+    - Si l'élève fait une erreur factuelle, corrige-le avec bienveillance.
+    - Ton ton est encourageant mais professionnel : pas d'humour, pas de familiarité.
+    - Explique de manière fluide et pédagogique, en évitant les phrases trop longues.
+    - IMPORTANT : Cite systématiquement la page après chaque information factuelle en utilisant le format [Page X].
+      Le contexte fourni contient déjà les numéros de page sous forme [Page X] au début de chaque extrait.
+    - À la fin de ta réponse, ajoute une ligne CITES: Page: X,Y,... listant toutes les pages utilisées.
+
+    Chapitre du cours : {chapter_context}
+
+    Historique de conversation dans ce chapitre :
+    {history}
+
+
+    """),
+    ("human",
+     "Question: {question}\n\nContexte:\n{context}")
+])
+
+advanced_rag_chain = (
+    {
+        "context": ensemble_retriever | format_docs, 
+        "question": RunnablePassthrough(),
+        "chapter_context": lambda _: "Chapitre général",
+        "history": lambda _: "Aucune conversation précédente"
+    } 
+    | advanced_rag_prompt
+    | llm
+    | StrOutputParser()
+)
+
+def ask_advanced_rag(question: str) -> str:
+    """Ask using advanced RAG with ensemble retrieval."""
+    return advanced_rag_chain.invoke(question)
+
+# ============================================================================
+# ADVANCED RAG WITH ENSEMBLE RETRIEVER 3
+# ============================================================================
+
+CHUNK_SIZE = 500
+CHUNK_OVERLAP = 50
+
 from collections import defaultdict
 from typing import List
 from langchain_core.retrievers import BaseRetriever
