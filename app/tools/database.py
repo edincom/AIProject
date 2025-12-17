@@ -20,6 +20,8 @@ def init_database():
         grade REAL,
         scores TEXT,
         advice TEXT,
+        expected_answer TEXT,
+        key_points TEXT,
         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
     )
     ''')
@@ -32,6 +34,8 @@ def init_database():
         chapter TEXT,
         question TEXT,
         answer TEXT,
+        input_tokens INTEGER,
+        output_tokens INTEGER,
         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
     )
     ''')
@@ -87,7 +91,7 @@ def save_result(student_name, question, answer, grading_json):
 
 
 
-def save_teach_interaction(student_name, chapter, question, answer):
+def save_teach_interaction(student_name, chapter, question, answer, input_tokens=0, output_tokens=0):
     """
     Save a teaching mode interaction to the database.
     
@@ -96,18 +100,22 @@ def save_teach_interaction(student_name, chapter, question, answer):
         chapter: str - The chapter the question relates to
         question: str - The student's question
         answer: str - The AI's answer
+        input_tokens: int - Number of input tokens
+        output_tokens: int - Number of output tokens
     """
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     
     cursor.execute('''
-        INSERT INTO student_teach (student_name, chapter, question, answer)
-        VALUES (?, ?, ?, ?)
+        INSERT INTO student_teach (student_name, chapter, question, answer, input_tokens, output_tokens)
+        VALUES (?, ?, ?, ?, ?, ?)
     ''', (
         student_name,
         chapter,
         question,
-        answer
+        answer,
+        input_tokens,
+        output_tokens
     ))
     
     conn.commit()

@@ -3,8 +3,8 @@ CHUNK_SIZE = 500
 CHUNK_OVERLAP = 50
 
 
-#LLM_MODEL = "mistral-small-latest"
-LLM_MODEL = "mistral-large-latest"
+#LLM_MODEL = "mistral-small-latest"      Context = 128k
+LLM_MODEL = "mistral-large-latest"      #Context = 256k
 
 VISION_MODEL = "pixtral-12b-2409"
 EMBED_MODEL = "mistral-embed"
