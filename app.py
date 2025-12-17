@@ -194,7 +194,20 @@ def retest():
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
 
-
+@app.route('/eco_stats', methods=['GET'])
+def eco_stats():
+    """Affiche les statistiques environnementales"""
+    from app.chains.persona_chain import streaming_llm
+    from app.chains.test_chain import llm as test_llm
+    from app.chains.theme_chain import theme_llm
+    
+    stats = {
+        "persona_chain": streaming_llm.get_stats_summary(),
+        "test_chain": test_llm.get_stats_summary(),
+        "theme_chain": theme_llm.get_stats_summary()
+    }
+    
+    return jsonify(stats)
 
 if __name__ == '__main__':
     app.run(debug=True, threaded=True)

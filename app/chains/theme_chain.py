@@ -7,11 +7,12 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from app.tools.loaders import load_pdf
 import os
+from app.tools.eco_mistral import EcoMistralChat
 
 
-theme_llm = ChatMistralAI(
+theme_llm = EcoMistralChat(
     model="mistral-small-latest",
-    temperature=0  # Low temperature for structured extraction
+    temperature=0
 )
 
 docs = load_pdf()
