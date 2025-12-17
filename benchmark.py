@@ -468,10 +468,10 @@ def create_ensemble_retriever(chunk_size, chunk_overlap, dense_vectorstore):
     # Dense retriever
     dense_retriever = dense_vectorstore.as_retriever(search_kwargs={'k': 7})
     
-    # Combine with ensemble (60% BM25, 40% dense for keyword-heavy queries)
+    # Combine with ensemble
     ensemble_retriever = SimpleEnsembleRetriever(
         retrievers=[bm25, dense_retriever],
-        weights=[0.6, 0.4],
+        weights=[0.30, 0.70],
         k=7
     )
     
@@ -591,7 +591,7 @@ FORMAT DE RÉPONSE: Réponds UNIQUEMENT avec un objet JSON valide (sans markdown
 """
 )
 
-judge_llm = ChatMistralAI(model="mistral-small-latest", temperature=0)
+judge_llm = ChatMistralAI(model="mistral-large-latest", temperature=0)
 judge_chain = judge_prompt | judge_llm | StrOutputParser()
 
 def parse_judge_scores(judge_output: str) -> dict:
