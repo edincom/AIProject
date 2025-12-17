@@ -1,4 +1,4 @@
-PDF_PATH = "data/Atlas.pdf"
+PDF_PATH = "./Data/Atlas.pdf"
 CHUNK_SIZE = 500
 CHUNK_OVERLAP = 50
 
