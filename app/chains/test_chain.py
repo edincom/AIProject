@@ -4,7 +4,9 @@ from app.config.settings import LLM_MODEL
 from app.tools.eco_mistral import EcoMistralChat
 
 
-llm = EcoMistralChat(model=LLM_MODEL, temperature=1)
+llm1 = EcoMistralChat(model=LLM_MODEL, temperature=0.8)
+llm2 = EcoMistralChat(model=LLM_MODEL, temperature=0.2)
+
 
 # Chain for generating test questions (fixed: literal JSON uses doubled braces)
 generate_question_prompt = ChatPromptTemplate.from_messages([
@@ -28,7 +30,7 @@ generate_question_prompt = ChatPromptTemplate.from_messages([
      "Génère maintenant le JSON.")
 ])
 
-generate_question_chain = generate_question_prompt | llm
+generate_question_chain = generate_question_prompt | llm1
 
 
 # Chain for grading student answers
@@ -100,4 +102,4 @@ test_prompt = ChatPromptTemplate.from_messages([
      "- N'ajoute AUCUN texte avant ou après le JSON")
 ])
 
-test_chain = test_prompt | llm
+test_chain = test_prompt | llm2

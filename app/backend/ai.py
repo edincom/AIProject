@@ -355,7 +355,6 @@ def generate_test_question(criteria, allow_reuse=True, similarity_threshold=0.75
                 # Found a match above threshold
                 doc = results[0]
                 print(f"♻️ Question réutilisée!")
-                print(f"   💚 Économie estimée : ~1800 tokens ≈ 6g CO2")
                 
                 return {
                     'question': doc.page_content,

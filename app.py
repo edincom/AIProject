@@ -198,12 +198,13 @@ def retest():
 def eco_stats():
     """Affiche les statistiques environnementales"""
     from app.chains.persona_chain import streaming_llm
-    from app.chains.test_chain import llm as test_llm
+    from app.chains.test_chain import llm1,llm2
     from app.chains.theme_chain import theme_llm
     
     stats = {
         "persona_chain": streaming_llm.get_stats_summary(),
-        "test_chain": test_llm.get_stats_summary(),
+        "test_chain_question": llm1.get_stats_summary(),
+        "test_chain_grading": llm2.get_stats_summary(),
         "theme_chain": theme_llm.get_stats_summary()
     }
     
