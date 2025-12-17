@@ -1,8 +1,10 @@
-from langchain_mistralai import ChatMistralAI
+# app/chains/test_chain.py
 from langchain_core.prompts import ChatPromptTemplate
 from app.config.settings import LLM_MODEL
+from app.tools.ecologits_wrapper import MistralWithEcoLogits, format_langchain_prompt_for_mistral
 
-llm = ChatMistralAI(model=LLM_MODEL, temperature=1)
+# Créer le client Mistral avec EcoLogits
+llm = MistralWithEcoLogits(model=LLM_MODEL, temperature=1, streaming=False)
 
 # Chain for generating test questions (fixed: literal JSON uses doubled braces)
 generate_question_prompt = ChatPromptTemplate.from_messages([
@@ -25,9 +27,6 @@ generate_question_prompt = ChatPromptTemplate.from_messages([
      "}}\n\n"
      "Génère maintenant le JSON.")
 ])
-
-generate_question_chain = generate_question_prompt | llm
-
 
 # Chain for grading student answers
 test_prompt = ChatPromptTemplate.from_messages([
@@ -98,4 +97,31 @@ test_prompt = ChatPromptTemplate.from_messages([
      "- N'ajoute AUCUN texte avant ou après le JSON")
 ])
 
-test_chain = test_prompt | llm
+
+class TestChain:
+    """Chain personnalisée pour les tests avec EcoLogits"""
+    
+    def __init__(self, prompt, llm):
+        self.prompt = prompt
+        self.llm = llm
+    
+    def invoke(self, inputs: dict):
+        """Invoke avec tracking EcoLogits"""
+        # Formatter le prompt
+        prompt_value = self.prompt.format_prompt(**inputs)
+        
+        # Convertir au format Mistral
+        messages = format_langchain_prompt_for_mistral(prompt_value)
+        
+        # Appeler le LLM
+        response = self.llm.invoke(messages)
+        
+        # Afficher les impacts
+        self.llm.print_impacts(prefix="[Test/Grade Mode] ")
+        
+        return response
+
+
+# Créer les chains
+generate_question_chain = TestChain(generate_question_prompt, llm)
+test_chain = TestChain(test_prompt, llm)

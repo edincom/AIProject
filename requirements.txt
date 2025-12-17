@@ -1,0 +1,6 @@
+ecologits[mistralai]
+langchain-mistralai
+flask
+python-dotenv
+faiss-cpu
+langchain-community

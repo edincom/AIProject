@@ -1,0 +1,56 @@
+[
+  {
+    "timestamp": "2025-12-17T01:05:32.780459",
+    "mode": "teach",
+    "username": "nabs",
+    "energy_wh": 1.4360475575083398e-05,
+    "gwp_kgco2eq": 7.350933656860466e-07,
+    "model": "mistral-small-latest",
+    "operation": "chat"
+  },
+  {
+    "timestamp": "2025-12-17T01:07:00.445639",
+    "mode": "test",
+    "username": "system",
+    "energy_wh": 2.4934290935306386e-05,
+    "gwp_kgco2eq": 1.3526966031154574e-06,
+    "model": "mistral-small-latest",
+    "operation": "generate_question"
+  },
+  {
+    "timestamp": "2025-12-17T01:14:36.324686",
+    "mode": "test",
+    "username": "nabs",
+    "energy_wh": 4.197929831149263e-05,
+    "gwp_kgco2eq": 2.1825382564178872e-06,
+    "model": "mistral-small-latest",
+    "operation": "grade"
+  },
+  {
+    "timestamp": "2025-12-17T01:16:08.772113",
+    "mode": "test",
+    "username": "system",
+    "energy_wh": 2.3507590829982677e-05,
+    "gwp_kgco2eq": 1.1841169594516316e-06,
+    "model": "mistral-small-latest",
+    "operation": "generate_question"
+  },
+  {
+    "timestamp": "2025-12-17T01:16:56.405816",
+    "mode": "test",
+    "username": "nabs",
+    "energy_wh": 4.426049070409962e-05,
+    "gwp_kgco2eq": 2.2455247960931703e-06,
+    "model": "mistral-small-latest",
+    "operation": "grade"
+  },
+  {
+    "timestamp": "2025-12-17T01:17:37.602007",
+    "mode": "teach",
+    "username": "nabs",
+    "energy_wh": 3.4093971113930075e-05,
+    "gwp_kgco2eq": 1.8525771665626658e-06,
+    "model": "mistral-small-latest",
+    "operation": "chat"
+  }
+]

@@ -518,3 +518,137 @@ function closeHistory() {
 
 loadChapterHistory();
 userInput.focus();
+
+// Fonction pour charger et afficher les stats EcoLogits
+async function loadEcoLogitsStats() {
+    try {
+        const response = await fetch(`/ecologits_stats?username=${encodeURIComponent(username)}`);
+        const data = await response.json();
+        
+        if (data.success && data.stats.total_requests > 0) {
+            displayEcoLogitsStats(data.stats);
+        }
+    } catch (error) {
+        console.error('Error loading EcoLogits stats:', error);
+    }
+}
+
+function displayEcoLogitsStats(stats) {
+    // Créer ou mettre à jour le panneau de stats
+    let statsPanel = document.getElementById('ecologits-stats');
+    
+    if (!statsPanel) {
+        statsPanel = document.createElement('div');
+        statsPanel.id = 'ecologits-stats';
+        statsPanel.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 350px;
+            z-index: 1000;
+            border-left: 4px solid #4caf50;
+        `;
+        document.body.appendChild(statsPanel);
+    }
+    
+    const kmDriven = stats.equivalents.km_driven.toFixed(2);
+    const phoneCharges = stats.equivalents.smartphone_charges.toFixed(1);
+    
+    statsPanel.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="margin: 0; color: #4caf50;">🌱 Impact EcoLogits</h3>
+            <button onclick="closeEcoLogitsStats()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #999;">×</button>
+        </div>
+        
+        <div style="background: #f8f9fa; padding: 1rem; border-radius: 10px; margin-bottom: 1rem;">
+            <div style="margin-bottom: 0.5rem;">
+                <strong style="color: #333;">Total requêtes:</strong>
+                <span style="float: right; color: #667eea;">${stats.total_requests}</span>
+            </div>
+            <div style="margin-bottom: 0.5rem;">
+                <strong style="color: #333;">Énergie:</strong>
+                <span style="float: right; color: #667eea;">${stats.total_energy_wh.toFixed(6)} Wh</span>
+            </div>
+            <div>
+                <strong style="color: #333;">Émissions:</strong>
+                <span style="float: right; color: #667eea;">${stats.total_gwp_kgco2eq.toFixed(9)} kgCO2eq</span>
+            </div>
+        </div>
+        
+        <div style="background: #e8f5e9; padding: 1rem; border-radius: 10px;">
+            <div style="font-weight: 600; color: #2e7d32; margin-bottom: 0.5rem;">
+                📊 Équivalences
+            </div>
+            <div style="color: #2e7d32; font-size: 0.9rem; line-height: 1.6;">
+                🚗 ${kmDriven} km en voiture<br>
+                📱 ${phoneCharges} charges de smartphone
+            </div>
+        </div>
+        
+        <button onclick="loadEcoLogitsStats()" style="
+            width: 100%;
+            margin-top: 1rem;
+            padding: 0.5rem;
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        ">
+            🔄 Actualiser
+        </button>
+    `;
+}
+
+function closeEcoLogitsStats() {
+    const statsPanel = document.getElementById('ecologits-stats');
+    if (statsPanel) {
+        statsPanel.remove();
+    }
+}
+
+// Ajouter un bouton dans l'interface pour afficher les stats
+function addEcoLogitsButton() {
+    const navbar = document.querySelector('.user-info');
+    if (navbar) {
+        const button = document.createElement('button');
+        button.textContent = '🌱 Impact';
+        button.style.cssText = `
+            padding: 0.6rem 1.5rem;
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            margin-left: 1rem;
+        `;
+        button.onmouseover = () => {
+            button.style.background = 'rgba(76, 175, 80, 0.3)';
+            button.style.transform = 'translateY(-2px)';
+        };
+        button.onmouseout = () => {
+            button.style.background = 'rgba(76, 175, 80, 0.2)';
+            button.style.transform = 'translateY(0)';
+        };
+        button.onclick = loadEcoLogitsStats;
+        navbar.insertBefore(button, navbar.lastChild);
+    }
+}
+
+// Initialiser le bouton au chargement de la page
+addEcoLogitsButton();
+
+// Charger les stats automatiquement toutes les 30 secondes si le panneau est ouvert
+setInterval(() => {
+    const statsPanel = document.getElementById('ecologits-stats');
+    if (statsPanel) {
+        loadEcoLogitsStats();
+    }
+}, 30000);

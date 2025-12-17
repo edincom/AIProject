@@ -4,6 +4,8 @@ from app.backend.ai import ai_answer_stream, generate_test_question, grade_answe
 from app.tools.database import get_question_retest, get_user_history
 import json
 from app.tools.database import get_student_chapter_interactions_grouped
+from app.tools.ecologits_tracker import tracker
+
 
 app = Flask(__name__, template_folder="app/templates", static_folder="app/static")
 
@@ -193,6 +195,59 @@ def retest():
         import traceback
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
+
+@app.route('/ecologits_stats', methods=['GET'])
+def ecologits_stats():
+    """
+    Retourne les statistiques EcoLogits pour un utilisateur
+    GET /ecologits_stats?username=Alice
+    """
+    try:
+        username = request.args.get('username')
+        if not username:
+            return jsonify({"error": "Missing username parameter"}), 400
+        
+        stats = tracker.get_user_stats(username)
+        return jsonify({
+            "success": True,
+            "stats": stats
+        })
+    
+    except Exception as e:
+        print("Error in /ecologits_stats:", e)
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/ecologits_session', methods=['GET'])
+def ecologits_session():
+    """
+    Retourne les statistiques de la session en cours
+    GET /ecologits_session
+    """
+    try:
+        stats = tracker.get_session_stats()
+        return jsonify({
+            "success": True,
+            "stats": stats
+        })
+    
+    except Exception as e:
+        print("Error in /ecologits_session:", e)
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
+
+
+# Ajouter aussi ce hook pour afficher un résumé à la fermeture
+import atexit
+
+def print_final_summary():
+    """Affiche le résumé EcoLogits à la fermeture de l'application"""
+    tracker.print_session_summary()
+
+atexit.register(print_final_summary)
 
 
 

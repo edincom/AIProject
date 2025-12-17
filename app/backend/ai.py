@@ -11,11 +11,13 @@ from app.tools.loaders import caption_images
 from app.tools.rag import split_docs
 from app.chains.persona_chain import streaming_persona_chain, persona_prompt
 from app.chains.test_chain import generate_question_chain, test_chain
-from app.config.settings import FAISS_PATH, FAISS_QUESTIONS_PATH
+from app.config.settings import FAISS_PATH, FAISS_QUESTIONS_PATH, LLM_MODEL
 from app.chains.theme_chain import theme_llm
 from app.tools.database import save_teach_interaction
 from langchain_core.prompts import ChatPromptTemplate
 from app.tools.database import get_student_chapter_interactions
+from app.tools.ecologits_tracker import tracker
+
 
 print("Initializing AI backend…")
 
@@ -194,6 +196,7 @@ def ai_answer_stream(inputs, username="Guest", chapter=None):
     """
     Stream answer from the RAG/chat system token by token.
     Saves the interaction to the database after streaming completes.
+    Enregistre aussi les impacts environnementaux avec EcoLogits.
     
     Args:
         inputs: dict with 'question' key containing the user's question
@@ -203,10 +206,7 @@ def ai_answer_stream(inputs, username="Guest", chapter=None):
     Yields:
         str: Individual tokens/chunks of the response
     """
-    # Import at the beginning
-    from app.tools.database import get_student_chapter_interactions
     
-    # Ensure inputs is a dict with 'question' key
     if isinstance(inputs, str):
         inputs = {"question": inputs}
     
@@ -216,38 +216,30 @@ def ai_answer_stream(inputs, username="Guest", chapter=None):
     if "question" not in inputs:
         raise ValueError("inputs dict must contain 'question' key")
     
-    # Ensure question is a string
     question = inputs["question"]
     if not isinstance(question, str):
         question = str(question)
     
     question = question.strip()
     
-    # Variables to collect data for database
     chapter_context = chapter or ""
     full_answer = ""
     
     try:
-        # Step 0: Find the relevant chapter if not provided
         if not chapter_context:
-            # Get recent conversation for context
             all_recent = get_student_chapter_interactions(username, None)
             print(f"🔍 DEBUG: Fetched {len(all_recent)} recent interactions for user '{username}'")
             if all_recent:
                 print(f"   Most recent: {all_recent[0]}")
             
-            # Pass recent history to chapter identifier
             chapter_context = get_relevant_chapter(question, recent_history=all_recent[:3])
 
-        # Step 1: Retrieve context using RAG (non-streaming)
         docs = retriever.invoke(question)
         context = "\n\n".join(d.page_content for d in docs)
         
-        # Step 2: Get conversation history for this chapter
         history = get_student_chapter_interactions(username, chapter_context)
-        history_text = "\n".join([f"Q: {h[2]}\nA: {h[3]}" for h in history[-5:]])  # Last 5 interactions
+        history_text = "\n".join([f"Q: {h[2]}\nA: {h[3]}" for h in history[-5:]])
         
-        # Step 3: Stream the LLM response with context
         stream_inputs = {
             "question": question,
             "chapter_context": chapter_context,
@@ -255,7 +247,6 @@ def ai_answer_stream(inputs, username="Guest", chapter=None):
             "history": history_text if history_text else "Aucune conversation précédente"
         }
 
-        # Debug: Print what's being sent to the LLM
         print("\n" + "="*80)
         print("🔍 SENDING TO MISTRAL API:")
         print("="*80)
@@ -263,41 +254,39 @@ def ai_answer_stream(inputs, username="Guest", chapter=None):
         print(f"Chapter: {chapter_context}")
         print(f"Context length: {len(context)} chars")
         print(f"History included: {bool(history_text)}")
-        print("\nFull prompt inputs:")
-        print(stream_inputs)
         print("="*80 + "\n")
         
-        # Token counting variables
-        token_count_input = 0
         token_count_output = 0
         
-        # Stream directly from the persona chain
         for chunk in streaming_persona_chain.stream(stream_inputs):
-            # Extract only the text content from each chunk
             if hasattr(chunk, 'content'):
                 content = chunk.content
-                if content:  # Only yield non-empty content
+                if content:
                     full_answer += content
-                    token_count_output += len(content.split())  # Rough estimate
+                    token_count_output += len(content.split())
                     yield content
             elif isinstance(chunk, str):
-                if chunk:  # Only yield non-empty strings
+                if chunk:
                     full_answer += chunk
                     token_count_output += len(chunk.split())
                     yield chunk
-            
-            # Check if chunk has usage metadata (safe check)
-            if hasattr(chunk, 'usage_metadata') and chunk.usage_metadata is not None:
-                token_count_input = chunk.usage_metadata.get('input_tokens', 0)
         
-        # Print token usage after streaming completes
-        if token_count_input > 0:
-            print(f"\n📊 Token usage - Input: {token_count_input}, Output (estimated): {token_count_output}")
-        else:
-            print(f"\n📊 Token usage - Input: Not available from API, Output (estimated): {token_count_output}")
+        print(f"\n📊 Token usage - Output (estimated): {token_count_output}")
         
-        # Step 4: Save interaction to database after streaming completes
-        if full_answer:  # Only save if we got a response
+        # 🌱 NOUVEAU : Enregistrer les impacts EcoLogits
+        llm_instance = streaming_persona_chain.llm
+        impacts = llm_instance.get_last_impacts()
+        if impacts:
+            tracker.record_impact(
+                mode="teach",
+                username=username,
+                energy=impacts["energy"]["value"],
+                gwp=impacts["gwp"]["value"],
+                model=LLM_MODEL,
+                operation="chat"
+            )
+        
+        if full_answer:
             save_teach_interaction(username, chapter_context, question, full_answer)
                     
     except Exception as e:
@@ -307,40 +296,29 @@ def ai_answer_stream(inputs, username="Guest", chapter=None):
         traceback.print_exc()
         yield error_msg
         
-        # Save error interaction to database
         if chapter_context or question:
             save_teach_interaction(username, chapter_context or "Error", question, error_msg)
+
 
 
 def generate_test_question(criteria, allow_reuse=True, similarity_threshold=0.75):
     """
     Generate a test question using document context (RAG).
     Automatically reuses existing questions when possible.
-    
-    Args:
-        criteria: str - The topic/criteria
-        allow_reuse: bool - Whether to search for existing questions
-        similarity_threshold: float - Minimum similarity (0-1)
-    
-    Returns:
-        dict with keys: question, expected_answer, key_points, context_used
     """
     
     if allow_reuse:
         print(f"\n🔍 Searching similar question (criteria: '{criteria}')")
         
-        # Get retriever with automatic threshold filtering
         questions_retriever = get_questions_retriever(
             similarity_threshold=similarity_threshold,
             k=1
         )
         
         if questions_retriever:
-            # Search - retriever handles threshold automatically!
             results = questions_retriever.invoke(criteria)
             
             if results:
-                # Found a match above threshold
                 doc = results[0]
                 print(f"♻️ Question réutilisée!")
                 print(f"   💚 Économie estimée : ~1800 tokens ≈ 6g CO2")
@@ -356,13 +334,10 @@ def generate_test_question(criteria, allow_reuse=True, similarity_threshold=0.75
         else:
             print("ℹ️ Questions FAISS not ready yet (need 5+ questions)")
 
-
     try:
-        # Step 1: Retrieve relevant context via RAG
         docs = retriever.invoke(criteria)
         context_text = "\n\n".join([doc.page_content for doc in docs])
 
-        # Step 2: Call chain
         result = generate_question_chain.invoke({
             "criteria": criteria,
             "context": context_text
@@ -371,7 +346,6 @@ def generate_test_question(criteria, allow_reuse=True, similarity_threshold=0.75
         raw_output = result.content if hasattr(result, "content") else str(result)
         raw_output = raw_output.strip()
 
-        # Remove markdown fences if present
         if raw_output.startswith("```"):
             lines = raw_output.split("\n")
             if lines[0].startswith("```"):
@@ -380,11 +354,9 @@ def generate_test_question(criteria, allow_reuse=True, similarity_threshold=0.75
                 lines = lines[:-1]
             raw_output = "\n".join(lines).strip()
 
-        # Try direct JSON parse
         try:
             parsed = json.loads(raw_output)
         except json.JSONDecodeError:
-            # Heuristic: try to find first {...} substring and parse that
             import re
             m = re.search(r'\{[\s\S]*\}', raw_output)
             if m:
@@ -405,19 +377,32 @@ def generate_test_question(criteria, allow_reuse=True, similarity_threshold=0.75
                 "key_points": [],
                 "context_used": context_text
             }
-        # Normalize results
+        
         question = parsed.get("question", "").strip()
         expected_answer = parsed.get("expected_answer", "").strip()
         key_points = parsed.get("key_points") or []
         if isinstance(key_points, str):
-            # try to split lines if LLM returned string list
             key_points = [kp.strip() for kp in key_points.split("\n") if kp.strip()]
+        
         dict_questions = {
             "question": question,
             "expected_answer": expected_answer,
             "key_points": key_points,
             "context_used": context_text
         }
+
+        # 🌱 NOUVEAU : Enregistrer les impacts EcoLogits
+        llm_instance = generate_question_chain.llm
+        impacts = llm_instance.get_last_impacts()
+        if impacts:
+            tracker.record_impact(
+                mode="test",
+                username="system",  # Pas d'utilisateur spécifique lors de la génération
+                energy=impacts["energy"]["value"],
+                gwp=impacts["gwp"]["value"],
+                model=LLM_MODEL,
+                operation="generate_question"
+            )
 
         if question and question not in ["ERROR_GENERATING_QUESTION", "ERROR"]:
             try:
@@ -444,23 +429,20 @@ def generate_test_question(criteria, allow_reuse=True, similarity_threshold=0.75
     
 def grade_answer(question, answer, expected_answer, key_points, username="Anonymous"):
     """
-    Grade a student's answer based on objective criteria:
-    - match with expected_answer
-    - coverage of key_points
-    - incorrect facts
-    - clarity/structure
+    Grade a student's answer based on objective criteria.
+    Enregistre aussi les impacts environnementaux.
     """
     try:
-        # Call the correction chain
         result = test_chain.invoke({
             "question": question,
             "answer": answer,
             "expected_answer": expected_answer,
             "key_points": key_points
         })
+        
         raw_output = result.content if hasattr(result, "content") else str(result)
         raw_output = raw_output.strip()
-        # Remove ``` fences
+        
         if raw_output.startswith("```"):
             lines = raw_output.split("\n")
             if lines[0].startswith("```"):
@@ -469,11 +451,9 @@ def grade_answer(question, answer, expected_answer, key_points, username="Anonym
                 lines = lines[:-1]
             raw_output = "\n".join(lines).strip()
 
-        # Parse JSON normally
         try:
             grading_json = json.loads(raw_output)
         except json.JSONDecodeError:
-            # Fallback: extract JSON substring
             import re
             match = re.search(r'\{[\s\S]*\}', raw_output)
             if match:
@@ -496,13 +476,25 @@ def grade_answer(question, answer, expected_answer, key_points, username="Anonym
                     "advice": "Parsing error. Try again."
                 }
 
-        # Save to DB (your existing function)
+        # 🌱 NOUVEAU : Enregistrer les impacts EcoLogits
+        llm_instance = test_chain.llm
+        impacts = llm_instance.get_last_impacts()
+        if impacts:
+            tracker.record_impact(
+                mode="test",
+                username=username,
+                energy=impacts["energy"]["value"],
+                gwp=impacts["gwp"]["value"],
+                model=LLM_MODEL,
+                operation="grade"
+            )
+
         try:
             save_result(username, question, answer, grading_json, expected_answer, key_points)
         except Exception as db_err:
             print("Database error:", db_err)
         
-        print("Grading result:............................................................", grading_json)
+        print("Grading result:", grading_json)
         return grading_json
 
     except Exception as e:
