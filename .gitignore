@@ -1,6 +1,8 @@
 .env
 init.py
-
+.dockerignore
+docker-compose.yml
+Dockerfile
 
 
 __pycache__/
