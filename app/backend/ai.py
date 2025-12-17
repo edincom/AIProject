@@ -5,28 +5,130 @@ from dotenv import load_dotenv
 from app.tools.database import save_result
 load_dotenv()
 
-from app.tools.rag import add_question_to_faiss, get_questions_retriever, get_retriever
+from app.tools.rag import add_question_to_faiss, get_questions_retriever, get_retriever, load_vectorstore
+
 from app.tools.loaders import load_pdf
 from app.tools.loaders import caption_images
 from app.tools.rag import split_docs
 from app.chains.persona_chain import streaming_persona_chain
 from app.chains.test_chain import generate_question_chain, test_chain
-from app.config.settings import FAISS_PATH, FAISS_QUESTIONS_PATH, CONTEXT_LENGTH
+from app.config.settings import FAISS_PATH, FAISS_QUESTIONS_PATH, CONTEXT_LENGTH, PDF_PATH, CHUNK_SIZE, CHUNK_OVERLAP
+
 from app.chains.theme_chain import theme_llm
 from app.tools.database import save_teach_interaction
 from langchain_core.prompts import ChatPromptTemplate
 from app.tools.database import get_student_chapter_interactions
 from app.tools.rag import format_docs
 
+from langchain_community.retrievers import BM25Retriever
+from langchain_community.document_loaders import PyMuPDFLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+# Ensemble retriever components
+from collections import defaultdict
+from typing import List
+from langchain_core.retrievers import BaseRetriever
+from langchain_core.documents import Document
+from pydantic import BaseModel
+
+
+# ============================================================================
+# HELPER FUNCTION
+# ============================================================================
+
+def format_docs(docs):
+    """Format retrieved documents with page numbers"""
+    return "\n\n".join(f"[Page {d.metadata.get('page','N/A')}] {d.page_content}" for d in docs)
+
+
+# ============================================================================
+# ENSEMBLE RETRIEVER IMPLEMENTATION
+# ============================================================================
+
+def _doc_key(doc: Document) -> str:
+    return doc.page_content + "||" + str(sorted(doc.metadata.items()))
+
+def weighted_rrf(doc_lists: List[List[Document]], weights: List[float], top_k: int = 7, c: int = 60):
+    scores = defaultdict(float)
+    doc_map = {}
+    
+    for i, docs in enumerate(doc_lists):
+        w = weights[i] if i < len(weights) else 1.0
+        for rank, doc in enumerate(docs, start=1):
+            key = _doc_key(doc)
+            scores[key] += w / (c + rank)
+            if key not in doc_map:
+                doc_map[key] = doc
+    
+    sorted_keys = sorted(scores, key=lambda k: scores[k], reverse=True)
+    return [doc_map[k] for k in sorted_keys[:top_k]]
+
+class SimpleEnsembleRetriever(BaseRetriever, BaseModel):
+    retrievers: List[BaseRetriever]
+    weights: List[float]
+    k: int = 7
+    c: int = 60
+    
+    class Config:
+        arbitrary_types_allowed = True
+    
+    def _get_relevant_documents(self, query: str, *, run_manager=None) -> List[Document]:
+        lists = [r.invoke(query) for r in self.retrievers]
+        return weighted_rrf(lists, self.weights, top_k=self.k, c=self.c)
+    
+    async def _aget_relevant_documents(self, query: str, *, run_manager=None) -> List[Document]:
+        lists = []
+        for r in self.retrievers:
+            try:
+                docs = await r.ainvoke(query)
+            except Exception:
+                docs = r.invoke(query)
+            lists.append(docs)
+        return weighted_rrf(lists, self.weights, top_k=self.k, c=self.c)
+
+
+# ============================================================================
+# INITIALIZE RETRIEVERS
+# ============================================================================
+
+
 print("Initializing AI backend…")
 
 docs = load_pdf()
 image_docs = caption_images()
 chunks = split_docs(docs)
-all_docs = chunks  # + image_docs if you want to include images
-retriever = get_retriever(all_docs, FAISS_PATH)
-print("Information retriever initialized")
+all_docs = chunks
 
+# Build/load dense vectorstore
+_ = get_retriever(all_docs, FAISS_PATH, search_k=7)
+
+# Create BM25 retriever
+loader = PyMuPDFLoader(PDF_PATH)
+raw_docs = loader.load()
+splitter = RecursiveCharacterTextSplitter(chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP)
+split_docs_for_bm25 = splitter.split_documents(raw_docs)
+
+texts_for_bm25 = [d.page_content for d in split_docs_for_bm25]
+bm25_retriever = BM25Retriever.from_texts(texts_for_bm25, metadatas=[d.metadata for d in split_docs_for_bm25])
+bm25_retriever.k = 7
+
+# Create dense retriever from vectorstore
+dense_vectorstore = load_vectorstore(FAISS_PATH)
+dense_retriever = dense_vectorstore.as_retriever(search_kwargs={'k': 7})
+
+# Create ensemble retriever (BM25 + Dense)
+retriever = SimpleEnsembleRetriever(
+    retrievers=[bm25_retriever, dense_retriever],
+    weights=[0.50, 0.50],
+    k=7
+)
+
+print("✓ Ensemble retriever initialized (BM25 + Dense retrieval)")
+
+
+# ============================================================================
+# REST OF THE CODE REMAINS UNCHANGED
+# ============================================================================
 
 def get_relevant_chapter(question, recent_history=None):
     """Find which chapter is most relevant to the question, considering conversation context"""
@@ -49,7 +151,7 @@ def get_relevant_chapter(question, recent_history=None):
         conversation_context = ""
         previous_chapter = "Aucun"
         if recent_history and len(recent_history) > 0:
-            previous_chapter = recent_history[0][1]  # Get the chapter from most recent interaction
+            previous_chapter = recent_history[0][1]
             conversation_context = "\n\nConversation récente:\n" + "\n".join([
                 f"Chapitre: {h[1]}\nQ: {h[2]}\nR: {h[3][:150]}..." for h in recent_history[:2]
             ])
@@ -127,20 +229,6 @@ Chapitres disponibles :
 Analyse et réponds strictement au format demandé.
 """)
         ])
-
-        
-        # # DEBUG: Print what we're sending to the LLM
-        # print("\n" + "="*80)
-        # print("🔍 CHAPTER DETECTION - INPUT:")
-        # print("="*80)
-        # print(f"Question: {question}")
-        # print(f"Previous chapter: {previous_chapter}")
-        # print(f"Has recent history: {bool(recent_history)}")
-        # if recent_history:
-        #     print(f"Recent history count: {len(recent_history)}")
-        #     print("Recent conversation context:")
-        #     print(conversation_context)
-        # print("="*80 + "\n")
         
         chain = chapter_prompt | theme_llm
         result = chain.invoke({
@@ -166,13 +254,10 @@ Analyse et réponds strictement au format demandé.
             elif line.startswith("RAISON:"):
                 reason = line.replace("RAISON:", "").strip()
         
-        # CRITICAL FIX: If follow-up detected, use previous_chapter directly
-        # This ensures consistency - we don't rely on LLM to echo back the chapter
         if "OUI" in is_followup.upper() and previous_chapter != "Aucun":
             detected_chapter = previous_chapter
             reason = f"Suite logique détectée → même chapitre: {previous_chapter}"
         
-        # DEBUG: Print what the LLM decided
         print("\n" + "="*80)
         print("✅ CHAPTER DETECTION - OUTPUT:")
         print("="*80)
@@ -188,7 +273,6 @@ Analyse et réponds strictement au format demandé.
         import traceback
         traceback.print_exc()
         return "Chapitre général"
-    
 
 
 def ai_answer_stream(inputs, username="Guest", chapter=None):
@@ -323,7 +407,6 @@ def ai_answer_stream(inputs, username="Guest", chapter=None):
         if chapter_context or question:
             save_teach_interaction(username, chapter_context or "Error", question, error_msg, 0, 0)
 
-
 def generate_test_question(criteria, allow_reuse=True, similarity_threshold=0.75):
     """
     Generate a test question using document context (RAG).
@@ -454,15 +537,8 @@ def generate_test_question(criteria, allow_reuse=True, similarity_threshold=0.75
 
     
 def grade_answer(question, answer, expected_answer, key_points, username="Anonymous"):
-    """
-    Grade a student's answer based on objective criteria:
-    - match with expected_answer
-    - coverage of key_points
-    - incorrect facts
-    - clarity/structure
-    """
+    """Grade a student's answer based on objective criteria."""
     try:
-        # Call the correction chain
         result = test_chain.invoke({
             "question": question,
             "answer": answer,
@@ -471,7 +547,7 @@ def grade_answer(question, answer, expected_answer, key_points, username="Anonym
         })
         raw_output = result.content if hasattr(result, "content") else str(result)
         raw_output = raw_output.strip()
-        # Remove ``` fences
+        
         if raw_output.startswith("```"):
             lines = raw_output.split("\n")
             if lines[0].startswith("```"):
@@ -480,11 +556,9 @@ def grade_answer(question, answer, expected_answer, key_points, username="Anonym
                 lines = lines[:-1]
             raw_output = "\n".join(lines).strip()
 
-        # Parse JSON normally
         try:
             grading_json = json.loads(raw_output)
         except json.JSONDecodeError:
-            # Fallback: extract JSON substring
             import re
             match = re.search(r'\{[\s\S]*\}', raw_output)
             if match:
@@ -507,13 +581,12 @@ def grade_answer(question, answer, expected_answer, key_points, username="Anonym
                     "advice": "Parsing error. Try again."
                 }
 
-        # Save to DB (your existing function)
         try:
             save_result(username, question, answer, grading_json, expected_answer, key_points)
         except Exception as db_err:
             print("Database error:", db_err)
         
-        print("Grading result:............................................................", grading_json)
+        print("Grading result:", grading_json)
         return grading_json
 
     except Exception as e:

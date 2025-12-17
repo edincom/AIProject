@@ -108,6 +108,7 @@ def save_teach_interaction(student_name, chapter, question, answer, input_tokens
         answer: str - The AI's answer
         input_tokens: int - Number of input tokens
         output_tokens: int - Number of output tokens
+
     """
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
