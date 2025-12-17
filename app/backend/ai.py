@@ -119,7 +119,7 @@ dense_retriever = dense_vectorstore.as_retriever(search_kwargs={'k': 7})
 # Create ensemble retriever (BM25 + Dense)
 retriever = SimpleEnsembleRetriever(
     retrievers=[bm25_retriever, dense_retriever],
-    weights=[0.50, 0.50],
+    weights=[0.1, 0.9],
     k=7
 )
 
