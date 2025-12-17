@@ -9,13 +9,14 @@ from app.tools.rag import add_question_to_faiss, get_questions_retriever, get_re
 from app.tools.loaders import load_pdf
 from app.tools.loaders import caption_images
 from app.tools.rag import split_docs
-from app.chains.persona_chain import streaming_persona_chain, persona_prompt
+from app.chains.persona_chain import streaming_persona_chain
 from app.chains.test_chain import generate_question_chain, test_chain
-from app.config.settings import FAISS_PATH, FAISS_QUESTIONS_PATH
+from app.config.settings import FAISS_PATH, FAISS_QUESTIONS_PATH, CONTEXT_LENGTH
 from app.chains.theme_chain import theme_llm
 from app.tools.database import save_teach_interaction
 from langchain_core.prompts import ChatPromptTemplate
 from app.tools.database import get_student_chapter_interactions
+from app.tools.rag import format_docs
 
 print("Initializing AI backend…")
 
@@ -128,18 +129,18 @@ Analyse et réponds strictement au format demandé.
         ])
 
         
-        # DEBUG: Print what we're sending to the LLM
-        print("\n" + "="*80)
-        print("🔍 CHAPTER DETECTION - INPUT:")
-        print("="*80)
-        print(f"Question: {question}")
-        print(f"Previous chapter: {previous_chapter}")
-        print(f"Has recent history: {bool(recent_history)}")
-        if recent_history:
-            print(f"Recent history count: {len(recent_history)}")
-            print("Recent conversation context:")
-            print(conversation_context)
-        print("="*80 + "\n")
+        # # DEBUG: Print what we're sending to the LLM
+        # print("\n" + "="*80)
+        # print("🔍 CHAPTER DETECTION - INPUT:")
+        # print("="*80)
+        # print(f"Question: {question}")
+        # print(f"Previous chapter: {previous_chapter}")
+        # print(f"Has recent history: {bool(recent_history)}")
+        # if recent_history:
+        #     print(f"Recent history count: {len(recent_history)}")
+        #     print("Recent conversation context:")
+        #     print(conversation_context)
+        # print("="*80 + "\n")
         
         chain = chapter_prompt | theme_llm
         result = chain.invoke({
@@ -226,6 +227,7 @@ def ai_answer_stream(inputs, username="Guest", chapter=None):
     # Variables to collect data for database
     chapter_context = chapter or ""
     full_answer = ""
+    is_followup = False
     
     try:
         # Step 0: Find the relevant chapter if not provided
@@ -236,16 +238,29 @@ def ai_answer_stream(inputs, username="Guest", chapter=None):
             if all_recent:
                 print(f"   Most recent: {all_recent[0]}")
             
-            # Pass recent history to chapter identifier
-            chapter_context = get_relevant_chapter(question, recent_history=all_recent[:3])
+            # Get chapter and detect if it's a follow-up
+            previous_chapter = all_recent[0][1] if all_recent else "Aucun"
+            detected_chapter = get_relevant_chapter(question, recent_history=all_recent[:3])
+            
+            # If same chapter as before, it's likely a follow-up
+            is_followup = (detected_chapter == previous_chapter and previous_chapter != "Aucun")
+            chapter_context = detected_chapter
 
-        # Step 1: Retrieve context using RAG (non-streaming)
-        docs = retriever.invoke(question)
-        context = "\n\n".join(d.page_content for d in docs)
-        
-        # Step 2: Get conversation history for this chapter
+        # Step 1: Enhanced RAG retrieval for follow-up questions
         history = get_student_chapter_interactions(username, chapter_context)
-        history_text = "\n".join([f"Q: {h[2]}\nA: {h[3]}" for h in history[-5:]])  # Last 5 interactions
+        rag_query = question
+        
+        if is_followup and history:
+            # Accumulate all questions in the conversation chain
+            all_questions = " ".join([h[2] for h in reversed(history[:CONTEXT_LENGTH])])
+            rag_query = f"{all_questions} {question}"
+            print(f"🔗 Follow-up detected! Enhanced RAG query: '{rag_query}'")
+        
+        docs = retriever.invoke(rag_query)
+        context = format_docs(docs)
+        
+        # Step 2: Format conversation history
+        history_text = "\n".join([f"Q: {h[2]}\nA: {h[3]}" for h in history[-CONTEXT_LENGTH:]])
         
         # Step 3: Stream the LLM response with context
         stream_inputs = {
@@ -260,6 +275,8 @@ def ai_answer_stream(inputs, username="Guest", chapter=None):
         print("🔍 SENDING TO MISTRAL API:")
         print("="*80)
         print(f"Question: {question}")
+        print(f"RAG Query: {rag_query}")
+        print(f"Is Follow-up: {is_followup}")
         print(f"Chapter: {chapter_context}")
         print(f"Context length: {len(context)} chars")
         print(f"History included: {bool(history_text)}")
@@ -278,27 +295,22 @@ def ai_answer_stream(inputs, username="Guest", chapter=None):
                 content = chunk.content
                 if content:  # Only yield non-empty content
                     full_answer += content
-                    token_count_output += len(content.split())  # Rough estimate
                     yield content
             elif isinstance(chunk, str):
                 if chunk:  # Only yield non-empty strings
                     full_answer += chunk
-                    token_count_output += len(chunk.split())
                     yield chunk
             
-            # Check if chunk has usage metadata (safe check)
+            # Check if chunk has usage metadata
             if hasattr(chunk, 'usage_metadata') and chunk.usage_metadata is not None:
                 token_count_input = chunk.usage_metadata.get('input_tokens', 0)
+                token_count_output = chunk.usage_metadata.get('output_tokens', 0)
         
-        # Print token usage after streaming completes
-        if token_count_input > 0:
-            print(f"\n📊 Token usage - Input: {token_count_input}, Output (estimated): {token_count_output}")
-        else:
-            print(f"\n📊 Token usage - Input: Not available from API, Output (estimated): {token_count_output}")
+        print(f"\n📊 Token usage - Input: {token_count_input}, Output: {token_count_output}")
         
         # Step 4: Save interaction to database after streaming completes
         if full_answer:  # Only save if we got a response
-            save_teach_interaction(username, chapter_context, question, full_answer)
+            save_teach_interaction(username, chapter_context, question, full_answer, token_count_input, token_count_output)
                     
     except Exception as e:
         error_msg = f"Error: {str(e)}"
@@ -309,7 +321,7 @@ def ai_answer_stream(inputs, username="Guest", chapter=None):
         
         # Save error interaction to database
         if chapter_context or question:
-            save_teach_interaction(username, chapter_context or "Error", question, error_msg)
+            save_teach_interaction(username, chapter_context or "Error", question, error_msg, 0, 0)
 
 
 def generate_test_question(criteria, allow_reuse=True, similarity_threshold=0.75):

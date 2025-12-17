@@ -1,0 +1,1128 @@
+question,topic,configuration,reference_answer,candidate_answer,accuracy,completeness,citation_quality,relevance,overall,justification
+Quels sont les principaux enjeux géopolitiques dans la région du Caucase ?,points_chauds,Simple Prompt,"Le Caucase est une zone charnière entre Europe, Russie, Moyen-Orient et Asie centrale, marquée par des rivalités d'influence (Russie, Turquie, Iran, Occident), des conflits autour des frontières et des minorités, ainsi que par des enjeux énergétiques et de corridors de transport.","Les principaux enjeux géopolitiques dans le Caucase incluent :
+
+1. **Conflits territoriaux** : Tensions entre Arménie et Azerbaïdjan (Haut-Karabakh), entre la Géorgie et la Russie (Abkhazie, Ossétie du Sud).
+2. **Influence des puissances extérieures** : Rivalité entre la Russie, la Turquie, l'Iran et l'UE/OTAN.
+3. **Ressources énergétiques** : Contrôle des pipelines (BTC, South Caucasus Pipeline) et gaz naturel.
+4. **Stabilité régionale** : Fragilité des États post-soviétiques et risques de radicalisation.
+5. **Désenclavement** : Projets de corridors (comme le corridor Zangezur) pour relier l'Asie centrale à l'Europe.
+
+Ces enjeux mêlent sécurité, économie et rivalités stratégiques.",5,5,5,5,5,"La réponse candidate est très précise, couvre tous les enjeux majeurs et cite des exemples concrets (Haut-Karabakh, pipelines BTC). Elle est parfaitement pertinente et complète par rapport à la référence."
+Quels sont les principaux enjeux géopolitiques dans la région du Caucase ?,points_chauds,Basic RAG,"Le Caucase est une zone charnière entre Europe, Russie, Moyen-Orient et Asie centrale, marquée par des rivalités d'influence (Russie, Turquie, Iran, Occident), des conflits autour des frontières et des minorités, ainsi que par des enjeux énergétiques et de corridors de transport.","Voici les principaux enjeux géopolitiques dans la région du Caucase, expliqués de manière claire et structurée :
+
+---
+
+**1. Tensions entre héritage russe et influence européenne**
+Les pays du Caucase (Géorgie, Arménie, Azerbaïdjan) sont tiraillés entre leur passé soviétique et leur volonté de se rapprocher de l’Union européenne. Par exemple, en Géorgie, les manifestations de 2023 contre une loi jugée pro-russe illustrent cette rivalité d’influences [Page 40].
+Cette situation crée des divisions internes et fragilise la stabilité politique.
+
+---
+
+**2. Conflits territoriaux non résolus**
+L’effondrement de l’URSS en 1991 a laissé des frontières internes mal définies, notamment pour les régions autonomes comme l’**Ossétie du Sud** et l’**Abkhazie** (en Géorgie). Ces territoires, soutenus par la Russie, revendiquent leur indépendance, ce qui alimente des conflits gelés ou ouverts [Page 41].
+Le cas du **Haut-Karabakh** est emblématique : l’Azerbaïdjan, soutenu par la Turquie, a repris le contrôle de cette région en 2023 après des décennies de guerre avec l’Arménie [Page 38].
+
+---
+
+**3. Hétérogénéité ethnique et risques de fragmentation**
+Le Caucase est une mosaïque de groupes ethniques et linguistiques (indo-européens, altaïques, caucasiques). Cette diversité, couplée à des frontières mal adaptées, favorise les tensions intercommunautaires et les revendications séparatistes [Page 40].
+Par exemple, le nationalisme géorgien a exacerbé les crises en Ossétie du Sud et en Abkhazie [Page 41].
+
+---
+
+**4. Rivalités entre puissances régionales**
+La région est un terrain de compétition entre :
+- **La Russie**, qui maintient une influence forte (soutien aux séparatistes, bases militaires).
+- **La Turquie**, alliée de l’Azerbaïdjan et acteur clé dans le conflit du Haut-Karabakh [Page 38].
+- **L’Union européenne et les États-Unis**, qui cherchent à promouvoir la démocratie et l’intégration économique (ex. : accords d’association avec la Géorgie).
+
+---
+
+**5. Enjeux énergétiques et économiques**
+Le Caucase est une zone stratégique pour le transit des hydrocarbures (pipelines reliant la mer Caspienne à l’Europe). Les tensions géopolitiques peuvent perturber ces flux, comme lors des conflits entre l’Arménie et l’Azerbaïdjan.
+
+---
+**À retenir** :
+Ces enjeux se renforcent mutuellement : les conflits territoriaux alimentent les rivalités entre puissances, tandis que la diversité ethnique complique la construction d’États stables.
+
+Si tu veux approfondir un point précis (ex. : le rôle de la Turquie ou les détails sur le Haut-Karabakh), n’hésite pas à demander. Sinon, ton professeur pourra t’aider à explorer d’autres aspects non couverts ici.",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les enjeux majeurs mentionnés dans la référence, avec des détails supplémentaires pertinents. Les citations sont bien intégrées, bien que leur format (ex. [Page 40]) soit moins standard que des références académiques. La réponse est parfaitement adaptée à la question."
+Quels sont les principaux enjeux géopolitiques dans la région du Caucase ?,points_chauds,Advanced RAG,"Le Caucase est une zone charnière entre Europe, Russie, Moyen-Orient et Asie centrale, marquée par des rivalités d'influence (Russie, Turquie, Iran, Occident), des conflits autour des frontières et des minorités, ainsi que par des enjeux énergétiques et de corridors de transport.","Voici les principaux enjeux géopolitiques dans la région du Caucase, d'après ton manuel :
+
+**1. Tensions entre héritage russe et aspirations européennes**
+La région est marquée par un clivage entre l’influence historique de la Russie et le désir de certains pays de se rapprocher de l’Europe. Par exemple, la Géorgie est secouée par des manifestations contre une loi jugée pro-russe, tandis que des débats existent sur une éventuelle adhésion à l’OTAN [Page 40].
+
+**2. Conflits territoriaux non résolus**
+Les frontières entre l’Arménie et l’Azerbaïdjan restent une source de tensions récurrentes, avec des risques de résurgence de conflits comme celui du Haut-Karabakh [Page 40].
+
+**3. Influence des puissances extérieures**
+La région est un terrain de rivalité entre grandes puissances (Russie, États-Unis, Union européenne, Turquie). La question d’une adhésion de la Géorgie à l’OTAN, par exemple, illustre cette compétition [Page 19].
+
+**4. Instabilité politique interne**
+Certains pays du Caucase, comme la Géorgie, connaissent des mouvements de protestation contre leurs gouvernements, reflétant des divisions internes sur leur orientation géopolitique [Page 40].
+
+Si tu veux approfondir un point précis (comme le conflit du Haut-Karabakh ou le rôle de la Russie), je t’invite à consulter ton professeur, car ces détails ne sont pas développés dans ton manuel.
+
+CITES: Page: 19,40",5,4,3,5,4,"La réponse candidate est globalement exacte et pertinente, couvrant les principaux enjeux géopolitiques du Caucase. Cependant, elle manque de complétude sur certains aspects (comme les enjeux énergétiques ou les corridors de transport) et les citations manquent de précision (références aux pages sans contexte)."
+Décrivez les tensions actuelles autour de Taïwan et leurs implications régionales.,points_chauds,Simple Prompt,"Les tensions autour de Taïwan opposent la Chine, qui revendique l'île, aux États-Unis et à leurs partenaires qui soutiennent de facto son autonomie, ce qui alimente une course aux armements en Asie de l'Est et renforce les alliances régionales de sécurité.","Les tensions autour de Taïwan opposent la Chine, qui revendique l'île comme partie intégrante de son territoire, et Taïwan, qui fonctionne comme un État de facto indépendant. La Chine renforce sa pression militaire (exercices, menaces) et diplomatique, tandis que Taïwan reçoit un soutien accru des États-Unis (ventes d'armes, visites de responsables). Ces tensions affectent la stabilité régionale, notamment en mer de Chine méridionale, et risquent d'entraîner une escalade militaire impliquant les États-Unis et leurs alliés (Japon, Australie). La situation influence aussi les relations sino-américaines et les dynamiques géopolitiques en Asie-Pacifique.",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les aspects clés des tensions autour de Taïwan, y compris les acteurs impliqués, les actions militaires et diplomatiques, et les implications régionales. Elle est pertinente et bien structurée, bien que les citations manquent de sources explicites."
+Décrivez les tensions actuelles autour de Taïwan et leurs implications régionales.,points_chauds,Basic RAG,"Les tensions autour de Taïwan opposent la Chine, qui revendique l'île, aux États-Unis et à leurs partenaires qui soutiennent de facto son autonomie, ce qui alimente une course aux armements en Asie de l'Est et renforce les alliances régionales de sécurité.","Voici une explication structurée des tensions actuelles autour de Taïwan et de leurs implications régionales, basée sur les informations disponibles dans ton manuel :
+
+---
+
+**1. Origine des tensions : une question de souveraineté**
+La Chine considère Taïwan comme une province rebelle qu’elle souhaite ""réunifier"" avec le continent, par la force si nécessaire. Cette position remonte à la guerre civile chinoise (1949), lorsque les nationalistes du Kuomintang, vaincus par les communistes, se sont réfugiés sur l’île. Pékin n’a jamais renoncé à cette revendication, comme le rappelle la loi anti-sécession de 2005, qui autorise l’usage de la force en cas de déclaration formelle d’indépendance par Taïwan [Page 30].
+
+**2. Escalade récente des tensions**
+Les tensions se sont aggravées depuis 2022 pour plusieurs raisons :
+- **Manœuvres militaires chinoises** : Pékin multiplie les exercices militaires dans le détroit de Taïwan, simulant des blocus ou des invasions. Ces démonstrations de force visent à intimider l’île et à tester les réactions internationales [Page 31].
+- **Élections taïwanaises** : Les scrutins, comme celui de janvier 2024, sont perçus comme des provocations par la Chine, surtout si un candidat pro-indépendance l’emporte. Pékin craint que Taïwan ne s’éloigne durablement de son giron [Page 30].
+- **Guerre en Ukraine** : Ce conflit a ravivé les craintes d’une invasion chinoise, même si les États-Unis ont réaffirmé leur engagement à défendre Taïwan (sans préciser si cela inclurait une intervention militaire) [Page 31].
+
+**3. Implications régionales**
+- **Risque de conflit** : 40 % des Taïwanais redoutent une guerre dans les dix prochaines années, selon un sondage de 2022. Cette peur reflète l’incertitude géopolitique, même si une invasion chinoise reste incertaine (coût militaire et économique élevé) [Page 34].
+- **Alliances stratégiques** : Les États-Unis soutiennent Taïwan militairement (ventes d’armes) et diplomatiquement, ce qui irrite la Chine. D’autres pays, comme le Japon ou l’Australie, pourraient être entraînés dans un conflit en raison de leurs liens avec Washington [Page 31].
+- **Stabilité économique** : Taïwan est un acteur clé des chaînes de production mondiales (semi-conducteurs, technologie). Un conflit perturberait gravement l’économie régionale et mondiale [Page 34].
+
+**4. Enjeux pour l’avenir**
+La situation dépendra de plusieurs facteurs :
+- L’évolution du rapport de forces militaire entre la Chine et les États-Unis.
+- Le résultat des élections taïwanaises et les choix politiques de l’île (rapprochement ou éloignement avec Pékin).
+- La réaction de la communauté internationale, notamment en cas d’escalade.
+
+---
+
+**Remarque** :
+Ton manuel ne détaille pas les positions des autres pays asiatiques (comme la Corée du Sud ou les pays de l’ASEAN) ni les aspects juridiques du statut de Taïwan. Pour approfondir ces points, je te conseille d’en parler avec ton professeur ou de consulter des sources complémentaires.",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les aspects clés des tensions autour de Taïwan, avec des détails pertinents sur les origines, l'escalade récente et les implications régionales. Les citations sont bien intégrées, bien que la mention des pages du manuel soit un peu formelle. La réponse est parfaitement pertinente pour la question posée."
+Décrivez les tensions actuelles autour de Taïwan et leurs implications régionales.,points_chauds,Advanced RAG,"Les tensions autour de Taïwan opposent la Chine, qui revendique l'île, aux États-Unis et à leurs partenaires qui soutiennent de facto son autonomie, ce qui alimente une course aux armements en Asie de l'Est et renforce les alliances régionales de sécurité.","Voici une explication claire et structurée des tensions actuelles autour de Taïwan et de leurs implications régionales, basée uniquement sur les informations disponibles dans ton manuel.
+
+---
+
+**1. Origine des tensions : la relation Taïwan-Chine**
+Taïwan est au cœur d’un conflit territorial et politique avec la Chine continentale. Pékin considère Taïwan comme une province rebelle qui doit être réunifiée, par la force si nécessaire. Cette position s’est durcie ces dernières années, notamment avec les **manœuvres militaires chinoises dans le détroit de Taïwan en 2022** [Page 31]. Ces exercices visent à intimider l’île et à tester sa capacité de résistance.
+
+**2. Rôle des États-Unis et enjeux géopolitiques**
+Les tensions sont amplifiées par l’implication des États-Unis, qui soutiennent Taïwan militairement et politiquement. Le président américain a **réaffirmé sa détermination à défendre Taïwan en cas d’agression chinoise** [Page 31]. Cette garantie, bien que floue sur le plan juridique, crée un équilibre précaire :
+- Pour la Chine, elle est perçue comme une ingérence dans ses affaires intérieures.
+- Pour Taïwan, elle est une assurance contre une invasion.
+- Pour les États-Unis, c’est un moyen de contenir l’influence chinoise en Asie-Pacifique.
+
+**3. Implications régionales**
+Ces tensions ont des répercussions majeures en Asie de l’Est :
+- **Risque d’escalade militaire** : Une attaque chinoise sur Taïwan pourrait déclencher un conflit régional impliquant les États-Unis, le Japon, ou d’autres alliés américains (comme l’Australie).
+- **Instabilité économique** : Le détroit de Taïwan est une route maritime cruciale pour le commerce mondial. Un blocage ou un conflit perturberait les chaînes d’approvisionnement, notamment pour les semi-conducteurs (Taïwan en produit 60 % des besoins mondiaux).
+- **Effet d’entraînement** : D’autres pays asiatiques (comme le Japon ou les Philippines) pourraient renforcer leur coopération militaire avec les États-Unis, ce qui accroîtrait les divisions en Asie.
+
+**4. Contexte international : la guerre en Ukraine comme référence**
+La guerre en Ukraine sert de **point de comparaison** [Page 31]. Pékin observe la réaction occidentale à cette invasion pour évaluer les risques d’une action contre Taïwan. Si les sanctions contre la Russie ont été sévères, une attaque chinoise pourrait avoir des conséquences encore plus graves, compte tenu du poids économique de la Chine.
+
+**5. Désinformation et propagande**
+Les tensions autour de Taïwan sont aussi alimentées par des **campagnes de désinformation** [Page 100]. Les régimes autoritaires (comme la Chine) utilisent les réseaux sociaux pour influencer l’opinion publique, notamment en Occident. Cela complique la gestion diplomatique du conflit et polarise les débats.
+
+---
+
+**Ce que ton manuel ne précise pas** :
+- Les détails des manœuvres militaires chinoises (nombre de navires, types d’exercices).
+- Les positions exactes des autres pays asiatiques (Japon, Corée du Sud, etc.).
+- Les scénarios précis d’une éventuelle intervention américaine.
+
+Pour approfondir ces points, je te conseille de consulter ton professeur ou des sources complémentaires.
+
+CITES: Page: 31,100",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les aspects clés des tensions autour de Taïwan, avec des détails pertinents sur les enjeux géopolitiques et économiques. Les citations sont bien intégrées, bien que leur format soit un peu inhabituel. La réponse est parfaitement pertinente pour la question posée."
+Quel est l'état actuel du conflit israélo-palestinien ?,points_chauds,Simple Prompt,"Le conflit israélo-palestinien reste caractérisé par l'absence de solution politique négociée, la poursuite de la colonisation, des cycles récurrents de violences, et une crise humanitaire grave dans les territoires palestiniens.","Le conflit israélo-palestinien reste un enjeu majeur au Moyen-Orient. Voici les éléments clés de la situation actuelle (2024) :
+
+1. **Conflit armé** : Depuis octobre 2023, une guerre intense oppose Israël et le Hamas dans la bande de Gaza, déclenchée par l'attaque surprise du Hamas le 7 octobre. Les combats ont causé des milliers de morts (principalement palestiniens) et une grave crise humanitaire à Gaza.
+
+2. **Occupation et colonisation** : Israël maintient son contrôle sur la Cisjordanie, où la colonisation israélienne se poursuit, malgré les condamnations internationales. Les tensions y restent vives, avec des violences régulières entre colons, soldats israéliens et Palestiniens.
+
+3. **Statut de Jérusalem** : La ville est revendiquée comme capitale par Israël et les Palestiniens. Israël en contrôle la majeure partie, tandis que les Palestiniens cherchent à en faire la capitale d'un futur État.
+
+4. **Diplomatie** : Les négociations de paix sont au point mort. Les propositions de cessez-le-feu et de reconstruction à Gaza sont bloquées par des désaccords sur les conditions (libération d'otages, désarmement du Hamas, etc.).
+
+5. **Réactions internationales** : La communauté internationale est divisée. Certains pays (comme les États-Unis) soutiennent Israël, tandis que d'autres (comme la Turquie ou l'Afrique du Sud) critiquent ses actions. L'ONU et l'UE appellent à une solution à deux États, mais sans avancée concrète.
+
+**En résumé** : Le conflit reste marqué par la violence, l'absence de perspective politique et une polarisation croissante.",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les aspects clés du conflit, avec des détails actualisés (2024). Elle manque de citations directes mais reste bien structurée et pertinente. Elle dépasse même la référence en ajoutant des éléments contextuels (diplomatie, réactions internationales)."
+Quel est l'état actuel du conflit israélo-palestinien ?,points_chauds,Basic RAG,"Le conflit israélo-palestinien reste caractérisé par l'absence de solution politique négociée, la poursuite de la colonisation, des cycles récurrents de violences, et une crise humanitaire grave dans les territoires palestiniens.","Voici l'état actuel du conflit israélo-palestinien selon les informations disponibles dans ton manuel :
+
+**1. Un conflit toujours actif et meurtrier**
+Le conflit reste une source majeure de tensions et de violences. Par exemple, au printemps 2023, 35 personnes sont mortes en 5 jours, dont 34 Palestiniens [Page 58].
+Les affrontements armés récents entre Israël et la bande de Gaza remontent à août 2022, après ceux de 2021 [Page 58].
+
+**2. Un contexte politique bloqué**
+- **Côté israélien** : Le gouvernement formé après les élections de novembre 2022 est le plus à droite de l'histoire du pays. Cela rend difficile toute reprise des négociations avec les Palestiniens [Page 55].
+- **Côté palestinien** : La division persiste entre le Hamas (qui contrôle Gaza) et le Fatah (qui dirige la Cisjordanie). Mahmoud Abbas, président de l'Autorité palestinienne, voit sa légitimité affaiblie en l'absence d'élections depuis 2006 (celles prévues en 2021 ont été reportées) [Page 58].
+
+**3. Une marginalisation internationale du conflit**
+- Les accords de normalisation entre Israël et certains pays arabes (comme les Accords d'Abraham) n'ont pas permis de faire avancer la résolution du conflit [Page 56].
+- L'Union européenne, divisée sur la question, ne joue plus de rôle actif au Proche-Orient [Page 56].
+- Les États-Unis, sous Joe Biden, continuent de soutenir la solution à deux États, mais sans avancée concrète [Page 56].
+
+**4. Des tensions symboliques fortes**
+Les provocations, comme les visites de responsables israéliens sur l'esplanade des Mosquées (3e lieu saint de l'islam), alimentent les tensions avec les Palestiniens et les pays arabes [Page 58].
+
+**En résumé** : Le conflit reste gelé politiquement, mais les violences et les divisions internes empêchent toute avancée vers une solution durable.
+
+Si tu veux approfondir un point précis (comme la solution à deux États ou le rôle des États-Unis), n'hésite pas à demander. Pour des mises à jour plus récentes (au-delà de 2023), je te conseille de te référer à ton professeur ou à des sources actualisées.",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les aspects clés du conflit, avec des détails pertinents sur les violences, le contexte politique et les tensions internationales. Les citations sont bien intégrées, bien que leur format (référence à un manuel) soit moins standard que des sources directes. La réponse est parfaitement adaptée à la question posée."
+Quel est l'état actuel du conflit israélo-palestinien ?,points_chauds,Advanced RAG,"Le conflit israélo-palestinien reste caractérisé par l'absence de solution politique négociée, la poursuite de la colonisation, des cycles récurrents de violences, et une crise humanitaire grave dans les territoires palestiniens.","Le conflit israélo-palestinien reste **actuellement une zone de tensions majeures** dans le monde, sans résolution en vue. Voici les éléments clés présents dans ton manuel :
+
+1. **Un conflit toujours central**
+   Le conflit n’est pas marginalisé : il continue d’occuper une place importante dans les relations internationales, malgré les tentatives de normalisation avec certains pays arabes [Page 55].
+
+2. **Un contexte politique tendu en Israël**
+   En novembre 2022, Israël a formé **le gouvernement le plus à droite de son histoire**, ce qui a exacerbé les tensions avec les Palestiniens. Ce gouvernement a relégué la question palestinienne au second plan, privilégiant la menace iranienne (notamment son programme nucléaire) [Page 55].
+
+3. **Aucune solution politique en cours**
+   Le manuel souligne que **le règlement de ce conflit reste indispensable** pour l’avenir d’Israël et de la région, mais aucune avancée concrète n’est mentionnée [Page 55].
+
+---
+**Attention** : Ton manuel ne donne **aucune information sur les événements postérieurs à 2022** (comme la guerre déclenchée en octobre 2023 par l’attaque du Hamas contre Israël). Pour une analyse actualisée, je te conseille de te référer à ton professeur ou à des sources récentes (comme des articles de presse fiables).
+
+CITES: Page: 9,55",3,2,4,3,3,"La réponse candidate est partiellement exacte mais incomplète, car elle ne mentionne pas la colonisation ni la crise humanitaire, éléments clés du conflit. Les citations sont bien référencées, mais la réponse est datée (2022) et ignore des événements récents majeurs comme la guerre de 2023. La pertinence est moyenne car elle se concentre sur des aspects politiques sans aborder les dimensions humanitaires et territoriales."
+Comment la guerre en Ukraine affecte-t-elle l'équilibre géopolitique mondial ?,points_chauds,Simple Prompt,"La guerre en Ukraine a renforcé la cohésion des alliés occidentaux, accentué la confrontation avec la Russie, accéléré le réalignement énergétique européen et rapproché davantage Moscou de puissances non occidentales comme la Chine, ce qui recompose l'équilibre mondial.","La guerre en Ukraine a plusieurs impacts géopolitiques majeurs :
+
+1. **Renforcement de l'OTAN** : L'alliance s'est resserrée, avec un élargissement possible (Finlande, Suède).
+2. **Affaiblissement de la Russie** : Isolement diplomatique, sanctions économiques et pertes militaires.
+3. **Montée en puissance de la Chine** : Position ambiguë, renforcement des liens avec Moscou, mais prudence face aux sanctions.
+4. **Crise énergétique en Europe** : Réduction de la dépendance au gaz russe, accélération des énergies renouvelables.
+5. **Polarisation des alliances** : Affaiblissement des relations Russie-Occident, renforcement des blocs (OTAN vs. Chine/Russie).
+
+Résultat : Un monde plus fragmenté, avec une rivalité croissante entre démocraties et régimes autoritaires.",5,5,5,5,5,"La réponse candidate est très précise et couvre tous les points clés de la réponse de référence, avec des détails supplémentaires pertinents. Elle est bien structurée et pertinente pour la question posée."
+Comment la guerre en Ukraine affecte-t-elle l'équilibre géopolitique mondial ?,points_chauds,Basic RAG,"La guerre en Ukraine a renforcé la cohésion des alliés occidentaux, accentué la confrontation avec la Russie, accéléré le réalignement énergétique européen et rapproché davantage Moscou de puissances non occidentales comme la Chine, ce qui recompose l'équilibre mondial.","Voici une réponse structurée et précise, basée uniquement sur les éléments du contexte fourni :
+
+---
+
+**1. Remise en cause des règles internationales**
+La guerre en Ukraine marque un tournant géopolitique car la Russie viole ouvertement la Charte des Nations unies, qui interdit les agressions entre États depuis 1945. C’est la première fois en Europe qu’un tel acte se produit depuis la fin de la Seconde Guerre mondiale [Page 20].
+Cette transgression affaiblit le système de sécurité collective et encourage d’autres puissances à contourner le droit international.
+
+---
+
+**2. Redéfinition des alliances et des rapports de force**
+- **Affaiblissement de la Russie** : Malgré ses objectifs initiaux (empêcher l’élargissement de l’OTAN ou de l’UE), la guerre a isolé Moscou sur la scène internationale. Les pertes humaines (estimées à 200 000 morts dans chaque camp) et matérielles montrent que le conflit s’enlise [Page 24].
+- **Résistance ukrainienne** : L’Ukraine refuse toute concession territoriale, y compris sur la Crimée, et dépend désormais des livraisons d’armes occidentales pour résister [Page 24]. Cela renforce son ancrage à l’Ouest et éloigne définitivement son destin de celui de la Russie.
+- **Médiations inefficaces** : Les tentatives de médiation (Turquie, Chine, Vatican) ont échoué, illustrant l’incapacité des puissances tierces à imposer une solution diplomatique [Page 24].
+
+---
+
+**3. Crise énergétique et dépendances stratégiques**
+La guerre a exacerbé les tensions autour des ressources énergétiques, déjà visibles dès 2006 lorsque la Russie a suspendu ses livraisons de gaz à l’Ukraine pour faire pression politiquement [Page 177]. Aujourd’hui, cette crise rappelle aux Européens leur vulnérabilité face aux fournisseurs autoritaires et accélère leur transition vers d’autres sources d’approvisionnement.
+
+---
+
+**4. Un conflit aux racines historiques profondes**
+- **La Crimée comme déclencheur** : L’annexion de la Crimée en 2014 par la Russie, profitant de l’instabilité post-révolutionnaire en Ukraine, a marqué le début de l’escalade actuelle [Page 179]. Cette région reste un enjeu symbolique et stratégique majeur.
+- **Le Donbass, épicentre du conflit** : Depuis 2014, la guerre larvée dans l’est de l’Ukraine (soutenue par Moscou) a servi de prélude à l’invasion de 2022 [Page 179]. Les combats y déterminent désormais l’issue globale du conflit.
+
+---
+
+**5. Conséquences globales encore incertaines**
+Le contexte souligne que l’issue de la guerre reste ""toujours plus incertaine"" [Page 20]. Cependant, deux scénarios se dessinent :
+- **Une victoire ukrainienne** : Elle renforcerait le camp occidental et affaiblirait durablement la Russie.
+- **Une victoire russe** : Elle légitimerait l’usage de la force pour redessiner les frontières, avec des répercussions mondiales (ex. : tensions en Asie ou en Afrique).
+
+---
+
+**À retenir** :
+Cette guerre n’est pas seulement un conflit local : elle redéfinit les équilibres entre puissances, teste la résilience des démocraties et montre que les crises régionales peuvent avoir des effets planétaires.
+
+*Pour approfondir les conséquences économiques ou les réactions des autres États (Chine, États-Unis, etc.), je te conseille de consulter ton professeur, car ces aspects ne sont pas détaillés dans ton manuel.*",5,4,5,5,4,"La réponse candidate est très précise et pertinente, avec des citations bien intégrées. Elle couvre la plupart des points clés, mais manque légèrement de détails sur certains aspects comme le rapprochement Chine-Russie ou le réalignement énergétique européen, présents dans la réponse de référence. La structure est claire et les faits sont exacts."
+Comment la guerre en Ukraine affecte-t-elle l'équilibre géopolitique mondial ?,points_chauds,Advanced RAG,"La guerre en Ukraine a renforcé la cohésion des alliés occidentaux, accentué la confrontation avec la Russie, accéléré le réalignement énergétique européen et rapproché davantage Moscou de puissances non occidentales comme la Chine, ce qui recompose l'équilibre mondial.","La guerre en Ukraine a profondément modifié l'équilibre géopolitique mondial de plusieurs manières, selon les informations disponibles dans ton manuel.
+
+**1. Remise en cause de l'ordre international post-Guerre froide**
+La Russie, en envahissant l'Ukraine en février 2022, a violé le principe de souveraineté territoriale, un pilier du droit international depuis 1945. Cela marque un retour à une logique de puissance et de conquête, remettant en cause l'ordre établi après la chute de l'URSS (1991). Cette guerre rappelle les conflits du XXe siècle, où les grandes puissances imposaient leur volonté par la force [Page 179].
+
+**2. Renforcement des alliances occidentales**
+L'OTAN, qui semblait affaiblie avant 2022, a retrouvé une nouvelle dynamique. Des pays historiquement neutres, comme la Suède et la Finlande, ont rejoint l'Alliance pour se protéger de la menace russe. Les États-Unis et l'Union européenne (UE) ont également renforcé leur coopération militaire et économique pour soutenir l'Ukraine [Page 9].
+
+**3. Crise énergétique et économique mondiale**
+La guerre a perturbé les approvisionnements en gaz et en pétrole, notamment en Europe, qui dépendait fortement de la Russie. Cela a accéléré la transition vers d'autres sources d'énergie (renouvelables, GNL) et révélé la vulnérabilité des économies face aux chocs géopolitiques [Page 9].
+
+**4. Polarisation du monde**
+La guerre a divisé la communauté internationale. D'un côté, les pays occidentaux soutiennent l'Ukraine et sanctionnent la Russie. De l'autre, des pays comme la Chine, l'Inde ou certains États africains adoptent une position neutre ou favorable à Moscou, refusant de condamner l'invasion. Cela montre un monde de plus en plus multipolaire, où les alliances traditionnelles sont remises en question [Page 9].
+
+**5. Impact sur d'autres zones de tension**
+La guerre en Ukraine a détourné l'attention et les ressources des autres conflits (Syrie, Sahel, etc.), tout en inspirant des stratégies similaires (annexions, propagande, hybridation des conflits). Elle a aussi ravivé les craintes d'une escalade nucléaire, la Russie brandissant cette menace à plusieurs reprises [Page 9].
+
+**Limites des informations disponibles**
+Ton manuel ne détaille pas tous les impacts (ex. : conséquences sur la Chine, rôle de l'ONU, ou effets précis sur l'Afrique). Pour approfondir, je te conseille de te référer à ton professeur ou à d'autres sources complémentaires.
+
+CITES: Page: 9,179",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les points clés de la réponse de référence, avec des détails supplémentaires pertinents. Les citations sont bien intégrées, bien que leur format soit un peu inhabituel (références à des pages). La réponse est parfaitement pertinente pour la question posée."
+Quelles sont les forces et faiblesses militaires de la Russie dans le conflit ukrainien ?,ukraine,Simple Prompt,"La Russie dispose d'un important arsenal, d'une base industrielle de défense et de la supériorité en artillerie, mais elle souffre de contraintes logistiques, de pertes humaines et matérielles élevées, de problèmes de commandement et de moral ainsi que d'une difficulté à mener des opérations combinées efficaces.","**Forces militaires de la Russie :**
+- **Puissance de feu** : Armée conventionnelle nombreuse (2e au monde en effectifs), artillerie et missiles de longue portée.
+- **Capacités nucléaires** : 3e arsenal nucléaire mondial, dissuasion stratégique.
+- **Expérience** : Opérations asymétriques (Syrie, Tchétchénie) et guerre hybride (cyber, désinformation).
+- **Logistique** : Production industrielle soutenue (munitions, drones).
+
+**Faiblesses militaires de la Russie :**
+- **Mobilisation limitée** : Recrutement difficile, pertes élevées (estimées à 300 000+ morts/blessés).
+- **Problèmes logistiques** : Chaînes d'approvisionnement fragiles, corruption.
+- **Sanctions** : Accès restreint aux technologies occidentales (électronique, drones).
+- **Résistance ukrainienne** : Adaptabilité, soutien occidental (armes, renseignement).
+
+*Source : Analyses militaires (2023-2024).*",5,4,3,5,4,"La réponse candidate est très précise et pertinente, couvrant les forces et faiblesses militaires de la Russie. Elle ajoute des détails utiles (comme les capacités nucléaires et l'expérience en opérations hybrides) non mentionnés dans la référence. Cependant, elle est légèrement moins complète sur certains aspects logistiques et de commandement, et la citation des sources est vague ('Analyses militaires 2023-2024')."
+Quelles sont les forces et faiblesses militaires de la Russie dans le conflit ukrainien ?,ukraine,Basic RAG,"La Russie dispose d'un important arsenal, d'une base industrielle de défense et de la supériorité en artillerie, mais elle souffre de contraintes logistiques, de pertes humaines et matérielles élevées, de problèmes de commandement et de moral ainsi que d'une difficulté à mener des opérations combinées efficaces.","Voici une analyse des forces et faiblesses militaires de la Russie dans le conflit ukrainien, basée sur les informations disponibles dans ton manuel :
+
+---
+
+**Forces militaires de la Russie :**
+
+1. **Expérience et effectifs importants**
+   La Russie dispose d’une armée nombreuse, avec des réserves mobilisables. Son expérience récente dans des conflits comme la guerre en Syrie ou la guerre du Donbass (depuis 2014) lui a permis de tester des tactiques et des équipements [Page 179].
+
+2. **Arsenal militaire conventionnel**
+   La Russie possède un stock important d’armes conventionnelles (chars, artillerie, missiles) et une capacité industrielle pour produire ou moderniser du matériel, même si les sanctions occidentales limitent ses approvisionnements en composants électroniques [Page 20].
+
+3. **Contrôle territorial initial**
+   En 2022, la Russie a rapidement pris le contrôle de zones stratégiques dans le sud et l’est de l’Ukraine, comme la Crimée (annexée en 2014) et des parties du Donbass, ce qui lui donne des bases logistiques et des lignes de front établies [Page 179].
+
+4. **Guerre d’usure**
+   La Russie mise sur une stratégie de guerre prolongée pour épuiser l’Ukraine et ses alliés occidentaux, en comptant sur sa capacité à absorber les pertes humaines et matérielles sur le long terme [Page 20].
+
+---
+
+**Faiblesses militaires de la Russie :**
+
+1. **Problèmes de coordination et de moral**
+   Les premières phases de la guerre ont révélé des lacunes dans la planification, la logistique et le commandement russe. Les pertes humaines (estimées à 200 000 morts dans chaque camp) et les difficultés de mobilisation ont aussi affecté le moral des troupes [Page 24].
+
+2. **Dépendance à une armée de conscrits et de mercenaires**
+   La Russie a eu recours à des conscrits mal formés et à des groupes paramilitaires comme Wagner, ce qui limite la qualité et la cohésion de ses forces. Les désertions et les refus de combattre ont été signalés [Page 20].
+
+3. **Sanctions économiques et technologiques**
+   Les sanctions occidentales ont restreint l’accès de la Russie à des technologies clés (comme les semi-conducteurs), ce qui affecte sa capacité à produire ou réparer des équipements sophistiqués (drones, missiles de précision, etc.) [Page 90].
+
+4. **Front figé et contre-offensives ukrainiennes**
+   Depuis mi-2023, le front est presque totalement figé, et la Russie peine à progresser malgré ses offensives. Les contre-attaques ukrainiennes, soutenues par l’OTAN (armes modernes, renseignements), ont permis à Kiev de reprendre des territoires [Page 20].
+
+5. **Isolement diplomatique et dépendance à des alliés limités**
+   La Russie ne peut compter que sur quelques soutiens (Chine, Iran, Corée du Nord), tandis que l’Ukraine bénéficie d’une aide massive des États-Unis et de l’OTAN (71 milliards d’euros d’aides, dont 43,2 milliards pour le volet militaire) [Page 90].
+
+---
+
+**Conclusion :**
+La Russie dispose d’atouts majeurs (effectifs, arsenal, expérience), mais ses faiblesses structurelles (logistique, moral, sanctions) et la résistance ukrainienne, soutenue par l’Occident, rendent une victoire russe incertaine. Le conflit s’oriente vers une guerre d’usure sans issue claire [Page 20].
+
+Si tu veux approfondir un point précis (comme l’impact des sanctions ou les tactiques militaires), n’hésite pas à demander.",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les points clés de la réponse de référence, avec des détails supplémentaires pertinents. Les citations sont bien intégrées, bien que leur format (références à des pages) soit moins standard qu'une source directe. La pertinence est excellente, répondant parfaitement à la question posée."
+Quelles sont les forces et faiblesses militaires de la Russie dans le conflit ukrainien ?,ukraine,Advanced RAG,"La Russie dispose d'un important arsenal, d'une base industrielle de défense et de la supériorité en artillerie, mais elle souffre de contraintes logistiques, de pertes humaines et matérielles élevées, de problèmes de commandement et de moral ainsi que d'une difficulté à mener des opérations combinées efficaces.","Voici une analyse des forces et faiblesses militaires de la Russie dans le conflit ukrainien, **basée uniquement sur les éléments disponibles dans ton manuel** :
+
+---
+
+**Forces militaires de la Russie** :
+1. **Expérience récente en guerre conventionnelle** :
+   La Russie a mené des interventions militaires depuis les années 2000 (Géorgie en 2008, Syrie depuis 2015), ce qui lui a permis d’affiner ses tactiques et son matériel [Page 20]. Ces conflits ont servi de ""laboratoires"" pour moderniser son armée.
+
+2. **Supériorité numérique initiale** :
+   L’armée russe dispose d’un effectif bien plus important que celui de l’Ukraine (avant la mobilisation ukrainienne de 2022). Elle a aussi un avantage en artillerie lourde et en chars [Page 20], même si cet avantage a été réduit par les livraisons occidentales à l’Ukraine.
+
+3. **Contrôle partiel du ciel** :
+   Malgré des pertes, la Russie conserve une supériorité aérienne relative, avec des missiles de croisière et des drones pour frapper les infrastructures ukrainiennes [non détaillé dans le contexte, mais souvent lié aux capacités russes].
+
+---
+
+**Faiblesses militaires de la Russie** :
+1. **Problèmes de logistique et de commandement** :
+   Le contexte souligne que la guerre d’agression russe en Ukraine est un échec partiel des principes de la Charte des Nations unies (interdiction des guerres d’annexion) [Page 20]. Cela suggère des lacunes dans la planification :
+   - Sous-estimation de la résistance ukrainienne.
+   - Difficultés à coordonner des offensives sur un front aussi étendu.
+
+2. **Dépendance aux équipements soviétiques** :
+   Une partie de l’arsenal russe date de l’ère soviétique (chars T-72, avions Su-25), ce qui pose des problèmes de maintenance et de modernisation face aux armes occidentales livrées à l’Ukraine (comme les missiles Javelin ou HIMARS) [non précisé dans le contexte, mais déductible des tensions logistiques].
+
+3. **Isolement diplomatique et économique** :
+   Bien que le manuel ne détaille pas les sanctions, il mentionne que la Russie est perçue comme un agresseur (violation du droit international) [Page 20]. Cela limite ses approvisionnements en technologies et pièces détachées, affaiblissant son industrie de défense.
+
+4. **Manque de motivation des troupes** :
+   Le contexte ne l’évoque pas directement, mais les difficultés de recrutement (mobilisation partielle en 2022) et les désertions suggèrent un moral fragile, contrastant avec la détermination ukrainienne.
+
+---
+
+**Limites du contexte** :
+Ton manuel ne fournit pas de données précises sur :
+- Les effectifs exacts des deux camps.
+- Les pertes matérielles (chars, avions).
+- Les détails des tactiques utilisées (guerre hybride, cyberattaques).
+- L’impact des livraisons d’armes occidentales.
+
+Pour approfondir ces points, je te conseille de te référer à :
+- Ton professeur pour des sources complémentaires.
+- Les chapitres sur la géopolitique post-soviétique ou les conflits contemporains dans ton manuel.
+
+---
+
+CITES: Page: 20",4,3,4,4,4,"La réponse candidate est globalement exacte et pertinente, mais elle manque de complétude par rapport à la référence, notamment sur les pertes humaines et matérielles. Les citations sont bien utilisées, mais la réponse aurait gagné à inclure plus de détails concrets sur les faiblesses logistiques et le moral des troupes."
+Comment l'Europe a-t-elle réagi face à l'invasion russe de l'Ukraine ?,ukraine,Simple Prompt,"L'Europe a répondu par des sanctions économiques massives contre la Russie, une aide militaire et financière significative à l'Ukraine, le renforcement de l'OTAN et une réorientation rapide de sa politique énergétique pour réduire sa dépendance aux hydrocarbures russes.","L'Europe a réagi à l'invasion russe de l'Ukraine en 2022 par des mesures politiques, économiques et militaires :
+
+1. **Sanctions économiques** : L'UE et ses membres ont imposé des sanctions massives contre la Russie (gel d'actifs, exclusion du système SWIFT, embargo sur le pétrole et le gaz).
+2. **Soutien militaire** : Envoi d'armes et d'équipements à l'Ukraine (chars, missiles, drones).
+3. **Aide humanitaire et financière** : Plus de 50 milliards d'euros promis par l'UE pour soutenir l'Ukraine.
+4. **Accueil des réfugiés** : Plus de 8 millions d'Ukrainiens ont fui vers l'UE, avec des politiques d'asile facilitées.
+5. **Solidarité politique** : Condamnation unanime de l'agression russe, avec des pays comme la Pologne et les pays baltes en première ligne.
+
+L'OTAN a renforcé sa présence militaire en Europe de l'Est (détachements en Pologne, Roumanie, etc.).",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les aspects clés de la réaction européenne, avec des détails supplémentaires pertinents (comme l'accueil des réfugiés). Elle est légèrement moins explicite sur la réorientation énergétique, mais reste excellente globalement."
+Comment l'Europe a-t-elle réagi face à l'invasion russe de l'Ukraine ?,ukraine,Basic RAG,"L'Europe a répondu par des sanctions économiques massives contre la Russie, une aide militaire et financière significative à l'Ukraine, le renforcement de l'OTAN et une réorientation rapide de sa politique énergétique pour réduire sa dépendance aux hydrocarbures russes.","Voici la réaction de l'Europe face à l'invasion russe de l'Ukraine en 2022, basée sur les informations disponibles dans ton manuel :
+
+---
+
+**1. Un soutien politique et diplomatique fort à l'Ukraine**
+L'Union européenne (UE) a immédiatement condamné l'invasion russe. Elle a reconnu l'Ukraine comme candidate officielle à l'adhésion en juin 2022, marquant une étape symbolique et un engagement à long terme [Page 24].
+Cette décision montre une volonté de rapprocher l'Ukraine de l'Europe, malgré les défis posés par la guerre.
+
+**2. Une réponse militaire et sécuritaire renforcée**
+L'invasion a poussé deux pays historiquement neutres, la **Finlande** et la **Suède**, à demander leur adhésion à l'OTAN [Page 24].
+Cela illustre une remise en cause profonde de la sécurité européenne et une volonté de se protéger face à la Russie.
+
+**3. Des sanctions économiques sans précédent**
+L'UE a adopté des mesures pour affaiblir l'économie russe, notamment dans les secteurs énergétique et financier. Ces sanctions visent à limiter les capacités de la Russie à financer la guerre [Page 21].
+Cependant, ces mesures ont aussi des répercussions sur les économies européennes, notamment en raison de leur dépendance passée au gaz russe.
+
+**4. Un soutien humanitaire et financier**
+L'Europe a accueilli des millions de réfugiés ukrainiens et débloqué des aides financières pour soutenir le pays. Ces actions montrent une solidarité concrète avec la population ukrainienne.
+
+---
+
+**Attention** :
+Ton manuel ne détaille pas toutes les mesures prises (comme les livraisons d'armes ou les accords énergétiques). Pour une analyse complète, je te conseille de te référer à ton professeur ou à des sources complémentaires.
+
+Si tu veux approfondir un point précis (comme les sanctions ou l'adhésion à l'OTAN), dis-le-moi !",5,4,4,5,4,"La réponse candidate est globalement exacte et pertinente, couvrant les principaux aspects de la réaction européenne. Cependant, elle est légèrement moins complète que la référence, notamment sur les livraisons d'armes et la réorientation énergétique. Les citations sont bien intégrées, mais la mention du manuel limite leur qualité perçue."
+Comment l'Europe a-t-elle réagi face à l'invasion russe de l'Ukraine ?,ukraine,Advanced RAG,"L'Europe a répondu par des sanctions économiques massives contre la Russie, une aide militaire et financière significative à l'Ukraine, le renforcement de l'OTAN et une réorientation rapide de sa politique énergétique pour réduire sa dépendance aux hydrocarbures russes.","L'Europe a réagi à l'invasion russe de l'Ukraine en février 2022 par plusieurs mesures fortes, principalement coordonnées avec ses alliés.
+
+**1. Soutien militaire et financier à l'Ukraine**
+L'Europe a apporté un soutien massif à l'Ukraine, notamment via l'Union européenne (UE) et l'OTAN. Les pays européens ont fourni des armes, une aide humanitaire et un soutien financier. Par exemple, l'UE a débloqué des fonds pour aider l'Ukraine à résister à l'agression russe [Page 90].
+
+**2. Sanctions économiques contre la Russie**
+L'UE a adopté des sanctions sans précédent contre la Russie, visant son économie, ses élites et ses secteurs stratégiques (énergie, finance, technologie). Ces sanctions ont été renforcées au fil des mois pour affaiblir la capacité de la Russie à financer la guerre [Page 90].
+
+**3. Renforcement de la défense européenne**
+L'invasion a accéléré la prise de conscience de la nécessité d'une autonomie stratégique européenne. Plusieurs pays, comme l'Allemagne, ont augmenté leurs budgets militaires. L'OTAN a également renforcé sa présence en Europe de l'Est pour dissuader de nouvelles agressions [Page 10].
+
+**4. Solidarité et unité européenne**
+Contrairement aux divisions passées, l'Europe a montré une unité remarquable face à cette crise. Les pays membres ont soutenu des positions communes, comme l'accueil des réfugiés ukrainiens ou la réduction de la dépendance énergétique vis-à-vis de la Russie [Page 16].
+
+Si tu veux des détails sur un aspect précis (sanctions, aide militaire, etc.), n'hésite pas à demander.
+
+CITES: Page: 10,16,90",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les aspects clés de la réaction européenne, en alignement avec la réponse de référence. Les citations sont pertinentes, bien que leur format soit minimaliste. La pertinence et la complétude sont excellentes."
+Quel est l'impact économique des sanctions contre la Russie ?,ukraine,Simple Prompt,"Les sanctions ont restreint l'accès de la Russie aux marchés, aux technologies et aux financements occidentaux, provoqué une réorientation forcée de ses exportations vers d'autres partenaires et entraîné des effets de contournement, tandis qu'elles ont aussi généré des coûts pour certaines économies européennes.","Les sanctions économiques contre la Russie, imposées après l'invasion de l'Ukraine en 2022, ont eu plusieurs impacts :
+
+1. **Ralentissement de l'économie russe** : Baisse de la croissance, inflation et difficultés d'accès aux technologies et financements occidentaux.
+2. **Prix de l'énergie** : Hausse initiale des cours du pétrole et du gaz, puis baisse des revenus russes en raison des plafonds de prix et des réductions d'exportations.
+3. **Contournement et résilience** : La Russie a diversifié ses partenariats (Chine, Inde, pays du Sud) et développé des circuits commerciaux alternatifs.
+4. **Effets sur les pays occidentaux** : Inflation importée, pénuries ponctuelles et dépendance réduite aux énergies russes à moyen terme.
+5. **Sanctions ciblées** : Impact limité sur les oligarques et secteurs stratégiques, mais contournement via des intermédiaires.
+
+Globalement, les sanctions ont affaibli l'économie russe, mais sans la paralyser.",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les aspects clés des sanctions contre la Russie, avec des détails supplémentaires pertinents. Elle manque légèrement de citations explicites, mais reste excellente globalement."
+Quel est l'impact économique des sanctions contre la Russie ?,ukraine,Basic RAG,"Les sanctions ont restreint l'accès de la Russie aux marchés, aux technologies et aux financements occidentaux, provoqué une réorientation forcée de ses exportations vers d'autres partenaires et entraîné des effets de contournement, tandis qu'elles ont aussi généré des coûts pour certaines économies européennes.","Voici les impacts économiques des sanctions contre la Russie, tels qu'ils apparaissent dans ton manuel :
+
+**1. Impact sur les prix agricoles et la sécurité alimentaire mondiale**
+La guerre en Ukraine a perturbé les exportations de céréales (blé) et d'oléagineux, ce qui a fait peser un risque sur la stabilité des prix à l'échelle mondiale. Bien qu'un accord sur les céréales en mer Noire et des voies de transit via l'UE aient permis de limiter partiellement cette crise, cela n'a pas suffi à compenser le choc économique pour de nombreux pays dépendants de ces exportations [Page 110].
+
+**2. Affaiblissement des relations économiques russo-européennes**
+Les sanctions ont visé des secteurs clés comme l'énergie, avec des conséquences pour les deux parties. La Russie utilisait auparavant son gaz comme levier géopolitique (ex. : suspension des livraisons à l'Ukraine en 2006 pour faire pression sur Kiev). Les sanctions ont accéléré la rupture de ces échanges, notamment avec l'UE [Page 177].
+
+**3. Renforcement des alliances alternatives**
+La Russie s'est rapprochée de la Chine pour contourner les sanctions, comme en témoigne leur partenariat signé en mars 2023. Ce rapprochement vise à compenser les pertes économiques liées aux mesures occidentales [Page 90].
+
+**Limites du contexte**
+Ton manuel ne détaille pas précisément les effets quantitatifs (ex. : baisse du PIB russe, inflation) ou sectoriels (ex. : impact sur les industries russes). Pour ces éléments, je t'invite à te référer à ton professeur ou à des sources complémentaires.
+
+Veux-tu approfondir un aspect en particulier ?",4,3,5,4,4,"La réponse candidate est globalement exacte et pertinente, mais elle manque de complétude en ne couvrant pas tous les aspects économiques des sanctions (ex. : effets sur les marchés financiers ou les technologies). Les citations sont bien référencées, mais la réponse dévie légèrement de la question en se concentrant sur des impacts indirects (sécurité alimentaire, alliances) plutôt que sur les effets directs des sanctions."
+Quel est l'impact économique des sanctions contre la Russie ?,ukraine,Advanced RAG,"Les sanctions ont restreint l'accès de la Russie aux marchés, aux technologies et aux financements occidentaux, provoqué une réorientation forcée de ses exportations vers d'autres partenaires et entraîné des effets de contournement, tandis qu'elles ont aussi généré des coûts pour certaines économies européennes.","Le contexte fourni ne contient pas d'informations précises sur **l'impact économique des sanctions contre la Russie**. Voici ce que l'on peut en dire à partir des éléments disponibles :
+
+---
+
+**1. Objectif des sanctions**
+Les sanctions économiques contre la Russie, mises en place par les États-Unis, l’Union européenne et leurs alliés (OTAN, UE), visent à affaiblir sa capacité à financer la guerre en Ukraine. Elles ciblent notamment les secteurs financiers, énergétiques et technologiques [Page 90].
+
+**2. Effets mentionnés indirectement**
+Le contexte souligne que ces sanctions s’inscrivent dans une stratégie de **coordination occidentale** pour isoler économiquement la Russie. Cependant, il n’explique pas leurs conséquences concrètes (ex. : inflation, récession, contournement par la Chine) [Page 90].
+
+**3. Limites du contexte**
+Aucune donnée chiffrée (PIB, taux de change, commerce extérieur) ou analyse détaillée des répercussions internes (ex. : pénuries, chômage) n’est fournie dans les extraits. Le manuel évoque surtout le **cadre géopolitique** (alliances, partenariat Russie-Chine) plutôt que l’économie [Page 90].
+
+---
+
+**Pour aller plus loin**
+Je t’invite à consulter :
+- Les pages de ton manuel consacrées à **l’économie russe** ou aux **sanctions internationales**.
+- Ton professeur pour des exemples précis (ex. : embargo sur le pétrole, gel des réserves de la Banque centrale russe).
+
+CITES: Page: 90",4,3,4,3,3,"La réponse candidate est globalement correcte mais incomplète par rapport à la référence, qui mentionne des effets concrets (restriction des marchés, réorientation des exportations, coûts pour l'Europe). Les citations sont bien utilisées, mais la réponse manque de données chiffrées et d'analyse détaillée. La pertinence est moyenne car elle se concentre sur le cadre géopolitique plutôt que sur l'impact économique direct."
+La Russie peut-elle gagner la guerre en Ukraine ?,ukraine,Simple Prompt,"L'issue du conflit reste incertaine et dépend de nombreux facteurs militaires, politiques et économiques, mais la Russie fait face à des contraintes structurelles et à une forte résistance ukrainienne soutenue par l'aide occidentale, ce qui rend improbable une victoire rapide et totale.","La question de savoir si la Russie peut gagner la guerre en Ukraine dépend de plusieurs facteurs, notamment la durée du conflit, les ressources militaires et économiques des deux pays, ainsi que l'implication des alliés de l'Ukraine (comme l'OTAN et l'UE).
+
+Actuellement, malgré des gains territoriaux limités, la Russie n'a pas atteint ses objectifs initiaux (notamment la prise de Kiev ou la déstabilisation du gouvernement ukrainien). L'Ukraine, soutenue par des livraisons d'armes occidentales, résiste efficacement.
+
+Une victoire russe dépendrait d'une capacité à maintenir un effort militaire prolongé sans effondrement économique ou politique, tandis qu'une victoire ukrainienne nécessiterait une contre-offensive décisive ou une usure russe.
+
+En résumé, aucune issue n'est certaine, et le conflit pourrait se prolonger ou évoluer vers un statu quo.",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les aspects clés mentionnés dans la référence, avec une analyse équilibrée des facteurs en jeu. Elle n'inclut pas de citations directes, mais les informations sont bien sourcées implicitement. La pertinence est excellente, répondant directement à la question posée."
+La Russie peut-elle gagner la guerre en Ukraine ?,ukraine,Basic RAG,"L'issue du conflit reste incertaine et dépend de nombreux facteurs militaires, politiques et économiques, mais la Russie fait face à des contraintes structurelles et à une forte résistance ukrainienne soutenue par l'aide occidentale, ce qui rend improbable une victoire rapide et totale.","Voici une réponse structurée et précise, basée uniquement sur le contexte fourni :
+
+**1. Une guerre d’usure figée**
+La guerre en Ukraine est actuellement une *guerre d’usure* sur un front presque immobile depuis 2023. Aucun camp ne semble capable de percer significativement les lignes ennemies. Les combats se poursuivent, mais les positions restent très proches de celles du début du conflit [Page 20].
+
+**2. Des objectifs irréconciliables**
+- *Pour la Russie* : Vladimir Poutine considère l’indépendance de l’Ukraine comme une catastrophe géopolitique. Il refuse de perdre des territoires comme la Crimée, qu’il juge historiquement russe [Page 21].
+- *Pour l’Ukraine* : Le pays refuse toute concession territoriale, y compris sur la Crimée, et exige un retrait complet des forces russes [Page 24].
+
+**3. Une victoire russe improbable**
+Le contexte souligne qu’il est *difficile d’envisager une victoire russe* dans ces conditions :
+- L’Ukraine bénéficie d’un soutien militaire massif (États-Unis, OTAN) [Page 20].
+- Les pertes humaines et matérielles sont colossales (environ 200 000 morts de chaque côté) sans gain territorial décisif [Page 24].
+- Aucune des deux parties n’est prête à négocier, ce qui prolonge l’impasse [Page 24].
+
+**Conclusion**
+Une victoire militaire russe semble *peu probable* à court ou moyen terme, mais le conflit pourrait s’enliser durablement. L’issue dépendra des rapports de force sur le terrain et de l’évolution du soutien international.
+
+*Pour aller plus loin* : Si tu veux approfondir les scénarios possibles (escalade, négociations, etc.), je te conseille de consulter ton professeur, car le manuel ne les détaille pas.",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les aspects clés de la question, avec des arguments solides et bien structurés. Les citations sont pertinentes, bien que leur format (pages) soit inhabituel. La réponse est parfaitement pertinente et complète par rapport à la référence."
+La Russie peut-elle gagner la guerre en Ukraine ?,ukraine,Advanced RAG,"L'issue du conflit reste incertaine et dépend de nombreux facteurs militaires, politiques et économiques, mais la Russie fait face à des contraintes structurelles et à une forte résistance ukrainienne soutenue par l'aide occidentale, ce qui rend improbable une victoire rapide et totale.","La question de savoir si la Russie peut gagner la guerre en Ukraine est complexe et dépend de plusieurs facteurs analysés dans ton manuel.
+
+**1. Une guerre d’usure sur un front figé**
+La guerre en Ukraine est entrée dans une phase d’**usure**, avec un front presque immobilisé depuis 2023. Cela signifie que ni la Russie ni l’Ukraine ne parviennent à percer les lignes ennemies de manière décisive. Dans ce contexte, une victoire militaire claire pour la Russie semble **difficile à envisager** à court ou moyen terme, car l’Ukraine bénéficie d’un soutien massif en armes et en renseignements de la part des États-Unis et de l’OTAN [Page 20].
+
+**2. L’incertitude persistante**
+La contre-offensive ukrainienne lancée en juin 2023, avec l’aide occidentale, a ajouté une **incertitude majeure** sur l’issue du conflit. Même si la Russie occupe encore des territoires dans l’est et le sud de l’Ukraine (comme le Donbass et la Crimée), une victoire totale russe n’est pas garantie. Le président Poutine semble déterminé à poursuivre la guerre, mais sans avancée militaire significative, une issue favorable à la Russie reste **peu probable** [Page 20].
+
+**3. Le rôle de la Crimée et du Donbass**
+La prise de la Crimée en 2014 et le soutien aux rebelles du Donbass depuis cette date ont été des **étapes clés** dans l’escalade du conflit. Ces régions sont devenues des symboles pour la Russie, mais aussi des zones de résistance ukrainienne. Leur contrôle ne suffit pas à garantir une victoire russe, car la guerre s’est étendue bien au-delà [Page 179].
+
+**Conclusion**
+Ton manuel souligne que **la Russie a peu de chances de l’emporter militairement** dans les conditions actuelles, mais le conflit pourrait se prolonger sans issue claire. La situation dépendra de l’évolution du soutien occidental à l’Ukraine et de la capacité russe à maintenir son effort de guerre.
+
+CITES: Page: 20,179",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les points clés de la réponse de référence, avec des détails supplémentaires pertinents. Les citations sont bien intégrées, bien que leur format soit inhabituel (références à un manuel). La réponse est parfaitement pertinente pour la question posée."
+Pourquoi l'Indopacifique est-il devenu un théâtre majeur des rivalités mondiales ?,indopacifique,Simple Prompt,"L'Indopacifique concentre une grande part de la population mondiale, du commerce maritime et des chaînes de valeur, et voit la montée en puissance de la Chine face aux États-Unis, ce qui en fait un espace clé de compétition stratégique, technologique et navale.","L'Indopacifique est devenu un théâtre majeur des rivalités mondiales pour plusieurs raisons :
+
+1. **Enjeux économiques** : La région concentre 60 % du PIB mondial et des routes maritimes stratégiques (détroit de Malacca, mer de Chine).
+2. **Pouvoir militaire** : La Chine y renforce sa présence (îles Spratleys, base de Djibouti), provoquant des tensions avec les États-Unis et leurs alliés (AUKUS, Quad).
+3. **Influence géopolitique** : Les États-Unis y maintiennent leur domination (bases militaires, alliances), tandis que la Chine cherche à étendre son influence via les ""Nouvelles Routes de la Soie"".
+4. **Conflits territoriaux** : Disputes en mer de Chine méridionale et tensions entre l'Inde et la Chine (Himalaya).
+
+C'est un espace clé pour la domination mondiale du XXIe siècle.",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les aspects clés de la question, avec des exemples concrets (AUKUS, Quad, détroit de Malacca). Les citations sont pertinentes, bien que certaines sources (comme les pourcentages) pourraient être mieux référencées. La réponse est parfaitement pertinente et complète."
+Pourquoi l'Indopacifique est-il devenu un théâtre majeur des rivalités mondiales ?,indopacifique,Basic RAG,"L'Indopacifique concentre une grande part de la population mondiale, du commerce maritime et des chaînes de valeur, et voit la montée en puissance de la Chine face aux États-Unis, ce qui en fait un espace clé de compétition stratégique, technologique et navale.","Voici une réponse structurée pour comprendre pourquoi l'Indopacifique est devenu un théâtre majeur des rivalités mondiales :
+
+---
+
+**1. Un espace stratégique entre les États-Unis et la Chine**
+L'Indopacifique est aujourd'hui le principal terrain de compétition entre les deux premières puissances mondiales : les États-Unis et la Chine.
+- Après 1945, les États-Unis dominaient le Pacifique, considéré comme un ""lac américain"" [Page 25].
+- Depuis les années 2000, la Chine y étend son influence, notamment maritime, ce qui a relancé l'engagement américain dans la zone [Page 27].
+- Les États-Unis renforcent leurs flottes (3e et 7e flottes) et s'appuient sur des alliés comme le Japon, l'Australie ou les Philippines pour contrer la Chine [Page 27].
+
+---
+
+**2. Des enjeux économiques et militaires**
+- **Contrôle des routes maritimes** : L'Indopacifique concentre des détroits essentiels (Malacca, Hormuz) et des zones riches en ressources (hydrocarbures, terres rares).
+- **Sécurité régionale** : La Chine affirme ses revendications en mer de Chine méridionale, tandis que les États-Unis garantissent la liberté de navigation pour leurs alliés [Page 27].
+
+---
+
+**3. Un élargissement des rivalités au-delà de l'économie**
+Les tensions sino-américaines ne se limitent plus au commerce ou à la technologie.
+- La Chine étend son influence diplomatique, comme en témoigne son rôle dans le rapprochement Iran-Arabie saoudite en 2023 [Page 91].
+- Cela montre que la compétition s'étend désormais aux alliances géopolitiques et à la stabilité régionale.
+
+---
+
+**4. La place particulière de la France**
+La France est aussi un acteur clé grâce à ses territoires ultramarins (Nouvelle-Calédonie, La Réunion) et sa zone économique exclusive (ZEE) de 9 millions de km² [Page 28].
+- Elle cherche à affirmer son rôle dans la sécurité de la zone, mais son influence est limitée face aux États-Unis (exemple : perte du contrat de sous-marins avec l'Australie en 2021) [Page 25].
+
+---
+
+**Pour résumer** :
+L'Indopacifique est devenu un théâtre central car il concentre :
+- Une rivalité directe entre les États-Unis et la Chine.
+- Des enjeux économiques, militaires et diplomatiques majeurs.
+- L'implication d'autres puissances comme la France.
+
+Si tu veux approfondir un point précis (ex : les alliances militaires, les ressources), n'hésite pas à demander.",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les aspects clés de la question, avec des détails pertinents sur les rivalités sino-américaines, les enjeux économiques et militaires, ainsi que le rôle de la France. Les citations sont bien intégrées, bien que leur format (pages) soit moins standard que des références académiques. La réponse est globalement excellente."
+Pourquoi l'Indopacifique est-il devenu un théâtre majeur des rivalités mondiales ?,indopacifique,Advanced RAG,"L'Indopacifique concentre une grande part de la population mondiale, du commerce maritime et des chaînes de valeur, et voit la montée en puissance de la Chine face aux États-Unis, ce qui en fait un espace clé de compétition stratégique, technologique et navale.","L’Indopacifique est devenu un théâtre majeur des rivalités mondiales pour plusieurs raisons essentielles, liées à des enjeux géopolitiques, économiques et stratégiques.
+
+**1. Une zone de compétition entre les États-Unis et la Chine**
+Après la Seconde Guerre mondiale, le Pacifique était considéré comme un ""lac américain"", c’est-à-dire une zone sous domination des États-Unis [Page 25]. Aujourd’hui, cette région, élargie à l’océan Indien sous le nom d’Indopacifique, est le principal espace de rivalité entre les États-Unis et la Chine. Cette dernière cherche à étendre son influence, tandis que les États-Unis tentent de maintenir leur position dominante [Page 25].
+
+**2. Des enjeux économiques et commerciaux colossaux**
+L’Indopacifique est une zone clé pour le commerce mondial. Elle concentre les principales routes maritimes, notamment celles reliant l’Asie à l’Europe et au Moyen-Orient. Ces routes sont vitales pour les échanges internationaux, ce qui en fait un enjeu stratégique pour les grandes puissances [Page 25].
+
+**3. La présence de points de tension majeurs**
+La région abrite plusieurs conflits ou tensions, comme la question de Taïwan, qui est un sujet de crispation entre la Chine et les États-Unis [Page 18]. Ces tensions renforcent l’importance géopolitique de la zone, car elles pourraient déstabiliser l’équilibre mondial.
+
+**4. L’implication d’autres acteurs internationaux**
+Outre les États-Unis et la Chine, d’autres pays sont très présents dans la région. La France, par exemple, y joue un rôle grâce à ses territoires ultramarins (comme La Réunion ou la Nouvelle-Calédonie). Cependant, des revers comme le choix de l’Australie de privilégier les États-Unis plutôt que la France montrent que la compétition y est intense [Page 25].
+
+En résumé, l’Indopacifique est devenu un théâtre des rivalités mondiales en raison de son importance stratégique, économique et géopolitique, où les grandes puissances s’affrontent indirectement pour le contrôle ou l’influence.
+
+CITES: Page: 18,25",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les points clés de la réponse de référence, avec des détails supplémentaires pertinents. Les citations sont bien intégrées, bien que leur format soit inhabituel (pages numérotées). La réponse est parfaitement adaptée à la question posée."
+Quel est le rôle de la Chine dans la région indopacifique ?,indopacifique,Simple Prompt,"La Chine cherche à y affirmer son statut de grande puissance, à sécuriser ses routes maritimes et ses approvisionnements, à projeter sa puissance militaire et à étendre son influence économique et diplomatique à travers des investissements et des partenariats.","La Chine joue un rôle central dans la région indopacifique, marqué par :
+
+1. **Influence économique** : Premier partenaire commercial de nombreux pays (ASEAN, Australie, Inde).
+2. **Investissements** : Projets d'infrastructures via les ""Nouvelles Routes de la Soie"" (BRI).
+3. **Militaire** : Renforcement de sa présence navale (mer de Chine méridionale, bases en Asie du Sud).
+4. **Diplomatie** : Rivalité avec les États-Unis et alliances avec des pays comme le Pakistan ou la Russie.
+5. **Conflits territoriaux** : Revendications en mer de Chine méridionale et tensions avec Taïwan.
+
+La Chine cherche à affirmer sa domination tout en maintenant des relations économiques clés.",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les aspects clés de la réponse de référence, avec des détails supplémentaires pertinents. Les citations sont bien intégrées, bien qu'aucune source explicite ne soit mentionnée. La réponse est parfaitement pertinente pour la question posée."
+Quel est le rôle de la Chine dans la région indopacifique ?,indopacifique,Basic RAG,"La Chine cherche à y affirmer son statut de grande puissance, à sécuriser ses routes maritimes et ses approvisionnements, à projeter sa puissance militaire et à étendre son influence économique et diplomatique à travers des investissements et des partenariats.","Voici le rôle de la Chine dans la région indopacifique, en me basant uniquement sur les informations du contexte :
+
+**1. Puissance économique et partenariats**
+La Chine est un partenaire économique majeur en Océanie. Elle développe des infrastructures stratégiques, comme des ports en eaux profondes (ex. : Luganville au Vanuatu, Honiara aux îles Salomon) et cherche à étendre son influence en Papouasie-Nouvelle-Guinée. Ces initiatives visent à renforcer sa présence commerciale et logistique dans la région [Page 26].
+
+**2. Affirmation géopolitique face aux États-Unis**
+L’Indopacifique est devenu le principal théâtre de rivalité entre la Chine et les États-Unis. Pékin y affirme sa puissance pour contester l’hégémonie américaine, notamment en développant des alliances et des infrastructures militaires ou duales (civiles et militaires) [Page 25].
+
+**3. Stratégie de contestation des normes occidentales**
+La Chine profite des tensions entre les pays océaniens et leurs partenaires traditionnels (Australie, Nouvelle-Zélande) pour proposer une alternative à leur politique d’aide conditionnelle (démocratie, bonne gouvernance). Cela lui permet de gagner en influence sans imposer de critères politiques [Page 26].
+
+**Limites du contexte**
+Le manuel ne détaille pas les autres aspects du rôle chinois (ex. : initiatives comme les ""Nouvelles routes de la soie"", relations avec l’ASEAN, ou tensions en mer de Chine méridionale). Pour approfondir, consulte ton professeur ou des ressources complémentaires.
+
+Si tu souhaites analyser un aspect précis (économique, militaire, etc.), précise ta demande.",5,4,5,5,4,"La réponse candidate est très précise et pertinente, avec des citations bien sourcées. Elle couvre plusieurs aspects clés du rôle de la Chine, mais manque de complétude sur des éléments comme les Nouvelles routes de la soie ou les tensions en mer de Chine méridionale, comme elle l'admet elle-même."
+Quel est le rôle de la Chine dans la région indopacifique ?,indopacifique,Advanced RAG,"La Chine cherche à y affirmer son statut de grande puissance, à sécuriser ses routes maritimes et ses approvisionnements, à projeter sa puissance militaire et à étendre son influence économique et diplomatique à travers des investissements et des partenariats.","La Chine joue un rôle central et de plus en plus affirmé dans la région indopacifique, principalement à travers deux dimensions :
+
+**1. Une puissance militaire et géopolitique croissante**
+La Chine renforce sa présence militaire dans la zone, notamment autour de Taïwan. En 2022, Pékin a multiplié les manœuvres militaires dans le détroit de Taïwan, ce qui a accru les tensions avec les États-Unis et leurs alliés. Ces actions visent à affirmer sa souveraineté sur Taïwan, que la Chine considère comme une province rebelle, et à dissuader toute velléité d'indépendance [Page 31].
+
+**2. Un acteur économique et stratégique majeur**
+Bien que le contexte ne détaille pas ses initiatives économiques, la Chine est un partenaire commercial clé pour de nombreux pays de la région. Son influence s'étend aussi via des projets comme les ""Nouvelles Routes de la Soie"", qui visent à renforcer les connexions maritimes et terrestres en Asie-Pacifique.
+
+**Limites du contexte**
+Le manuel ne précise pas d'autres aspects comme les alliances régionales de la Chine (ex. : partenariats avec les pays de l'ASEAN) ou ses revendications en mer de Chine méridionale. Pour approfondir, je te conseille de consulter ton professeur ou des ressources complémentaires.
+
+CITES: Page: 31",5,4,3,5,4,"La réponse candidate est globalement exacte et pertinente, mais elle manque de complétude sur certains aspects économiques et diplomatiques. La citation est correcte mais limitée à une seule source."
+Comment les États-Unis répondent-ils aux ambitions chinoises en Asie ?,indopacifique,Simple Prompt,"Les États-Unis renforcent leurs alliances et partenariats (Japon, Corée du Sud, Australie, Inde, ASEAN), augmentent leur présence militaire, développent la coopération technologique et sécuritaire, et promeuvent des initiatives économiques alternatives pour contenir l'influence chinoise.","Les États-Unis répondent aux ambitions chinoises en Asie par plusieurs moyens :
+
+1. **Alliances militaires** : Renforcement des partenariats avec des pays comme le Japon, l'Australie, la Corée du Sud et les Philippines (via des accords comme le Quad).
+2. **Présence militaire** : Maintien de bases et de rotations de forces dans la région (ex. : 7e flotte, exercices militaires conjoints).
+3. **Diplomatie économique** : Promotion d'initiatives comme l'*Indo-Pacific Economic Framework* (IPEF) pour contrer l'influence chinoise.
+4. **Soutien aux démocraties** : Appui aux pays confrontés aux pressions chinoises (ex. : Taïwan, Vietnam).
+5. **Contrôle des technologies** : Restrictions sur les exportations de semi-conducteurs et autres technologies sensibles.
+
+Objectif : Limiter l'expansion chinoise tout en évitant un conflit direct.",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les aspects clés de la réponse de référence, avec des détails supplémentaires pertinents (ex. Quad, IPEF). Les citations sont bien choisies, bien que quelques sources explicites auraient pu renforcer la qualité. La réponse est parfaitement pertinente pour la question posée."
+Comment les États-Unis répondent-ils aux ambitions chinoises en Asie ?,indopacifique,Basic RAG,"Les États-Unis renforcent leurs alliances et partenariats (Japon, Corée du Sud, Australie, Inde, ASEAN), augmentent leur présence militaire, développent la coopération technologique et sécuritaire, et promeuvent des initiatives économiques alternatives pour contenir l'influence chinoise.","Voici une réponse structurée et précise à ta question, basée uniquement sur le contexte fourni :
+
+---
+
+**1. Renforcement militaire et présence maritime**
+Les États-Unis répondent aux ambitions chinoises en Asie en renforçant leur domination maritime. Ils ont augmenté les capacités de leurs deux principales flottes dans la région :
+- La **3ᵉ flotte**, basée à Hawaï.
+- La **7ᵉ flotte**, dont le quartier général est au Japon.
+L’île de Guam joue également un rôle clé, servant de ""porte-avions"" américain pour projeter leur puissance [Page 27].
+
+**2. Alliances stratégiques et coopération régionale**
+Pour contrer l’influence chinoise, Washington mise sur :
+- Le **Quad** (Dialogue quadrilatéral pour la sécurité), créé en 2007 avec l’Inde, le Japon et l’Australie. Ce partenariat vise à coordonner les positions face à Pékin.
+- Un rapprochement avec l’**ASEAN** (Association des nations de l’Asie du Sud-Est) en mai 2022, pour renforcer les liens économiques et sécuritaires [Page 92].
+- La négociation de **bases militaires, facilités ou accès à des ports** dans la région Asie-Pacifique, afin d’étendre leur présence logistique [Page 92].
+
+**3. Limites de la stratégie américaine**
+Les États-Unis évitent une confrontation directe avec la Chine. Leur objectif est de **contenir son affirmation sans remettre en cause le statu quo**, notamment sur Taïwan [Page 92]. Par ailleurs, la plupart des pays asiatiques refusent de choisir entre Washington et Pékin, préférant profiter des investissements des deux puissances [Page 93].
+
+**4. Rivalité élargie au-delà de l’Asie**
+La compétition sino-américaine s’étend désormais à d’autres zones, comme le **Moyen-Orient**. En 2023, la Chine a joué un rôle diplomatique actif en facilitant le rapprochement entre l’Iran et l’Arabie saoudite, une région traditionnellement sous influence américaine. Cela montre que la rivalité dépasse le cadre économique ou technologique pour toucher la **politique internationale** [Page 91].
+
+---
+
+**À retenir** :
+Les États-Unis combinent **hard power** (renforcement militaire) et **soft power** (diplomatie, alliances) pour limiter l’expansion chinoise, sans chercher l’affrontement direct. Leur approche reste prudente, car les pays asiatiques hésitent à prendre parti.
+
+Si tu veux approfondir un point précis (comme le Quad ou le rôle de Taïwan), n’hésite pas à demander. Pour des détails sur d’autres régions (comme l’Afrique ou l’Europe), je t’invite à consulter ton professeur, car ces éléments ne figurent pas dans le chapitre.",5,4,4,5,4,"La réponse candidate est très précise et pertinente, couvrant les aspects militaires, diplomatiques et économiques. Elle dépasse même la référence en mentionnant des détails comme le Quad et la rivalité au Moyen-Orient. Cependant, elle est légèrement moins complète que la référence sur les initiatives économiques alternatives et la coopération technologique. Les citations sont bien intégrées mais pourraient être plus explicites."
+Comment les États-Unis répondent-ils aux ambitions chinoises en Asie ?,indopacifique,Advanced RAG,"Les États-Unis renforcent leurs alliances et partenariats (Japon, Corée du Sud, Australie, Inde, ASEAN), augmentent leur présence militaire, développent la coopération technologique et sécuritaire, et promeuvent des initiatives économiques alternatives pour contenir l'influence chinoise.","Les États-Unis répondent aux ambitions chinoises en Asie en renforçant leur présence militaire et en consolidant leurs alliances dans la région.
+
+**Stratégie militaire**
+Les États-Unis ont renforcé leurs flottes dans le Pacifique pour contrer l’influence chinoise. La **3ᵉ flotte**, basée à Hawaï, et la **7ᵉ flotte**, dont le quartier général est au Japon, ont été mobilisées pour assurer une domination maritime face à la Chine [Page 27].
+
+**Alliances régionales**
+Ils s’appuient sur leurs alliés historiques comme le **Japon, la Corée du Sud, les Philippines, Taïwan et l’Australie** pour former un réseau de sécurité collective. L’île de **Guam**, qualifiée de ""porte-avions américain"", joue un rôle clé dans cette stratégie [Page 27].
+
+**Objectif principal**
+Cette réponse vise à contenir l’expansion chinoise, notamment en mer de Chine méridionale et dans la région Indo-Pacifique, en maintenant une présence dissuasive.
+
+---
+*Si tu veux approfondir d’autres aspects (économiques, diplomatiques, etc.), je t’invite à vérifier avec ton professeur, car ces éléments ne sont pas mentionnés dans ton manuel.*
+
+CITES: Page: 27",5,3,4,4,4,"La réponse candidate est factuellement correcte et pertinente, mais elle est incomplète car elle ne mentionne pas les aspects économiques, technologiques ou diplomatiques. Les citations sont bien intégrées, mais la référence à une 'Page 27' est vague. La réponse se concentre sur les aspects militaires et les alliances, ce qui est pertinent mais partiel."
+Quels sont les enjeux maritimes en mer de Chine méridionale ?,indopacifique,Simple Prompt,"La mer de Chine méridionale concentre des voies maritimes essentielles, des ressources halieutiques et énergétiques, et fait l'objet de revendications territoriales concurrentes, notamment de la Chine, ce qui crée des tensions autour de la liberté de navigation et du droit international de la mer.","Les enjeux maritimes en mer de Chine méridionale incluent :
+
+1. **Souveraineté territoriale** : Conflits entre la Chine, les Philippines, le Vietnam, la Malaisie, Brunei et Taïwan sur les îles Spratleys et Paracels.
+2. **Ressources naturelles** : Exploitation des hydrocarbures et des poissons.
+3. **Routes commerciales** : Contrôle des voies maritimes stratégiques (30 % du trafic mondial).
+4. **Militarisation** : Construction d’îles artificielles et déploiement de forces navales.
+5. **Droit international** : Respect (ou non) de la Convention des Nations unies sur le droit de la mer (CNUDM).
+
+La Chine revendique la quasi-totalité de la zone via la ""ligne en neuf traits"", contestée par ses voisins.",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les aspects clés des enjeux maritimes en mer de Chine méridionale, avec des détails supplémentaires (comme la 'ligne en neuf traits') qui enrichissent l'information. La qualité des citations est bonne, bien que certaines sources explicites (comme la CNUDM) soient mentionnées sans référence directe. La pertinence est excellente, répondant parfaitement à la question posée."
+Quels sont les enjeux maritimes en mer de Chine méridionale ?,indopacifique,Basic RAG,"La mer de Chine méridionale concentre des voies maritimes essentielles, des ressources halieutiques et énergétiques, et fait l'objet de revendications territoriales concurrentes, notamment de la Chine, ce qui crée des tensions autour de la liberté de navigation et du droit international de la mer.","Voici les principaux enjeux maritimes en mer de Chine méridionale, tels qu’abordés dans ton manuel :
+
+**1. Enjeux géopolitiques et militaires**
+La Chine revendique une grande partie de la mer de Chine méridionale, notamment via la ""ligne en neuf traits"", ce qui entre en conflit avec les revendications d’autres pays riverains (Vietnam, Philippines, Malaisie, Brunei, Taïwan).
+Ces tensions s’inscrivent dans une rivalité plus large avec les États-Unis, qui soutiennent leurs alliés régionaux (Japon, Philippines, Australie) pour contrer l’influence chinoise. Les flottes américaines (3e et 7e flottes) sont renforcées dans la zone pour maintenir une présence militaire [Page 25][Page 27].
+
+**2. Contrôle des ressources naturelles**
+La mer de Chine méridionale est riche en ressources :
+- **Hydrocarbures** : des gisements de pétrole et de gaz sont convoités, alimentant les tensions entre les États [Page 116].
+- **Ressources halieutiques** : les zones de pêche sont essentielles pour les économies locales, et leur contrôle est un enjeu majeur [Page 116].
+
+**3. Sécurité des routes maritimes**
+Cette mer est un carrefour stratégique pour le commerce mondial (un tiers du trafic maritime mondial y transite). La Chine cherche à sécuriser ses voies d’accès vers le Pacifique, tandis que les États-Unis veulent garantir la liberté de navigation [Page 25].
+
+**4. Enjeux environnementaux et juridiques**
+Les revendications territoriales permettent aux États d’étendre leur souveraineté sur des écosystèmes marins vulnérables (EMV), comme le souligne le principe de précaution adopté par l’ONU en 2006. Cela peut servir de prétexte pour contrôler des zones protégées [Page 225].
+
+**5. Absence de délimitation claire**
+60 % des frontières maritimes mondiales ne sont pas encore définies, ce qui aggrave les conflits, notamment en mer de Chine méridionale [Page 116].
+
+Si tu veux approfondir un point précis (comme les alliances militaires ou les ressources), n’hésite pas à me le demander. Sinon, ton professeur pourra compléter ces éléments en classe.",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les enjeux majeurs mentionnés dans la référence, avec des détails supplémentaires pertinents. Les citations sont bien intégrées, bien que leur format (pages de manuel) soit moins standard qu'une source académique. La réponse est parfaitement pertinente et complète."
+Quels sont les enjeux maritimes en mer de Chine méridionale ?,indopacifique,Advanced RAG,"La mer de Chine méridionale concentre des voies maritimes essentielles, des ressources halieutiques et énergétiques, et fait l'objet de revendications territoriales concurrentes, notamment de la Chine, ce qui crée des tensions autour de la liberté de navigation et du droit international de la mer.","Voici les enjeux maritimes en mer de Chine méridionale, tels qu’abordés dans ton manuel :
+
+**1. Revendications territoriales et souveraineté**
+La Chine affirme des droits historiques sur la quasi-totalité de la mer de Chine méridionale, matérialisés par la ""ligne en neuf traits"". Ces revendications entrent en conflit avec celles d’autres États riverains (Vietnam, Philippines, Malaisie, Brunei, Taïwan), qui s’appuient sur le droit international, notamment la Convention des Nations unies sur le droit de la mer (CNUDM) [Page 25].
+
+**2. Contrôle stratégique et militaire**
+La Chine cherche à briser l’encerclement militaire américain en Asie-Pacifique. Elle renforce sa présence navale dans la région pour sécuriser une ""première chaîne d’îles"" (incluant les îles Spratleys et Paracels), perçue comme une zone d’influence vitale. Cela menace la liberté de navigation, cruciale pour les États-Unis et leurs alliés [Page 25].
+
+**3. Ressources naturelles**
+La zone regorge de ressources :
+- **Hydrocarbures** : des gisements de pétrole et de gaz sont convoités, alimentant des tensions (ex. : forages contestés près des côtes vietnamiennes) [Page 116].
+- **Ressources halieutiques** : la pêche est un enjeu économique majeur pour les pays riverains, avec des flottes chinoises souvent accusées de pêche illégale [Page 116].
+
+**4. Enjeux géopolitiques globaux**
+La mer de Chine méridionale est un théâtre de rivalité sino-américaine. Les États-Unis y mènent des opérations de ""liberté de navigation"" pour contester les revendications chinoises, tandis que la Chine y déploie des bases militaires (îles artificielles, pistes d’atterrissage) [Page 25].
+
+**Limite du contexte** :
+Ton manuel n’aborde pas les aspects juridiques (ex. : arbitrage de 2016 contre la Chine) ni les dynamiques locales (rôle de l’ASEAN). Pour ces points, je t’invite à consulter ton professeur.
+
+CITES: Page: 25, 116",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les enjeux majeurs mentionnés dans la réponse de référence, avec des détails supplémentaires pertinents. Les citations sont bien intégrées, bien que leur format soit légèrement inhabituel (références à un manuel). La réponse est parfaitement pertinente pour la question posée."
+Pourquoi la Syrie est-elle considérée comme une guerre inachevée ?,moyen_orient,Simple Prompt,"Le régime a repris le contrôle d'une grande partie du territoire mais le pays reste fragmenté, avec des zones tenues par d'autres acteurs, une présence de forces étrangères, une crise humanitaire profonde et une absence de solution politique globale.","La Syrie est considérée comme une guerre inachevée en raison de plusieurs facteurs :
+
+1. **Conflit prolongé** : La guerre civile syrienne, débutée en 2011, n'est pas encore résolue malgré des avancées militaires du régime de Bachar al-Assad.
+2. **Factions multiples** : La présence de groupes armés (rebelles, djihadistes, forces kurdes) et d'acteurs étrangers (Russie, Iran, Turquie, États-Unis) complique toute résolution.
+3. **Instabilité persistante** : Des zones restent hors du contrôle du gouvernement, et des tensions locales persistent.
+4. **Absence de solution politique** : Les négociations internationales (comme celles d'Astana ou de Genève) n'ont pas abouti à un accord durable.
+5. **Crise humanitaire** : Le conflit a causé des millions de déplacés et de réfugiés, avec des conséquences régionales et internationales.
+
+La guerre est donc ""inachevée"" car elle n'a pas trouvé de résolution définitive, malgré des changements sur le terrain.",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les aspects clés de la réponse de référence, avec des détails supplémentaires pertinents. Elle n'inclut pas de citations directes, mais les informations sont bien sourcées implicitement. La pertinence est excellente, répondant parfaitement à la question posée."
+Pourquoi la Syrie est-elle considérée comme une guerre inachevée ?,moyen_orient,Basic RAG,"Le régime a repris le contrôle d'une grande partie du territoire mais le pays reste fragmenté, avec des zones tenues par d'autres acteurs, une présence de forces étrangères, une crise humanitaire profonde et une absence de solution politique globale.","La Syrie est considérée comme une **guerre inachevée** pour plusieurs raisons, expliquées dans ton manuel :
+
+1. **Le conflit dure depuis 12 ans sans résolution claire**
+   Malgré l’affaiblissement des groupes rebelles et la reconquête d’une grande partie du territoire par le régime de Bachar al-Assad, la guerre n’est pas officiellement terminée. Les combats persistent dans certaines zones, comme à Idlib, et aucun accord de paix durable n’a été trouvé [Page 45].
+
+2. **L’absence de justice et de reconstruction**
+   Les crimes commis par le régime (et d’autres acteurs) n’ont pas été jugés. De plus, le pays est économiquement détruit, et la population souffre toujours de conditions humanitaires dramatiques, aggravées par le séisme de 2023 [Page 45 et 48].
+
+3. **Les tensions géopolitiques persistent**
+   Plusieurs puissances étrangères restent impliquées, avec des intérêts contradictoires :
+   - La **Russie** soutient le régime, mais cherche aussi à ménager la Turquie.
+   - La **Turquie** contrôle une zone tampon à la frontière et combat les djihadistes.
+   - Les **États-Unis** maintiennent une présence militaire dans l’est du pays.
+   Ces rivalités empêchent une stabilisation définitive [Page 48].
+
+4. **La question kurde et les groupes armés**
+   La Turquie et le régime syrien s’opposent aux forces kurdes (soutenues par les États-Unis), tandis que des groupes djihadistes comme Daech ou Hayat Tahrir al-Cham restent actifs dans certaines zones [Page 48].
+
+**En résumé** : La Syrie est une guerre inachevée car les combats, les divisions politiques et les ingérences étrangères continuent, sans solution politique ni reconstruction en vue.
+
+Si tu veux approfondir un point précis (comme le rôle de la Russie ou la situation humanitaire), n’hésite pas à demander.",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les aspects clés de la question, avec des détails pertinents sur les acteurs géopolitiques et les enjeux humanitaires. Les citations de pages sont utiles mais pourraient être plus explicites (ex: nom du manuel). La réponse est globalement excellente."
+Pourquoi la Syrie est-elle considérée comme une guerre inachevée ?,moyen_orient,Advanced RAG,"Le régime a repris le contrôle d'une grande partie du territoire mais le pays reste fragmenté, avec des zones tenues par d'autres acteurs, une présence de forces étrangères, une crise humanitaire profonde et une absence de solution politique globale.","La Syrie est considérée comme une **guerre inachevée** pour plusieurs raisons, expliquées dans ton manuel.
+
+1. **Durée et absence de résolution**
+   Le conflit dure depuis **douze ans** (début en 2011) et n’a pas abouti à une paix durable. Malgré la reconquête du pouvoir par Bachar al-Assad, les combats et les tensions persistent, sans accord politique clair entre les différentes parties [Page 45].
+
+2. **Crise humanitaire et économique non résolue**
+   La population syrienne subit toujours une **grande souffrance** : l’économie est ""sinistrée"", et des catastrophes comme le tremblement de terre de février 2023 ont aggravé la situation. Les besoins humanitaires restent immenses [Page 45].
+
+3. **Légitimité internationale fragile**
+   Bien qu’Assad ait regagné une certaine reconnaissance dans le monde arabe (notamment après le séisme), la Syrie reste **isolée diplomatiquement** (sanctions, exclusion de la Ligue arabe jusqu’en 2023). Le conflit n’est pas officiellement terminé, et les divisions internes et externes (interventions étrangères) empêchent une stabilisation [Page 45].
+
+4. **Absence de reconstruction et de réconciliation**
+   Le manuel souligne que la guerre n’a pas débouché sur une **reconstruction du pays** ni sur une réconciliation entre les différentes communautés (régime, rebelles, Kurdes, djihadistes, etc.). Les causes profondes du conflit (répression, inégalités, ingérences étrangères) ne sont pas réglées [Page 45].
+
+---
+**Correction d’une éventuelle confusion** :
+Si tu pensais que la Syrie était une guerre ""terminée"" parce qu’Assad a repris le contrôle militaire, rappelle-toi que la fin des combats ne signifie pas la fin d’un conflit. Une guerre est considérée comme achevée quand il y a une **paix durable**, une reconstruction, et une reconnaissance internationale stable – ce qui n’est pas le cas ici.
+
+---
+**CITES**: Page: 45",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les aspects clés de la question, avec des détails pertinents sur la durée du conflit, la crise humanitaire, la légitimité internationale et l'absence de reconstruction. Les citations sont bien intégrées, bien que leur format (référence à un manuel) soit moins standard qu'une source académique ou médiatique. La réponse est globalement excellente."
+Quelle est la situation politique actuelle en Iran ?,moyen_orient,Simple Prompt,"L'Iran est dirigé par un régime théocratique qui fait face à des tensions internes récurrentes, à des sanctions internationales, à des difficultés économiques et à des rivalités régionales, tout en poursuivant une politique d'influence au Moyen-Orient.","L'Iran est une république islamique dirigée par un système théocratique depuis la révolution de 1979. Le pouvoir est partagé entre :
+
+- **Le Guide suprême** (Ali Khamenei depuis 1989), chef religieux et politique suprême.
+- **Le président** (Ebrahim Raïssi depuis 2021), élu au suffrage universel mais sous contrôle des institutions religieuses.
+- **Le Parlement** (Majlis), dominé par les conservateurs.
+
+L'Iran est marqué par des tensions internes (manifestations, répression) et des conflits géopolitiques (relations avec l'Occident, programme nucléaire).",5,4,3,5,4,"La réponse candidate est très précise et pertinente, couvrant les aspects clés du système politique iranien et des tensions actuelles. Elle manque cependant de citations ou sources explicites, et pourrait approfondir certains points comme les sanctions économiques ou les rivalités régionales pour une complétude parfaite."
+Quelle est la situation politique actuelle en Iran ?,moyen_orient,Basic RAG,"L'Iran est dirigé par un régime théocratique qui fait face à des tensions internes récurrentes, à des sanctions internationales, à des difficultés économiques et à des rivalités régionales, tout en poursuivant une politique d'influence au Moyen-Orient.","Voici la situation politique actuelle en Iran, telle qu'elle apparaît dans ton manuel :
+
+**1. Un régime autoritaire et répressif**
+L'Iran est une République islamique, dirigée par un guide suprême (actuellement l'ayatollah Ali Khamenei) qui concentre les pouvoirs religieux et politiques. Les manifestations sont sévèrement réprimées, comme en 2018, 2019, et plus récemment après la mort de Mahsa Amini en 2022, symbole de la contestation contre la police des mœurs et le port obligatoire du voile [Page 63][Page 65].
+
+**2. Une crise économique profonde**
+Les sanctions américaines, renforcées depuis 2018, asphyxient l'économie iranienne. L'inflation dépasse 50 %, la monnaie s'effondre, et le chômage officiel atteint 9,2 % (probablement sous-estimé). Malgré ses ressources en hydrocarbures, le pays est ""exsangue"" [Page 63][Page 64].
+
+**3. Tensions internationales et risque de conflit**
+- **Nucléaire** : L'accord de 2015 (JCPOA) sur le programme nucléaire iranien a été abandonné par les États-Unis en 2018, relançant les tensions. Israël, dirigé par Benyamin Netanyahou, considère l'Iran comme une menace existentielle et menace d'une action militaire [Page 105][Page 65].
+- **Mouvements de protestation** : Le slogan *""Femme, Vie, Liberté""* (après la mort de Mahsa Amini) montre une opposition croissante au régime, notamment parmi les femmes et les jeunes [Page 65].
+
+**Ce que ton manuel ne précise pas** :
+- Les dernières évolutions politiques internes (ex. : résultats des élections récentes).
+- Les détails des négociations actuelles sur le nucléaire.
+
+Pour approfondir ces points, je te conseille de consulter ton professeur ou des sources actualisées. Veux-tu que nous analysions un aspect en particulier ?",5,4,3,5,4,"La réponse candidate est globalement exacte et pertinente, couvrant les aspects clés de la situation politique en Iran. Elle est plus détaillée que la référence, mais manque de mise à jour sur les évolutions récentes (ex. élections). Les citations de pages de manuel sont peu utiles sans contexte."
+Quelle est la situation politique actuelle en Iran ?,moyen_orient,Advanced RAG,"L'Iran est dirigé par un régime théocratique qui fait face à des tensions internes récurrentes, à des sanctions internationales, à des difficultés économiques et à des rivalités régionales, tout en poursuivant une politique d'influence au Moyen-Orient.","La question sur la situation politique actuelle en Iran n'est pas abordée dans les extraits de ton manuel *Le Grand Atlas* que tu m'as fournis.
+
+Pour répondre précisément à ta question, je te conseille de te référer à ton professeur ou à des sources actualisées (comme des articles récents ou des rapports spécialisés), car cette information dépasse le cadre des pages citées.
+
+CITES: *Aucune page pertinente dans le contexte fourni.*",1,1,1,1,1,"La réponse candidate ne fournit aucune information pertinente sur la situation politique en Iran, se contentant de renvoyer vers des sources externes. Elle est donc inexacte, incomplète, non pertinente et ne cite aucune source fiable."
+Comment la Turquie sous Erdogan influence-t-elle la région ?,moyen_orient,Simple Prompt,"La Turquie mène une politique étrangère ambitieuse, combinant interventions militaires, soutien à certains groupes politiques, diplomatie énergétique et rôle de médiateur, ce qui lui permet de peser en Syrie, dans le Caucase, en Méditerranée orientale et au-delà.","La Turquie sous Erdogan influence la région de plusieurs manières :
+
+1. **Diplomatie active** : Ankara joue un rôle clé dans les crises régionales (Syrie, Libye, Caucase) et entretient des relations complexes avec l'UE, la Russie et les pays arabes.
+2. **Pouvoir militaire** : Elle intervient directement (Syrie, Azerbaïdjan) ou indirectement (soutien aux groupes armés) pour défendre ses intérêts.
+3. **Soft power** : Promotion de l'islam politique et influence culturelle via les médias et les ONG.
+4. **Économie** : Investissements et commerce avec les pays voisins, notamment en Afrique et au Moyen-Orient.
+5. **Défis sécuritaires** : Lutte contre le PKK et gestion des flux migratoires vers l'Europe.
+
+Cette influence est souvent perçue comme une rivalité avec d'autres acteurs régionaux (Iran, Arabie saoudite, Russie).",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les aspects clés de l'influence turque sous Erdogan, comme le fait la référence. Elle ajoute des détails pertinents (soft power, économie) sans dévier du sujet. La qualité des citations est bonne, bien que non explicites, car la réponse synthétise des faits largement documentés."
+Comment la Turquie sous Erdogan influence-t-elle la région ?,moyen_orient,Basic RAG,"La Turquie mène une politique étrangère ambitieuse, combinant interventions militaires, soutien à certains groupes politiques, diplomatie énergétique et rôle de médiateur, ce qui lui permet de peser en Syrie, dans le Caucase, en Méditerranée orientale et au-delà.","Voici une réponse structurée sur l’influence de la Turquie sous Erdogan dans sa région, basée uniquement sur les éléments du contexte :
+
+---
+
+**1. Une politique étrangère active et interventionniste**
+La Turquie d’Erdogan a adopté une stratégie dite *« néo-ottomane »*, cherchant à étendre son influence au Moyen-Orient et au-delà [Page 38].
+Cette approche marque un revirement par rapport à son repli historique, avec une diplomatie ambitieuse visant à résoudre les tensions (*« zéro problème avec les voisins »*), bien que les résultats soient contrastés [Page 38].
+
+---
+
+**2. Soutien militaire et alliances stratégiques**
+- **Caucase** : La Turquie a joué un rôle clé dans la victoire de l’Azerbaïdjan face à l’Arménie lors du conflit du *Haut-Karabakh*, renforçant son alliance avec Bakou [Page 38].
+- **Syrie** : Son intervention vise à combattre le séparatisme kurde (PKK), ce qui l’a rapprochée de la Russie et de l’Iran, expliquant sa neutralité actuelle dans la guerre russo-ukrainienne [Page 38].
+
+---
+
+**3. Expansion économique et diplomatique**
+La Turquie étend son influence en :
+- **Afrique et Golfe** : Développement de liens politiques et commerciaux [Page 38].
+- **Méditerranée orientale** : Tensions avec la Grèce et Chypre, notamment sur les ressources énergétiques [Page 38].
+
+---
+
+**4. Un positionnement ambigu sur la scène internationale**
+- **OTAN** : Membre de l’alliance, mais son rapprochement avec la Russie et son opposition aux Kurdes compliquent ses relations avec les Occidentaux [Page 13].
+- **Conflits régionaux** : Son rôle dans les crises (Syrie, Israël-Palestine) reflète une diplomatie pragmatique, parfois en contradiction avec ses partenaires traditionnels [Page 13].
+
+---
+
+**Limites du contexte**
+Le manuel ne détaille pas tous les aspects (ex. : relations avec l’UE, soft power culturel). Pour approfondir, je te conseille de consulter ton professeur ou des ressources complémentaires.
+
+---
+*As-tu des questions sur un point précis ?*",5,4,4,5,4,"La réponse candidate est globalement précise et pertinente, couvrant les principaux aspects de l'influence turque sous Erdogan. Elle manque cependant de détails sur certains points (comme le soft power culturel) et les citations, bien que bien intégrées, pourraient être plus explicites. La structure est claire et répond bien à la question posée."
+Comment la Turquie sous Erdogan influence-t-elle la région ?,moyen_orient,Advanced RAG,"La Turquie mène une politique étrangère ambitieuse, combinant interventions militaires, soutien à certains groupes politiques, diplomatie énergétique et rôle de médiateur, ce qui lui permet de peser en Syrie, dans le Caucase, en Méditerranée orientale et au-delà.","La Turquie sous la présidence d’Erdogan exerce une influence croissante dans sa région, marquée par une politique à la fois ambitieuse et parfois controversée. Voici les principaux aspects de cette influence, tels qu’abordés dans ton manuel :
+
+**1. Une politique étrangère active et indépendante**
+Erdogan a renforcé le rôle de la Turquie comme acteur clé au Moyen-Orient et au-delà. Son régime adopte une posture plus autonome vis-à-vis des alliances traditionnelles (comme l’OTAN ou l’Union européenne), tout en cherchant à étendre son influence. Par exemple, la Turquie intervient militairement en Syrie (contre les Kurdes ou Daech) et en Libye, où elle soutient le gouvernement de Tripoli. Ces actions visent à défendre ses intérêts stratégiques, comme la lutte contre les groupes kurdes qu’Ankara considère comme une menace terroriste [Page 35].
+
+**2. Un leadership régional affirmé**
+La Turquie se positionne comme un médiateur ou un acteur incontournable dans les crises régionales. Elle entretient des relations complexes avec des pays comme la Russie (coopération économique malgré des divergences en Syrie) ou l’Iran (dialogue malgré des rivalités). Son rôle dans le conflit israélo-palestinien est aussi notable : Erdogan se présente comme un défenseur des Palestiniens, tout en maintenant des liens économiques avec Israël [Page 35].
+
+**3. Une diplomatie économique et énergétique**
+La Turquie utilise son emplacement géographique stratégique (entre l’Europe et l’Asie) pour développer des projets énergétiques, comme le gazoduc TurkStream avec la Russie, ou des corridors commerciaux. Ces initiatives renforcent son poids dans les négociations internationales et lui permettent de jouer un rôle de pont entre différentes puissances [Page 35].
+
+**4. Un régime de plus en plus autoritaire**
+Sur le plan intérieur, la réélection d’Erdogan en 2023 montre que son pouvoir reste solide, malgré des critiques sur la restriction des libertés (presse, opposition). Cette stabilité interne lui permet de mener une politique étrangère plus assertive, sans craindre de contestation majeure [Page 35].
+
+**Limites du contexte**
+Ton manuel ne détaille pas tous les aspects de l’influence turque (par exemple, ses relations avec l’Azerbaïdjan ou son rôle dans les Balkans). Pour approfondir, je te conseille de te référer à ton professeur ou à des ressources complémentaires.
+
+CITES: Page: 35",5,4,4,5,4,"La réponse candidate est très précise et pertinente, couvrant les principaux aspects de l'influence turque sous Erdogan. Elle est légèrement moins complète que la référence, car elle ne mentionne pas explicitement le Caucase ou la Méditerranée orientale, mais elle reste solide. Les citations sont bien intégrées, bien que leur format soit inhabituel (référence à une 'page 35')."
+Quels sont les défis géopolitiques au Moyen-Orient ?,moyen_orient,Simple Prompt,"La région est marquée par des rivalités entre puissances régionales, des conflits armés, la question palestinienne, les enjeux énergétiques, la fragmentation étatique et les tensions confessionnelles, le tout sur fond de transitions politiques inachevées.","Les défis géopolitiques au Moyen-Orient incluent :
+
+1. **Conflits régionaux** (ex. : Israël-Palestine, Syrie, Yémen).
+2. **Tensions sectaires** (chiites/sunnites, notamment entre Iran et Arabie saoudite).
+3. **Interventions étrangères** (Russie, États-Unis, Turquie, etc.).
+4. **Instabilité des États** (faiblesse institutionnelle, guerres civiles).
+5. **Contrôle des ressources** (pétrole, gaz, eau).
+6. **Montée des groupes extrémistes** (ex. : Daech, Al-Qaïda).
+7. **Crises migratoires** (réfugiés syriens, irakiens, etc.).
+8. **Course aux armements** (nucléaire iranien, missiles balistiques).
+
+Ces enjeux s’entremêlent et alimentent une région volatile.",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les points clés mentionnés dans la référence, avec des exemples concrets. Elle ajoute des éléments pertinents comme les interventions étrangères et la montée des extrémistes, ce qui enrichit l'analyse. Les citations sont implicites mais bien intégrées."
+Quels sont les défis géopolitiques au Moyen-Orient ?,moyen_orient,Basic RAG,"La région est marquée par des rivalités entre puissances régionales, des conflits armés, la question palestinienne, les enjeux énergétiques, la fragmentation étatique et les tensions confessionnelles, le tout sur fond de transitions politiques inachevées.","Voici les principaux défis géopolitiques au Moyen-Orient, tels qu'abordés dans ton manuel :
+
+**1. Rivalités régionales et alliances changeantes**
+Le Moyen-Orient est marqué par des tensions entre États rivaux, comme l’**Iran et l’Arabie saoudite**. Leur rivalité historique a longtemps structuré les conflits locaux (ex. : guerre au Yémen, soutien à des groupes opposés en Syrie). Cependant, en 2023, la Chine a joué un rôle de médiateur pour faciliter un rapprochement entre ces deux pays, montrant l’influence croissante d’acteurs extérieurs dans la région [Page 91].
+
+**2. Conflits non résolus et instabilité chronique**
+Plusieurs crises persistent :
+- **Conflit israélo-palestinien** : Toujours au cœur des tensions, avec des périodes de violences récurrentes (ex. : rupture des relations diplomatiques entre Israël et la Turquie entre 2010 et 2016, liée au soutien turc à la cause palestinienne) [Page 38].
+- **Guerre en Syrie** : Un conflit toujours ""inachevé"", avec des conséquences humanitaires et géopolitiques majeures (interventions étrangères, présence de groupes armés) [Page 19].
+- **Crise au Yémen** : Conflit indirect entre l’Arabie saoudite et l’Iran, via leurs alliés locaux, ayant provoqué une catastrophe humanitaire.
+
+**3. Enjeux énergétiques et compétitions géoéconomiques**
+La découverte de **gisements de gaz en Méditerranée orientale** a exacerbé les rivalités entre pays riverains (ex. : Turquie, Grèce, Chypre, Israël, Égypte). Ces ressources deviennent un enjeu de puissance et de souveraineté [Page 38].
+
+**4. Ingérences étrangères et reconfiguration des alliances**
+- **Présence militaire étrangère** : La Turquie a ouvert une base militaire au Qatar en 2015, illustrant son ambition d’étendre son influence dans la région [Page 38].
+- **Concurrence entre grandes puissances** : Les États-Unis (allié traditionnel d’Israël et de l’Arabie saoudite) et la Chine (qui cherche à étendre son influence, comme avec la médiation Iran-Arabie saoudite) s’affrontent indirectement [Page 91].
+
+**5. Risques de fragmentation et d’autoritarisme**
+La région reste marquée par la coexistence de **régimes démocratiques fragiles** et de **régimes autoritaires**, avec un risque accru de désordre et d’instabilité [Page 13]. Les transitions politiques (ex. : Libye, Soudan) sont souvent sources de tensions.
+
+---
+**À retenir** :
+Ces défis sont **interconnectés** (ex. : un conflit local peut déclencher une crise énergétique ou une intervention étrangère). Pour approfondir, je te conseille de relire les pages citées et d’observer les cartes du manuel, qui illustrent ces dynamiques.
+
+Si tu veux des précisions sur un point en particulier (ex. : rôle de la Chine, conflit israélo-palestinien), n’hésite pas à demander.",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les points clés mentionnés dans la réponse de référence, avec des exemples concrets et des détails supplémentaires pertinents. Les citations sont bien intégrées, bien que leur format (pages de manuel) soit moins standard qu'une source académique ou médiatique. La réponse est parfaitement adaptée à la question posée."
+Quels sont les défis géopolitiques au Moyen-Orient ?,moyen_orient,Advanced RAG,"La région est marquée par des rivalités entre puissances régionales, des conflits armés, la question palestinienne, les enjeux énergétiques, la fragmentation étatique et les tensions confessionnelles, le tout sur fond de transitions politiques inachevées.","Voici les principaux défis géopolitiques au Moyen-Orient, tels qu’abordés dans ton manuel :
+
+**1. Les conflits liés à l’eau**
+L’eau est une ressource rare et stratégique au Moyen-Orient. Les tensions portent sur :
+- Le partage des fleuves et nappes phréatiques (ex. : le Tigre, l’Euphrate, le Jourdain).
+- La construction de barrages (comme celui d’Atatürk en Turquie) qui réduisent le débit en aval.
+- L’absence d’instances d’arbitrage reconnues pour régler ces différends.
+Ces conflits sont aggravés par des inégalités entre États et des enjeux culturels [Page 115].
+
+**2. Les rivalités régionales et les interventions étrangères**
+Le Moyen-Orient est marqué par :
+- Des tensions entre puissances régionales (Arabie saoudite, Iran, Turquie, Israël).
+- Des interventions militaires ou politiques de grandes puissances (États-Unis, Russie, Chine).
+Ces dynamiques alimentent des guerres par procuration (ex. : Syrie, Yémen) [Non mentionné explicitement dans le contexte, mais lié aux enjeux géopolitiques généraux].
+
+**3. Les enjeux énergétiques et économiques**
+- La région concentre une part majeure des réserves mondiales de pétrole et de gaz.
+- Les fluctuations des prix et les sanctions (ex. : contre l’Iran) créent des tensions économiques et géopolitiques [Non mentionné dans le contexte, mais essentiel pour comprendre la région].
+
+**Attention** :
+Certains défis cités dans ton manuel concernent d’autres régions (ex. : l’Inde [Page 235] ou les pandémies [Page 267]). Pour une analyse complète du Moyen-Orient, je te conseille de vérifier si ton manuel contient des pages spécifiques sur cette zone. Si ce n’est pas le cas, n’hésite pas à demander à ton professeur pour des précisions.
+
+CITES: Page: 115",4,3,3,4,3,"La réponse candidate est globalement pertinente et précise sur certains points (eau, rivalités régionales), mais elle omet des éléments clés comme la question palestinienne ou les tensions confessionnelles. Les citations sont bien référencées, mais la complétude est limitée par l'absence de certains enjeux majeurs mentionnés dans la réponse de référence."
+L'instabilité gagne-t-elle l'Afrique et pourquoi ?,afrique,Simple Prompt,"De nombreux pays africains connaissent des coups d'État, des insurrections armées et des tensions politiques, alimentés par la pauvreté, la faiblesse des institutions, la compétition pour les ressources et les ingérences extérieures.","Oui, l'Afrique connaît une instabilité croissante, due à plusieurs facteurs :
+
+1. **Conflits politiques** : Coups d'État, tensions ethniques et rivalités politiques (ex. Sahel, Corne de l'Afrique).
+2. **Crises économiques** : Pauvreté, inégalités, dépendance aux matières premières et dette.
+3. **Changements climatiques** : Sécheresses, famines et migrations forcées.
+4. **Terrorisme et insécurité** : Activité de groupes armés (Boko Haram, Al-Shabaab, etc.).
+5. **Interventions extérieures** : Influence de puissances étrangères (Russie, Chine, anciennes métropoles).
+
+Ces facteurs s'entretiennent mutuellement, aggravant l'instabilité.",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les points clés de la référence, avec des exemples concrets. Les citations sont pertinentes, bien que non sourcées. La réponse est parfaitement adaptée à la question."
+L'instabilité gagne-t-elle l'Afrique et pourquoi ?,afrique,Basic RAG,"De nombreux pays africains connaissent des coups d'État, des insurrections armées et des tensions politiques, alimentés par la pauvreté, la faiblesse des institutions, la compétition pour les ressources et les ingérences extérieures.","Voici une réponse structurée pour comprendre pourquoi l'instabilité gagne l'Afrique, en m'appuyant uniquement sur les éléments du contexte :
+
+---
+
+**1. Une multiplication des coups d'État et des tensions politiques**
+Depuis 2021, plusieurs pays africains ont connu des coups d'État, comme au Sahel (Mali, Burkina Faso, Niger) ou en Afrique centrale. Ces putschs remettent en cause les avancées démocratiques des années 1990 et favorisent le retour de régimes autoritaires.
+*Exemple* : Le Sénégal a connu des tensions politiques en 2023, et le Soudan est plongé dans une guerre civile [Page 67].
+
+**2. La menace djihadiste et l'insécurité au Sahel**
+L'Afrique de l'Ouest et le Sahel sont déstabilisés par la progression de groupes djihadistes. Ces mouvements armés exploitent les faiblesses des États pour s'implanter, comme au Mali, et étendent leur influence vers d'autres pays [Page 68].
+
+**3. Les luttes d'influence étrangères**
+L'Afrique est devenue un terrain de rivalités entre puissances étrangères (Occidentaux, Russes, Chinois, Turcs). Ces interventions, parfois militaires ou économiques, alimentent les divisions et fragilisent les gouvernements locaux [Page 67].
+
+**4. Des crises socio-économiques profondes**
+La pauvreté, les inégalités et la corruption affaiblissent la confiance des populations envers leurs dirigeants. Par exemple, les peuples autochtones (15 % de la population dans certains pays) restent marginalisés, ce qui nourrit les frustrations et les violences [Page 97].
+
+---
+
+**À retenir** :
+L'instabilité en Afrique s'explique par un mélange de facteurs internes (coups d'État, terrorisme, corruption) et externes (ingérences étrangères). Ces défis varient selon les régions : l'Afrique de l'Ouest est surtout touchée par le djihadisme, tandis que d'autres zones subissent des conflits politiques ou ethniques.
+
+Si tu veux approfondir un point précis (comme le rôle de la Russie au Sahel ou les causes de la guerre au Soudan), je peux t'aider à analyser les éléments du manuel. N'hésite pas à demander !",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les points clés de la réponse de référence, avec des exemples concrets et une structure claire. Les citations sont bien intégrées, bien que leur format (pages) soit moins standard que des sources directes. La pertinence est excellente, répondant parfaitement à la question posée."
+L'instabilité gagne-t-elle l'Afrique et pourquoi ?,afrique,Advanced RAG,"De nombreux pays africains connaissent des coups d'État, des insurrections armées et des tensions politiques, alimentés par la pauvreté, la faiblesse des institutions, la compétition pour les ressources et les ingérences extérieures.","L’instabilité gagne effectivement une partie de l’Afrique, en particulier dans la région du **Sahel**, qui forme ce qu’on appelle un **""arc de crise""**. Voici les raisons principales expliquées simplement :
+
+---
+
+**1. Les coups d’État et le recul démocratique**
+Depuis 2021, plusieurs pays africains ont connu des **putschs militaires** (exemples non cités dans le contexte, mais le phénomène est souligné). Cela marque un recul par rapport aux avancées démocratiques des années 1990.
+Par ailleurs, des pays comme le **Sénégal** ont connu des **tensions politiques fortes en 2023**, sans aller jusqu’au coup d’État, mais montrant une fragilité des institutions [Page 67].
+
+**2. Les conflits armés**
+La **guerre civile au Soudan** (depuis 2023) est un exemple marquant de cette instabilité. Elle oppose deux factions militaires et a des conséquences humanitaires dramatiques [Page 67].
+
+**3. Les luttes d’influence étrangères**
+L’Afrique est devenue un terrain de compétition entre plusieurs puissances :
+- Les **Occidentaux** (États-Unis, France, Union européenne) ;
+- La **Russie** (notamment via le groupe Wagner) ;
+- La **Turquie** et la **Chine**, qui renforcent leur présence économique et militaire.
+Ces rivalités peuvent **alimenter les tensions locales** en soutenant différents acteurs ou en exploitant les ressources [Page 67].
+
+**4. Le contexte régional : le Sahel**
+La région sahélienne (Mali, Burkina Faso, Niger, etc.) est particulièrement touchée par :
+- La **montée des groupes jihadistes** (liés à Al-Qaïda ou à Daech) ;
+- La **faiblesse des États**, incapables d’assurer la sécurité ou les services de base ;
+- Les **coups d’État récurrents** (ex. : Mali en 2020 et 2021, Burkina Faso en 2022) [Page 9 et 67].
+
+---
+
+**Attention** : Le contexte ne précise pas *tous* les pays concernés ni les détails des conflits. Si tu veux des exemples concrets ou des analyses plus poussées sur un pays en particulier, je t’invite à demander à ton professeur ou à consulter d’autres sources.
+
+**En résumé** :
+Oui, l’instabilité progresse en Afrique, notamment au Sahel, à cause d’un mélange de **crises politiques, de conflits armés et d’ingérences étrangères**. Mais cela ne concerne pas *toute* l’Afrique : certains pays restent stables.
+
+CITES: Page: 9,67",5,4,3,5,4,"La réponse candidate est très précise et pertinente, couvrant les principaux facteurs d'instabilité en Afrique, notamment les coups d'État, les conflits armés et les ingérences étrangères. Cependant, elle est légèrement moins complète que la référence, qui mentionne aussi la pauvreté et la compétition pour les ressources. Les citations sont bien intégrées mais manquent de détails concrets."
+Qu'est-ce que l'arc de crise sahélien ?,afrique,Simple Prompt,"L'arc de crise sahélien désigne la bande allant du Sahel à la Corne de l'Afrique, marquée par l'insécurité, les groupes armés, le terrorisme, les trafics, la fragilité des États et les effets du changement climatique sur les sociétés.","L'arc de crise sahélien désigne une zone de tensions et d'instabilité s'étendant du Sahel (Afrique de l'Ouest et centrale) jusqu'au bassin du lac Tchad. Cette région est marquée par :
+- **Insécurité** (terrorisme, groupes armés comme AQMI, Boko Haram).
+- **Conflits intercommunautaires** (pasteurs vs agriculteurs).
+- **Crises humanitaires** (famine, déplacements de populations).
+- **Faiblesse des États** (corruption, manque de gouvernance).
+
+Les pays concernés incluent le Mali, le Niger, le Burkina Faso, le Tchad et le nord du Nigeria.",5,4,5,5,4,"La réponse candidate est très précise et pertinente, couvrant les aspects clés de l'arc de crise sahélien. Elle mentionne des groupes armés spécifiques et des conflits intercommunautaires, ce qui enrichit l'information. Cependant, elle pourrait inclure brièvement les effets du changement climatique, comme dans la réponse de référence, pour une complétude parfaite."
+Qu'est-ce que l'arc de crise sahélien ?,afrique,Basic RAG,"L'arc de crise sahélien désigne la bande allant du Sahel à la Corne de l'Afrique, marquée par l'insécurité, les groupes armés, le terrorisme, les trafics, la fragilité des États et les effets du changement climatique sur les sociétés.","L’**arc de crise sahélien** désigne une zone géographique instable située dans la région du Sahel, en Afrique.
+
+Cette zone s’étend sur plusieurs pays (comme le Mali, le Niger, le Burkina Faso ou le Tchad) et connaît une **multiplication des crises** depuis les années 2010 :
+- **Conflits armés** (groupes djihadistes, rebellions, coups d’État) [Page 68].
+- **Instabilité politique** (régimes fragiles, transitions chaotiques) [Page 68].
+- **Crises humanitaires** (sécheresses, insécurité alimentaire, déplacements de populations) [Page 260].
+
+L’expression souligne que ces crises sont **interconnectées** et forment une **bande de tensions** traversant le Sahel, aggravée par des facteurs comme :
+- La **déstabilisation de la Libye en 2011** (qui a accru les trafics d’armes et les mouvements de groupes armés) [Page 72].
+- La **propagation du djihadisme** depuis le Mali vers d’autres pays [Page 68].
+
+Si tu veux approfondir un aspect précis (géographie, causes, conséquences), dis-le-moi. Sinon, je t’invite à relire les pages 68 et 72 de ton manuel pour plus de détails.",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les aspects clés de la question, avec des détails supplémentaires pertinents. Les citations sont bien intégrées, bien que leur format (pages de manuel) soit moins standard que des sources académiques. La réponse est globalement excellente."
+Qu'est-ce que l'arc de crise sahélien ?,afrique,Advanced RAG,"L'arc de crise sahélien désigne la bande allant du Sahel à la Corne de l'Afrique, marquée par l'insécurité, les groupes armés, le terrorisme, les trafics, la fragilité des États et les effets du changement climatique sur les sociétés.","L’**arc de crise sahélien** désigne une zone géographique en Afrique qui traverse plusieurs pays du **Sahel**, marquée par une **instabilité chronique** (conflits armés, terrorisme, crises politiques et humanitaires).
+
+### **Définition et localisation**
+Le Sahel est une **bande semi-aride** de **5 500 km de long sur 500 km de large**, située entre le désert du Sahara (au nord) et les savanes plus humides (au sud). Il s’étend sur plusieurs pays, notamment :
+- Le **Mali**
+- Le **Niger**
+- Le **Burkina Faso**
+- Le **Tchad**
+- La **Mauritanie**
+- Une partie du **Nigeria** et du **Soudan**
+
+Cette région est appelée **""arc de crise""** en raison de sa **vulnérabilité aux conflits** depuis les années 2010 [Page 72].
+
+---
+
+### **Origines de la crise**
+1. **Effondrement de la Libye (2011)**
+   - La chute du régime de **Kadhafi** (consécutive au Printemps arabe) a provoqué :
+     - La **prolifération d’armes** dans la région.
+     - Le **retour de mercenaires** et de groupes armés au Sahel.
+   - Cela a **déclenché une onde de choc** qui a aggravé l’instabilité [Page 72].
+
+2. **Montée des groupes jihadistes**
+   - Des organisations comme **AQMI (Al-Qaïda au Maghreb islamique)** ou l’**État islamique au Grand Sahara (EIGS)** exploitent :
+     - Les **faiblesses des États** (corruption, armées fragiles).
+     - Les **tensions intercommunautaires** (entre agriculteurs et éleveurs, par exemple).
+   - Ces groupes mènent des **attaques contre les civils et les forces militaires** [Page 72].
+
+3. **Crises politiques et coups d’État**
+   - Plusieurs pays sahéliens ont connu des **putschs** (Mali en 2020 et 2021, Burkina Faso en 2022, Niger en 2023).
+   - Ces instabilités **affaiblissent la lutte contre le terrorisme** et **remettent en cause les partenariats** (comme celui avec la France) [Page 72].
+
+---
+
+### **Conséquences**
+- **Sécurité** : Multiplication des **attaques terroristes** et des **violences intercommunautaires**.
+- **Humanitaires** : **Déplacements massifs de populations** (plus de 3 millions de déplacés au Sahel en 2023) et **crises alimentaires**.
+- **Géopolitiques** : La France, historiquement présente, voit son influence **contestée** (retrait des troupes françaises du Mali en 2022, du Burkina Faso en 2023) [Page 72].
+
+---
+
+### **Pourquoi parle-t-on d’un ""arc"" ?**
+Le terme **""arc""** évoque une **zone en forme de croissant** qui s’étend d’ouest en est, reliant plusieurs foyers de crise. Cette expression souligne que les problèmes (terrorisme, pauvreté, instabilité) **ne sont pas isolés** mais **connectés** entre les pays [Page 72].
+
+---
+
+**À retenir** :
+L’arc de crise sahélien est une **région instable** du Sahel, touchée par le terrorisme, les coups d’État et les crises humanitaires, en partie à cause de l’effondrement de la Libye en 2011.
+
+CITES: Page: 72",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les aspects clés de l'arc de crise sahélien, avec des détails supplémentaires pertinents. Les citations sont bien intégrées, bien que leur format soit inhabituel (mention de 'Page 72'). La réponse est parfaitement pertinente pour la question posée."
+Quel est le rôle du groupe Wagner en Afrique ?,afrique,Simple Prompt,"Le groupe Wagner, ou ses structures successeures, agit comme instrument d'influence d'intérêts russes dans plusieurs pays africains en fournissant des services de sécurité, en soutenant certains régimes et en obtenant des contreparties minières ou politiques.","Le groupe Wagner, une société militaire privée russe, intervient en Afrique principalement pour :
+
+1. **Soutien militaire** : Formation et appui aux forces locales (ex. : Centrafrique, Mali, Libye).
+2. **Sécurité des régimes** : Protection des dirigeants alliés (ex. : Bachir au Tchad, Assimi Goïta au Mali).
+3. **Influence géopolitique** : Renforcement de l’influence russe face à l’Occident.
+4. **Exploitation des ressources** : Accès aux mines (or, diamants) en échange de services.
+
+Critiqué pour des exactions et des violations des droits humains.",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les aspects clés du rôle du groupe Wagner en Afrique, avec des exemples concrets. Elle est pertinente et bien structurée, bien que les citations manquent de sources explicites."
+Quel est le rôle du groupe Wagner en Afrique ?,afrique,Basic RAG,"Le groupe Wagner, ou ses structures successeures, agit comme instrument d'influence d'intérêts russes dans plusieurs pays africains en fournissant des services de sécurité, en soutenant certains régimes et en obtenant des contreparties minières ou politiques.","Voici le rôle du groupe Wagner en Afrique, d'après ton manuel :
+
+**1. Remplacer l’influence française**
+Le groupe Wagner est une société militaire privée russe qui agit en réalité pour le Kremlin. Il a permis à la Russie de s’implanter en Afrique (Centrafrique, Mali, Burkina Faso) en affaiblissant la présence française, notamment après les opérations *Serval* et *Barkhane* [Page 76].
+
+**2. Soutenir des régimes autoritaires**
+Wagner appuie des juntes militaires ou des gouvernements fragilisés par des coups d’État, comme au Mali ou au Burkina Faso. Ces régimes, souvent contestés par leur population, cherchent des alliés pour se maintenir au pouvoir et lutter contre les groupes djihadistes. La Russie, via Wagner, en profite pour étendre son influence [Page 68].
+
+**3. Exploiter les ressources locales**
+Comme d’autres puissances (France, Chine, États-Unis), la Russie utilise Wagner pour sécuriser son accès aux ressources stratégiques (minerais, uranium, etc.). Ces interventions servent aussi à contrer l’influence occidentale en Afrique [Page 68 et 116].
+
+**Attention** :
+- Wagner n’est pas une entreprise ""privée"" classique : elle est contrôlée par le Kremlin [Page 76].
+- Son action affaiblit les démocraties locales et renforce les régimes autoritaires [Page 68].
+
+Si tu veux approfondir un aspect précis (ex : son impact au Mali), dis-le-moi. Sinon, ton professeur pourra compléter avec des exemples concrets.",5,5,4,5,5,"La réponse candidate est très précise et couvre tous les aspects clés du rôle du groupe Wagner en Afrique, avec des détails pertinents sur son influence géopolitique, son soutien aux régimes autoritaires et son exploitation des ressources. Les citations de pages sont bien intégrées, bien que leur format soit inhabituel pour une réponse standard. La réponse est globalement excellente."
+Quel est le rôle du groupe Wagner en Afrique ?,afrique,Advanced RAG,"Le groupe Wagner, ou ses structures successeures, agit comme instrument d'influence d'intérêts russes dans plusieurs pays africains en fournissant des services de sécurité, en soutenant certains régimes et en obtenant des contreparties minières ou politiques.","Le groupe Wagner est une organisation militaire privée russe qui joue un rôle important en Afrique, notamment dans plusieurs pays confrontés à des crises politiques ou sécuritaires.
+
+**Rôle en Afrique :**
+1. **Soutien aux régimes en place** :
+   Le groupe Wagner intervient souvent pour appuyer des gouvernements fragilisés, comme en République centrafricaine (depuis 2018) ou au Mali (depuis 2021). Il fournit une aide militaire, logistique et sécuritaire en échange de concessions économiques (minerais, ressources naturelles) [Page 68].
+
+2. **Lutte contre les groupes insurgés** :
+   Wagner est déployé pour combattre des mouvements rebelles ou djihadistes, par exemple au Mali contre les groupes liés à Al-Qaïda ou à l’État islamique. Cependant, son efficacité est parfois remise en question, et ses méthodes peuvent être brutales.
+
+3. **Influence géopolitique de la Russie** :
+   Wagner permet à Moscou d’étendre son influence en Afrique sans engager directement son armée. Cela s’inscrit dans une stratégie de rivalité avec les puissances occidentales (comme la France ou les États-Unis) présentes sur le continent.
+
+**Pays concernés :**
+Les interventions les plus marquantes ont lieu en République centrafricaine, au Mali, au Soudan et en Libye. Ces pays sont souvent en proie à des coups d’État ou à des conflits internes, comme le montre la liste des putschs récents [Page 68].
+
+**Limites des informations :**
+Le contexte ne détaille pas davantage les actions précises de Wagner (exemples concrets, bilan humain). Pour approfondir, je te conseille de consulter ton professeur ou des sources complémentaires.
+
+CITES: Page: 68",5,5,3,5,4,"La réponse candidate est très précise et complète, couvrant tous les aspects clés du rôle du groupe Wagner en Afrique. Cependant, la qualité des citations est moyenne, car la référence 'Page 68' n'est pas explicitement identifiée. La réponse reste pertinente et bien structurée."
+Quels sont les principaux conflits actuels en Afrique ?,afrique,Simple Prompt,"On trouve des conflits armés ou insurrections notables au Sahel, en Afrique centrale, dans la Corne de l'Afrique et dans certaines régions côtières, souvent mêlant enjeux politiques, identitaires, économiques et environnementaux.","Voici les principaux conflits actuels en Afrique (2024) :
+
+1. **Sahara occidental** : Conflit entre le Maroc et le Front Polisario (soutenu par l'Algérie).
+2. **Soudan** : Guerre civile entre l'armée et les Forces de soutien rapide (RSF).
+3. **Éthiopie** : Conflit dans le Tigré et tensions ethniques persistantes.
+4. **RDC** : Guerres locales (M23, ADF) et tensions régionales (Rwanda, Ouganda).
+5. **Mali, Burkina Faso, Niger** : Insurrections jihadistes (Groupe de soutien à l'islam et aux musulmans, État islamique).
+6. **Somalie** : Conflit contre les shebabs (Al-Shabaab).
+7. **Cameroun** : Crise anglophone et attaques de Boko Haram.
+8. **Libye** : Instabilité politique et divisions territoriales.
+
+Ces conflits impliquent souvent des acteurs régionaux et internationaux.",5,5,4,5,5,"La réponse candidate est très précise et couvre les principaux conflits actuels en Afrique, avec des détails pertinents. Elle est complète et pertinente, bien que les citations manquent de sources explicites. La réponse de référence est plus générale, mais la candidate offre une liste détaillée et actualisée."
+Quels sont les principaux conflits actuels en Afrique ?,afrique,Basic RAG,"On trouve des conflits armés ou insurrections notables au Sahel, en Afrique centrale, dans la Corne de l'Afrique et dans certaines régions côtières, souvent mêlant enjeux politiques, identitaires, économiques et environnementaux.","Voici les principaux conflits actuels en Afrique mentionnés dans ton manuel, avec leurs causes et caractéristiques :
+
+**1. Conflit au Soudan (depuis 2023)**
+- **Acteurs** : Armée régulière (dirigée par le général al-Bourhan) contre les Forces de soutien rapide (FSR, milice paramilitaire).
+- **Cause** : Lutte pour le pouvoir, aggravée par le soutien de militants islamistes à l’armée régulière.
+- **Bilan humain** : 1 800 victimes et 1,5 million de déplacés [Page 69].
+
+**2. Conflits liés aux ressources naturelles**
+- **Exemples** :
+  - **Niger** : Interventions internationales (dont la France) pour sécuriser l’uranium [Page 116].
+  - **Soudan** : La Chine protège ses oléoducs, source de tensions [Page 116].
+- **Mécanisme** : Les États autoritaires ou les puissances étrangères exploitent ces ressources, parfois en réprimant les populations locales [Page 115-116].
+
+**3. Conflits liés aux frontières maritimes**
+- **Enjeu** : 60 % des frontières maritimes mondiales ne sont pas délimitées, ce qui peut générer des tensions pour le contrôle du pétrole ou des ressources halieutiques (poisson, etc.) [Page 116].
+- **Cas africains** : Le manuel ne cite pas d’exemple précis pour l’Afrique, mais ce type de conflit concerne aussi le continent.
+
+**Remarque importante** :
+Ton manuel ne donne pas une liste exhaustive des conflits actuels en Afrique. D’autres conflits majeurs (comme ceux en République démocratique du Congo, au Sahel ou en Éthiopie) ne sont pas mentionnés ici.
+Pour une vision complète, je te conseille de te référer à ton professeur ou à des sources actualisées comme les rapports de l’ONU ou de l’Union africaine.",4,3,5,4,4,"La réponse candidate est globalement précise et pertinente, avec des citations bien référencées. Cependant, elle est incomplète car elle ne couvre pas tous les conflits majeurs mentionnés dans la réponse de référence (comme ceux en Afrique centrale ou dans la Corne de l'Afrique). La mention des sources (manuel) est claire, mais la réponse aurait gagné à intégrer des exemples plus variés."
+Quels sont les principaux conflits actuels en Afrique ?,afrique,Advanced RAG,"On trouve des conflits armés ou insurrections notables au Sahel, en Afrique centrale, dans la Corne de l'Afrique et dans certaines régions côtières, souvent mêlant enjeux politiques, identitaires, économiques et environnementaux.","Voici les principaux conflits actuels en Afrique **mentionnés dans ton manuel**, en lien avec les causes structurelles abordées :
+
+---
+
+**1. Conflits liés aux ressources naturelles**
+Les richesses stratégiques (pétrole, minerais, eau, terres agricoles) alimentent des tensions durables. Ces ressources ne sont pas toujours la cause initiale des guerres, mais elles en prolongent la durée en fournissant des financements aux groupes armés ou en créant des rivalités entre régions ou États.
+*Exemple* : Les conflits pour le contrôle des terres arables ou des bassins hydrographiques opposent parfois des régions excédentaires à des régions déficitaires, ou des acteurs d’un même bassin (comme autour des grands fleuves) [Page 113-114].
+
+---
+
+**2. Conflits internationaux pour l’eau**
+Les grands fleuves africains (comme le Nil, le Niger ou le Congo) traversent plusieurs pays. Leur partage politique, souvent mal adapté aux réalités hydrographiques, génère des tensions entre États riverains. Ces conflits peuvent devenir ""virulents"" [Page 114].
+
+---
+
+**Attention** :
+- Ton manuel ne liste **pas de conflits précis par nom** (comme le Sahel, l’Éthiopie, ou la RDC), mais explique les *mécanismes* qui les sous-tendent.
+- Il ne mentionne pas non plus de conflits récents comme la guerre au Soudan (2023) ou les tensions au Sahel, car ces exemples ne figurent pas dans les extraits fournis.
+- Pour des cas concrets, je t’invite à consulter ton professeur ou des cartes actualisées dans ton atlas.
+
+---
+
+**Correction d’une idée reçue** :
+Tu as peut-être entendu parler du braconnage des rhinocéros comme un ""conflit"". En réalité, le manuel le présente comme une *menace écologique* liée au trafic illégal, pas comme un conflit armé [Page 282]. Ne confonds pas ces deux notions.
+
+---
+
+**Pour aller plus loin** :
+Relis les pages 113 et 114 pour comprendre comment les ressources naturelles *aggravent* les conflits, même si elles n’en sont pas la cause première.
+
+CITES: Page: 113,114,282,98",4,3,5,3,3,"La réponse candidate est factuellement correcte et bien sourcée, mais elle ne couvre pas tous les conflits actuels majeurs (comme ceux du Sahel ou de la Corne de l'Afrique) et se concentre sur des causes structurelles plutôt que sur des exemples concrets. La pertinence est limitée car elle s'appuie sur un manuel et non sur une analyse actualisée."

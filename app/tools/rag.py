@@ -20,6 +20,10 @@ theme_splitter = RecursiveCharacterTextSplitter(
 
 embeddings = MistralAIEmbeddings(model=EMBED_MODEL)
 
+def format_docs(docs):
+    """Format retrieved documents with page numbers"""
+    return "\n\n".join(f"[Page {d.metadata.get('page','N/A')}] {d.page_content}" for d in docs)
+
 def split_docs(docs, chunk_size=None, chunk_overlap=None):
     """
     Split documents into smaller chunks for better retrieval.
