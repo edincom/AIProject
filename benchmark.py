@@ -471,7 +471,7 @@ def create_ensemble_retriever(chunk_size, chunk_overlap, dense_vectorstore):
     # Combine with ensemble
     ensemble_retriever = SimpleEnsembleRetriever(
         retrievers=[bm25, dense_retriever],
-        weights=[0.30, 0.70],
+        weights=[0.1, 0.9],
         k=7
     )
     
