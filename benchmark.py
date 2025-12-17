@@ -9,6 +9,16 @@ from dotenv import load_dotenv
 import os
 import sys
 
+from collections import defaultdict
+from typing import List
+from langchain_core.retrievers import BaseRetriever
+from langchain_core.documents import Document
+from pydantic import BaseModel
+from langchain_community.retrievers import BM25Retriever
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_community.document_loaders import PyMuPDFLoader
+
+
 # ============================================================================
 # PATH SETUP - Auto-detect project root
 # ============================================================================
@@ -41,23 +51,15 @@ load_dotenv(override=True)
 # CONFIGURATION
 # ============================================================================
 PDF_PATH = "data/Atlas.pdf"
-
-LLM_MODEL = "mistral-large-latest"
+LLM_MODEL = "mistral-small-latest"
 EMBED_MODEL = "mistral-embed"
-FAISS_PATH = "faiss_index"
-
-# Verify required files exist
-if not os.path.exists(FAISS_PATH):
-    print(f"ERROR: FAISS index not found at {FAISS_PATH}")
-    print(f"Current directory: {os.getcwd()}")
-    print(f"Please ensure you have built the FAISS index first.")
-    sys.exit(1)
 
 if not os.path.exists(PDF_PATH):
     print(f"WARNING: PDF not found at {PDF_PATH}")
     print(f"PDF is only needed for Advanced RAG (BM25 setup)")
+    sys.exit(1)
 
-print(f"✓ FAISS index found at: {os.path.abspath(FAISS_PATH)}")
+print(f"✓ PDF found at: {os.path.abspath(PDF_PATH)}")
 print(f"✓ Configuration loaded\n")
 
 # ============================================================================
@@ -65,9 +67,39 @@ print(f"✓ Configuration loaded\n")
 # ============================================================================
 embeddings = MistralAIEmbeddings(model=EMBED_MODEL)
 
-def load_vectorstore(faiss_path):
-    """Load an existing FAISS vector database from disk."""
-    return FAISS.load_local(faiss_path, embeddings, allow_dangerous_deserialization=True)
+
+def build_vectorstore(documents, faiss_path, chunk_size=None, chunk_overlap=None):
+    """
+    Create a new FAISS vector database from documents.
+    - If chunk_size/chunk_overlap provided, splits documents first
+    - Converts each document chunk into a vector embedding using Mistral's embedding model
+    - Stores these embeddings in a FAISS index for fast similarity search
+    - Saves the index to disk so it can be reused without rebuilding
+    - Returns the vectorstore object for immediate use
+    
+    Args:
+        documents: List of documents (will be split if chunk_size provided)
+        faiss_path: Path where the FAISS index should be saved
+        chunk_size: Optional chunk size for splitting (uses documents as-is if None)
+        chunk_overlap: Optional chunk overlap for splitting
+    
+    Returns:
+        FAISS vectorstore object
+    """
+    # Split documents if chunk parameters provided
+    if chunk_size is not None:
+        from langchain_text_splitters import RecursiveCharacterTextSplitter
+        splitter = RecursiveCharacterTextSplitter(
+            chunk_size=chunk_size,
+            chunk_overlap=chunk_overlap or 0
+        )
+        documents = splitter.split_documents(documents)
+        print(f"Split into {len(documents)} chunks (size={chunk_size}, overlap={chunk_overlap})")
+    
+    store = FAISS.from_documents(documents, embeddings)
+    store.save_local(faiss_path)
+    print(f"Vectorstore saved to {faiss_path}")
+    return store
 
 def format_docs(docs):
     """Format retrieved documents with page numbers"""
@@ -208,18 +240,102 @@ benchmark_questions = {
 all_questions = [q for topic_questions in benchmark_questions.values() for q in topic_questions]
 
 # ============================================================================
-# RAG 1
+# REFERENCE ANSWERS
+# ============================================================================
+reference_answers = {
+    "Quels sont les principaux enjeux géopolitiques dans la région du Caucase ?":
+        "Le Caucase est une zone charnière entre Europe, Russie, Moyen-Orient et Asie centrale, marquée par des rivalités d'influence (Russie, Turquie, Iran, Occident), des conflits autour des frontières et des minorités, ainsi que par des enjeux énergétiques et de corridors de transport.",
+    "Décrivez les tensions actuelles autour de Taïwan et leurs implications régionales.":
+        "Les tensions autour de Taïwan opposent la Chine, qui revendique l'île, aux États-Unis et à leurs partenaires qui soutiennent de facto son autonomie, ce qui alimente une course aux armements en Asie de l'Est et renforce les alliances régionales de sécurité.",
+    "Quel est l'état actuel du conflit israélo-palestinien ?":
+        "Le conflit israélo-palestinien reste caractérisé par l'absence de solution politique négociée, la poursuite de la colonisation, des cycles récurrents de violences, et une crise humanitaire grave dans les territoires palestiniens.",
+    "Comment la guerre en Ukraine affecte-t-elle l'équilibre géopolitique mondial ?":
+        "La guerre en Ukraine a renforcé la cohésion des alliés occidentaux, accentué la confrontation avec la Russie, accéléré le réalignement énergétique européen et rapproché davantage Moscou de puissances non occidentales comme la Chine, ce qui recompose l'équilibre mondial.",
+    "Quelles sont les forces et faiblesses militaires de la Russie dans le conflit ukrainien ?":
+        "La Russie dispose d'un important arsenal, d'une base industrielle de défense et de la supériorité en artillerie, mais elle souffre de contraintes logistiques, de pertes humaines et matérielles élevées, de problèmes de commandement et de moral ainsi que d'une difficulté à mener des opérations combinées efficaces.",
+    "Comment l'Europe a-t-elle réagi face à l'invasion russe de l'Ukraine ?":
+        "L'Europe a répondu par des sanctions économiques massives contre la Russie, une aide militaire et financière significative à l'Ukraine, le renforcement de l'OTAN et une réorientation rapide de sa politique énergétique pour réduire sa dépendance aux hydrocarbures russes.",
+    "Quel est l'impact économique des sanctions contre la Russie ?":
+        "Les sanctions ont restreint l'accès de la Russie aux marchés, aux technologies et aux financements occidentaux, provoqué une réorientation forcée de ses exportations vers d'autres partenaires et entraîné des effets de contournement, tandis qu'elles ont aussi généré des coûts pour certaines économies européennes.",
+    "La Russie peut-elle gagner la guerre en Ukraine ?":
+        "L'issue du conflit reste incertaine et dépend de nombreux facteurs militaires, politiques et économiques, mais la Russie fait face à des contraintes structurelles et à une forte résistance ukrainienne soutenue par l'aide occidentale, ce qui rend improbable une victoire rapide et totale.",
+    "Pourquoi l'Indopacifique est-il devenu un théâtre majeur des rivalités mondiales ?":
+        "L'Indopacifique concentre une grande part de la population mondiale, du commerce maritime et des chaînes de valeur, et voit la montée en puissance de la Chine face aux États-Unis, ce qui en fait un espace clé de compétition stratégique, technologique et navale.",
+    "Quel est le rôle de la Chine dans la région indopacifique ?":
+        "La Chine cherche à y affirmer son statut de grande puissance, à sécuriser ses routes maritimes et ses approvisionnements, à projeter sa puissance militaire et à étendre son influence économique et diplomatique à travers des investissements et des partenariats.",
+    "Comment les États-Unis répondent-ils aux ambitions chinoises en Asie ?":
+        "Les États-Unis renforcent leurs alliances et partenariats (Japon, Corée du Sud, Australie, Inde, ASEAN), augmentent leur présence militaire, développent la coopération technologique et sécuritaire, et promeuvent des initiatives économiques alternatives pour contenir l'influence chinoise.",
+    "Quels sont les enjeux maritimes en mer de Chine méridionale ?":
+        "La mer de Chine méridionale concentre des voies maritimes essentielles, des ressources halieutiques et énergétiques, et fait l'objet de revendications territoriales concurrentes, notamment de la Chine, ce qui crée des tensions autour de la liberté de navigation et du droit international de la mer.",
+    "Pourquoi la Syrie est-elle considérée comme une guerre inachevée ?":
+        "Le régime a repris le contrôle d'une grande partie du territoire mais le pays reste fragmenté, avec des zones tenues par d'autres acteurs, une présence de forces étrangères, une crise humanitaire profonde et une absence de solution politique globale.",
+    "Quelle est la situation politique actuelle en Iran ?":
+        "L'Iran est dirigé par un régime théocratique qui fait face à des tensions internes récurrentes, à des sanctions internationales, à des difficultés économiques et à des rivalités régionales, tout en poursuivant une politique d'influence au Moyen-Orient.",
+    "Comment la Turquie sous Erdogan influence-t-elle la région ?":
+        "La Turquie mène une politique étrangère ambitieuse, combinant interventions militaires, soutien à certains groupes politiques, diplomatie énergétique et rôle de médiateur, ce qui lui permet de peser en Syrie, dans le Caucase, en Méditerranée orientale et au-delà.",
+    "Quels sont les défis géopolitiques au Moyen-Orient ?":
+        "La région est marquée par des rivalités entre puissances régionales, des conflits armés, la question palestinienne, les enjeux énergétiques, la fragmentation étatique et les tensions confessionnelles, le tout sur fond de transitions politiques inachevées.",
+    "L'instabilité gagne-t-elle l'Afrique et pourquoi ?":
+        "De nombreux pays africains connaissent des coups d'État, des insurrections armées et des tensions politiques, alimentés par la pauvreté, la faiblesse des institutions, la compétition pour les ressources et les ingérences extérieures.",
+    "Qu'est-ce que l'arc de crise sahélien ?":
+        "L'arc de crise sahélien désigne la bande allant du Sahel à la Corne de l'Afrique, marquée par l'insécurité, les groupes armés, le terrorisme, les trafics, la fragilité des États et les effets du changement climatique sur les sociétés.",
+    "Quel est le rôle du groupe Wagner en Afrique ?":
+        "Le groupe Wagner, ou ses structures successeures, agit comme instrument d'influence d'intérêts russes dans plusieurs pays africains en fournissant des services de sécurité, en soutenant certains régimes et en obtenant des contreparties minières ou politiques.",
+    "Quels sont les principaux conflits actuels en Afrique ?":
+        "On trouve des conflits armés ou insurrections notables au Sahel, en Afrique centrale, dans la Corne de l'Afrique et dans certaines régions côtières, souvent mêlant enjeux politiques, identitaires, économiques et environnementaux.",
+}
+
+# ============================================================================
+# Simple RAG, with different values of CHUNK_SIZE and CHUNK_OVERLAP
 # ============================================================================
 
-CHUNK_SIZE = 500
-CHUNK_OVERLAP = 50
+loader = PyMuPDFLoader(PDF_PATH)
+docs = loader.load()
 
-# Load vectorstore and create retriever
-vectorstore = load_vectorstore(FAISS_PATH)
-basic_retriever = vectorstore.as_retriever(search_type='similarity', search_kwargs={'k': 4})
+# Configuration 1: Small chunks
+CHUNK_SIZE_1 = 250
+CHUNK_OVERLAP_1 = 25
+FAISS_PATH_1 = "faiss_index_chunk250"
+
+if os.path.exists(FAISS_PATH_1):
+    print(f"Loading existing vectorstore from {FAISS_PATH_1}")
+    vectorstore_1 = FAISS.load_local(FAISS_PATH_1, embeddings, allow_dangerous_deserialization=True)
+else:
+    print(f"Building new vectorstore at {FAISS_PATH_1}")
+    vectorstore_1 = build_vectorstore(docs, FAISS_PATH_1, chunk_size=CHUNK_SIZE_1, chunk_overlap=CHUNK_OVERLAP_1)
+
+retriever_1 = vectorstore_1.as_retriever(search_type='similarity', search_kwargs={'k': 7})
+
+# Configuration 2: Medium chunks
+CHUNK_SIZE_2 = 500
+CHUNK_OVERLAP_2 = 50
+FAISS_PATH_2 = "faiss_index_chunk500"
+
+if os.path.exists(FAISS_PATH_2):
+    print(f"Loading existing vectorstore from {FAISS_PATH_2}")
+    vectorstore_2 = FAISS.load_local(FAISS_PATH_2, embeddings, allow_dangerous_deserialization=True)
+else:
+    print(f"Building new vectorstore at {FAISS_PATH_2}")
+    vectorstore_2 = build_vectorstore(docs, FAISS_PATH_2, chunk_size=CHUNK_SIZE_2, chunk_overlap=CHUNK_OVERLAP_2)
+
+retriever_2 = vectorstore_2.as_retriever(search_type='similarity', search_kwargs={'k': 7})
+
+# Configuration 3: Large chunks
+CHUNK_SIZE_3 = 1000
+CHUNK_OVERLAP_3 = 100
+FAISS_PATH_3 = "faiss_index_chunk1000"
+
+if os.path.exists(FAISS_PATH_3):
+    print(f"Loading existing vectorstore from {FAISS_PATH_3}")
+    vectorstore_3 = FAISS.load_local(FAISS_PATH_3, embeddings, allow_dangerous_deserialization=True)
+else:
+    print(f"Building new vectorstore at {FAISS_PATH_3}")
+    vectorstore_3 = build_vectorstore(docs, FAISS_PATH_3, chunk_size=CHUNK_SIZE_3, chunk_overlap=CHUNK_OVERLAP_3)
+
+retriever_3 = vectorstore_3.as_retriever(search_type='similarity', search_kwargs={'k': 7})
 
 # LLM
-llm = ChatMistralAI(model=LLM_MODEL, temperature=1)
+llm = ChatMistralAI(model=LLM_MODEL, temperature=0)
 
 # Persona prompt from project (modified to cite page numbers)
 persona_prompt = ChatPromptTemplate.from_messages([
@@ -256,171 +372,44 @@ persona_prompt = ChatPromptTemplate.from_messages([
      "Question: {question}\n\nContexte:\n{context}")
 ])
 
-# RAG chain
-basic_rag_chain = (
-    {
-        "context": basic_retriever | format_docs, 
-        "question": RunnablePassthrough(),
-        "chapter_context": lambda _: "Chapitre général",
-        "history": lambda _: "Aucune conversation précédente"
-    } 
-    | persona_prompt
-    | llm
-    | StrOutputParser()
-)
+def create_rag_chain(retriever):
+    """Factory function to create a RAG chain with a specific retriever."""
+    return (
+        {
+            "context": retriever | format_docs, 
+            "question": RunnablePassthrough(),
+            "chapter_context": lambda _: "Chapitre général",
+            "history": lambda _: "Aucune conversation précédente"
+        } 
+        | persona_prompt
+        | llm
+        | StrOutputParser()
+    )
 
-def ask_basic_rag(question: str) -> str:
-    """Ask using basic RAG with similarity retrieval."""
-    return basic_rag_chain.invoke(question)
+# Create three chains
+rag_chain_1 = create_rag_chain(retriever_1)
+rag_chain_2 = create_rag_chain(retriever_2)
+rag_chain_3 = create_rag_chain(retriever_3)
 
-# ============================================================================
-# RAG 2
-# ============================================================================
+def ask_basic_rag_1(question: str) -> str:
+    """Ask using RAG with chunk size 250."""
+    return rag_chain_1.invoke(question)
 
-CHUNK_SIZE = 500
-CHUNK_OVERLAP = 50
+def ask_basic_rag_2(question: str) -> str:
+    """Ask using RAG with chunk size 500."""
+    return rag_chain_2.invoke(question)
 
-# Load vectorstore and create retriever
-vectorstore = load_vectorstore(FAISS_PATH)
-basic_retriever = vectorstore.as_retriever(search_type='similarity', search_kwargs={'k': 4})
+def ask_basic_rag_3(question: str) -> str:
+    """Ask using RAG with chunk size 1000."""
+    return rag_chain_3.invoke(question)
 
-# LLM
-llm = ChatMistralAI(model=LLM_MODEL, temperature=1)
-
-# Persona prompt from project (modified to cite page numbers)
-persona_prompt = ChatPromptTemplate.from_messages([
-    ("system",
-            """Tu es un professeur d'histoire-géographie expérimenté (20 ans d'enseignement).
-    Tu aides un élève en difficulté en expliquant clairement, sans jamais inventer d'informations.
-
-    PRIORITÉS (dans cet ordre) :
-    1. Exactitude : ne répondre qu'avec les informations présentes dans le contexte fourni.
-    2. Rigueur : si le contexte ne contient pas la réponse, dis-le explicitement.
-    3. Pertinence : si la question est hors programme ou sans lien avec le chapitre, indique-le clairement.
-    4. Style : réponses courtes, claires, structurées en paragraphes avec sauts de ligne si nécessaire.
-    5. Citations : TOUJOURS citer la page source sous forme [Page X] après chaque fait mentionné.
-
-    RÈGLES :
-    - N'utilise comme source que : (a) le contexte, (b) l'historique de conversation, uniquement pour le fil logique, jamais comme source factuelle.
-    - Ne mentionne jamais l'existence du contexte, de règles ou de contraintes.
-    - Pour l'élève, le contexte correspond simplement à son manuel "Le Grand Atlas".
-    - Si une information n'apparaît nulle part dans le contexte, invite l'élève à se référer à son professeur.
-    - Si l'élève fait une erreur factuelle, corrige-le avec bienveillance.
-    - Ton ton est encourageant mais professionnel : pas d'humour, pas de familiarité.
-    - Explique de manière fluide et pédagogique, en évitant les phrases trop longues.
-    - IMPORTANT : Cite systématiquement la page après chaque information factuelle en utilisant le format [Page X].
-      Le contexte fourni contient déjà les numéros de page sous forme [Page X] au début de chaque extrait.
-
-    Chapitre du cours : {chapter_context}
-
-    Historique de conversation dans ce chapitre :
-    {history}
-
-
-    """),
-    ("human",
-     "Question: {question}\n\nContexte:\n{context}")
-])
-
-# RAG chain
-basic_rag_chain = (
-    {
-        "context": basic_retriever | format_docs, 
-        "question": RunnablePassthrough(),
-        "chapter_context": lambda _: "Chapitre général",
-        "history": lambda _: "Aucune conversation précédente"
-    } 
-    | persona_prompt
-    | llm
-    | StrOutputParser()
-)
-
-def ask_basic_rag(question: str) -> str:
-    """Ask using basic RAG with similarity retrieval."""
-    return basic_rag_chain.invoke(question)
-
-# ============================================================================
-# RAG 3
-# ============================================================================
-
-CHUNK_SIZE = 500
-CHUNK_OVERLAP = 50
-
-# Load vectorstore and create retriever
-vectorstore = load_vectorstore(FAISS_PATH)
-basic_retriever = vectorstore.as_retriever(search_type='similarity', search_kwargs={'k': 4})
-
-# LLM
-llm = ChatMistralAI(model=LLM_MODEL, temperature=1)
-
-# Persona prompt from project (modified to cite page numbers)
-persona_prompt = ChatPromptTemplate.from_messages([
-    ("system",
-            """Tu es un professeur d'histoire-géographie expérimenté (20 ans d'enseignement).
-    Tu aides un élève en difficulté en expliquant clairement, sans jamais inventer d'informations.
-
-    PRIORITÉS (dans cet ordre) :
-    1. Exactitude : ne répondre qu'avec les informations présentes dans le contexte fourni.
-    2. Rigueur : si le contexte ne contient pas la réponse, dis-le explicitement.
-    3. Pertinence : si la question est hors programme ou sans lien avec le chapitre, indique-le clairement.
-    4. Style : réponses courtes, claires, structurées en paragraphes avec sauts de ligne si nécessaire.
-    5. Citations : TOUJOURS citer la page source sous forme [Page X] après chaque fait mentionné.
-
-    RÈGLES :
-    - N'utilise comme source que : (a) le contexte, (b) l'historique de conversation, uniquement pour le fil logique, jamais comme source factuelle.
-    - Ne mentionne jamais l'existence du contexte, de règles ou de contraintes.
-    - Pour l'élève, le contexte correspond simplement à son manuel "Le Grand Atlas".
-    - Si une information n'apparaît nulle part dans le contexte, invite l'élève à se référer à son professeur.
-    - Si l'élève fait une erreur factuelle, corrige-le avec bienveillance.
-    - Ton ton est encourageant mais professionnel : pas d'humour, pas de familiarité.
-    - Explique de manière fluide et pédagogique, en évitant les phrases trop longues.
-    - IMPORTANT : Cite systématiquement la page après chaque information factuelle en utilisant le format [Page X].
-      Le contexte fourni contient déjà les numéros de page sous forme [Page X] au début de chaque extrait.
-
-    Chapitre du cours : {chapter_context}
-
-    Historique de conversation dans ce chapitre :
-    {history}
-
-
-    """),
-    ("human",
-     "Question: {question}\n\nContexte:\n{context}")
-])
-
-# RAG chain
-basic_rag_chain = (
-    {
-        "context": basic_retriever | format_docs, 
-        "question": RunnablePassthrough(),
-        "chapter_context": lambda _: "Chapitre général",
-        "history": lambda _: "Aucune conversation précédente"
-    } 
-    | persona_prompt
-    | llm
-    | StrOutputParser()
-)
-
-def ask_basic_rag(question: str) -> str:
-    """Ask using basic RAG with similarity retrieval."""
-    return basic_rag_chain.invoke(question)
 
 
 # ============================================================================
-# ADVANCED RAG WITH ENSEMBLE RETRIEVER 1
+# ADVANCED RAG WITH ENSEMBLE RETRIEVER - FACTORY APPROACH
 # ============================================================================
 
-CHUNK_SIZE = 500
-CHUNK_OVERLAP = 50
 
-from collections import defaultdict
-from typing import List
-from langchain_core.retrievers import BaseRetriever
-from langchain_core.documents import Document
-from pydantic import BaseModel
-from langchain_community.retrievers import BM25Retriever
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.document_loaders import PyMuPDFLoader
 
 def _doc_key(doc: Document) -> str:
     return doc.page_content + "||" + str(sorted(doc.metadata.items()))
@@ -443,7 +432,7 @@ def weighted_rrf(doc_lists: List[List[Document]], weights: List[float], top_k: i
 class SimpleEnsembleRetriever(BaseRetriever, BaseModel):
     retrievers: List[BaseRetriever]
     weights: List[float]
-    k: int = 4
+    k: int = 7
     c: int = 60
 
     class Config:
@@ -463,26 +452,35 @@ class SimpleEnsembleRetriever(BaseRetriever, BaseModel):
             lists.append(docs)
         return weighted_rrf(lists, self.weights, top_k=self.k, c=self.c)
 
-# Load and split documents for BM25
-loader = PyMuPDFLoader(PDF_PATH)
-docs = loader.load()
-splitter = RecursiveCharacterTextSplitter(chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP)
-split_docs = splitter.split_documents(docs)
+def create_ensemble_retriever(chunk_size, chunk_overlap, dense_vectorstore):
+    """Factory function to create an ensemble retriever with BM25 + dense retrieval."""
+    # Load and split documents for BM25
+    loader = PyMuPDFLoader(PDF_PATH)
+    docs = loader.load()
+    splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
+    split_docs = splitter.split_documents(docs)
+    
+    # Prepare BM25 retriever
+    texts_for_bm25 = [d.page_content for d in split_docs]
+    bm25 = BM25Retriever.from_texts(texts_for_bm25, metadatas=[d.metadata for d in split_docs])
+    bm25.k = 7
+    
+    # Dense retriever
+    dense_retriever = dense_vectorstore.as_retriever(search_kwargs={'k': 7})
+    
+    # Combine with ensemble
+    ensemble_retriever = SimpleEnsembleRetriever(
+        retrievers=[bm25, dense_retriever],
+        weights=[0.30, 0.70],
+        k=7
+    )
+    
+    return ensemble_retriever
 
-# Prepare BM25 retriever
-texts_for_bm25 = [d.page_content for d in split_docs]
-bm25 = BM25Retriever.from_texts(texts_for_bm25, metadatas=[d.metadata for d in split_docs])
-bm25.k = 4
-
-# Dense retriever
-dense_retriever = vectorstore.as_retriever(search_kwargs={'k': 4})
-
-# Combine with ensemble (60% BM25, 40% dense for keyword-heavy queries)
-ensemble_retriever = SimpleEnsembleRetriever(
-    retrievers=[bm25, dense_retriever],
-    weights=[0.6, 0.4],
-    k=4
-)
+# Create three ensemble retrievers
+ensemble_retriever_1 = create_ensemble_retriever(250, 25, vectorstore_1)
+ensemble_retriever_2 = create_ensemble_retriever(500, 50, vectorstore_2)
+ensemble_retriever_3 = create_ensemble_retriever(1000, 100, vectorstore_3)
 
 advanced_rag_prompt = ChatPromptTemplate.from_messages([
     ("system",
@@ -506,7 +504,6 @@ advanced_rag_prompt = ChatPromptTemplate.from_messages([
     - Explique de manière fluide et pédagogique, en évitant les phrases trop longues.
     - IMPORTANT : Cite systématiquement la page après chaque information factuelle en utilisant le format [Page X].
       Le contexte fourni contient déjà les numéros de page sous forme [Page X] au début de chaque extrait.
-    - À la fin de ta réponse, ajoute une ligne CITES: Page: X,Y,... listant toutes les pages utilisées.
 
     Chapitre du cours : {chapter_context}
 
@@ -519,280 +516,39 @@ advanced_rag_prompt = ChatPromptTemplate.from_messages([
      "Question: {question}\n\nContexte:\n{context}")
 ])
 
-advanced_rag_chain = (
-    {
-        "context": ensemble_retriever | format_docs, 
-        "question": RunnablePassthrough(),
-        "chapter_context": lambda _: "Chapitre général",
-        "history": lambda _: "Aucune conversation précédente"
-    } 
-    | advanced_rag_prompt
-    | llm
-    | StrOutputParser()
-)
+def create_advanced_rag_chain(ensemble_retriever):
+    """Factory function to create an advanced RAG chain with ensemble retriever."""
+    return (
+        {
+            "context": ensemble_retriever | format_docs, 
+            "question": RunnablePassthrough(),
+            "chapter_context": lambda _: "Chapitre général",
+            "history": lambda _: "Aucune conversation précédente"
+        } 
+        | advanced_rag_prompt
+        | llm
+        | StrOutputParser()
+    )
 
-def ask_advanced_rag(question: str) -> str:
-    """Ask using advanced RAG with ensemble retrieval."""
-    return advanced_rag_chain.invoke(question)
+# Create three advanced RAG chains
+advanced_rag_chain_1 = create_advanced_rag_chain(ensemble_retriever_1)
+advanced_rag_chain_2 = create_advanced_rag_chain(ensemble_retriever_2)
+advanced_rag_chain_3 = create_advanced_rag_chain(ensemble_retriever_3)
 
+def ask_advanced_rag_1(question: str) -> str:
+    """Ask using advanced RAG with chunk size 250."""
+    return advanced_rag_chain_1.invoke(question)
 
-# ============================================================================
-# ADVANCED RAG WITH ENSEMBLE RETRIEVER 2
-# ============================================================================
+def ask_advanced_rag_2(question: str) -> str:
+    """Ask using advanced RAG with chunk size 500."""
+    return advanced_rag_chain_2.invoke(question)
 
-CHUNK_SIZE = 500
-CHUNK_OVERLAP = 50
-
-from collections import defaultdict
-from typing import List
-from langchain_core.retrievers import BaseRetriever
-from langchain_core.documents import Document
-from pydantic import BaseModel
-from langchain_community.retrievers import BM25Retriever
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.document_loaders import PyMuPDFLoader
-
-def _doc_key(doc: Document) -> str:
-    return doc.page_content + "||" + str(sorted(doc.metadata.items()))
-
-def weighted_rrf(doc_lists: List[List[Document]], weights: List[float], top_k: int = 4, c: int = 60):
-    scores = defaultdict(float)
-    doc_map = {}
-
-    for i, docs in enumerate(doc_lists):
-        w = weights[i] if i < len(weights) else 1.0
-        for rank, doc in enumerate(docs, start=1):
-            key = _doc_key(doc)
-            scores[key] += w / (c + rank)
-            if key not in doc_map:
-                doc_map[key] = doc
-
-    sorted_keys = sorted(scores, key=lambda k: scores[k], reverse=True)
-    return [doc_map[k] for k in sorted_keys[:top_k]]
-
-class SimpleEnsembleRetriever(BaseRetriever, BaseModel):
-    retrievers: List[BaseRetriever]
-    weights: List[float]
-    k: int = 4
-    c: int = 60
-
-    class Config:
-        arbitrary_types_allowed = True
-
-    def _get_relevant_documents(self, query: str, *, run_manager=None) -> List[Document]:
-        lists = [r.invoke(query) for r in self.retrievers]
-        return weighted_rrf(lists, self.weights, top_k=self.k, c=self.c)
-
-    async def _aget_relevant_documents(self, query: str, *, run_manager=None) -> List[Document]:
-        lists = []
-        for r in self.retrievers:
-            try:
-                docs = await r.ainvoke(query)
-            except Exception:
-                docs = r.invoke(query)
-            lists.append(docs)
-        return weighted_rrf(lists, self.weights, top_k=self.k, c=self.c)
-
-# Load and split documents for BM25
-loader = PyMuPDFLoader(PDF_PATH)
-docs = loader.load()
-splitter = RecursiveCharacterTextSplitter(chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP)
-split_docs = splitter.split_documents(docs)
-
-# Prepare BM25 retriever
-texts_for_bm25 = [d.page_content for d in split_docs]
-bm25 = BM25Retriever.from_texts(texts_for_bm25, metadatas=[d.metadata for d in split_docs])
-bm25.k = 4
-
-# Dense retriever
-dense_retriever = vectorstore.as_retriever(search_kwargs={'k': 4})
-
-# Combine with ensemble (60% BM25, 40% dense for keyword-heavy queries)
-ensemble_retriever = SimpleEnsembleRetriever(
-    retrievers=[bm25, dense_retriever],
-    weights=[0.6, 0.4],
-    k=4
-)
-
-advanced_rag_prompt = ChatPromptTemplate.from_messages([
-    ("system",
-            """Tu es un professeur d'histoire-géographie expérimenté (20 ans d'enseignement).
-    Tu aides un élève en difficulté en expliquant clairement, sans jamais inventer d'informations.
-
-    PRIORITÉS (dans cet ordre) :
-    1. Exactitude : ne répondre qu'avec les informations présentes dans le contexte fourni.
-    2. Rigueur : si le contexte ne contient pas la réponse, dis-le explicitement.
-    3. Pertinence : si la question est hors programme ou sans lien avec le chapitre, indique-le clairement.
-    4. Style : réponses courtes, claires, structurées en paragraphes avec sauts de ligne si nécessaire.
-    5. Citations : TOUJOURS citer la page source sous forme [Page X] après chaque fait mentionné.
-
-    RÈGLES :
-    - N'utilise comme source que : (a) le contexte, (b) l'historique de conversation, uniquement pour le fil logique, jamais comme source factuelle.
-    - Ne mentionne jamais l'existence du contexte, de règles ou de contraintes.
-    - Pour l'élève, le contexte correspond simplement à son manuel "Le Grand Atlas".
-    - Si une information n'apparaît nulle part dans le contexte, invite l'élève à se référer à son professeur.
-    - Si l'élève fait une erreur factuelle, corrige-le avec bienveillance.
-    - Ton ton est encourageant mais professionnel : pas d'humour, pas de familiarité.
-    - Explique de manière fluide et pédagogique, en évitant les phrases trop longues.
-    - IMPORTANT : Cite systématiquement la page après chaque information factuelle en utilisant le format [Page X].
-      Le contexte fourni contient déjà les numéros de page sous forme [Page X] au début de chaque extrait.
-    - À la fin de ta réponse, ajoute une ligne CITES: Page: X,Y,... listant toutes les pages utilisées.
-
-    Chapitre du cours : {chapter_context}
-
-    Historique de conversation dans ce chapitre :
-    {history}
+def ask_advanced_rag_3(question: str) -> str:
+    """Ask using advanced RAG with chunk size 1000."""
+    return advanced_rag_chain_3.invoke(question)
 
 
-    """),
-    ("human",
-     "Question: {question}\n\nContexte:\n{context}")
-])
 
-advanced_rag_chain = (
-    {
-        "context": ensemble_retriever | format_docs, 
-        "question": RunnablePassthrough(),
-        "chapter_context": lambda _: "Chapitre général",
-        "history": lambda _: "Aucune conversation précédente"
-    } 
-    | advanced_rag_prompt
-    | llm
-    | StrOutputParser()
-)
-
-def ask_advanced_rag(question: str) -> str:
-    """Ask using advanced RAG with ensemble retrieval."""
-    return advanced_rag_chain.invoke(question)
-
-# ============================================================================
-# ADVANCED RAG WITH ENSEMBLE RETRIEVER 3
-# ============================================================================
-
-CHUNK_SIZE = 500
-CHUNK_OVERLAP = 50
-
-from collections import defaultdict
-from typing import List
-from langchain_core.retrievers import BaseRetriever
-from langchain_core.documents import Document
-from pydantic import BaseModel
-from langchain_community.retrievers import BM25Retriever
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.document_loaders import PyMuPDFLoader
-
-def _doc_key(doc: Document) -> str:
-    return doc.page_content + "||" + str(sorted(doc.metadata.items()))
-
-def weighted_rrf(doc_lists: List[List[Document]], weights: List[float], top_k: int = 4, c: int = 60):
-    scores = defaultdict(float)
-    doc_map = {}
-
-    for i, docs in enumerate(doc_lists):
-        w = weights[i] if i < len(weights) else 1.0
-        for rank, doc in enumerate(docs, start=1):
-            key = _doc_key(doc)
-            scores[key] += w / (c + rank)
-            if key not in doc_map:
-                doc_map[key] = doc
-
-    sorted_keys = sorted(scores, key=lambda k: scores[k], reverse=True)
-    return [doc_map[k] for k in sorted_keys[:top_k]]
-
-class SimpleEnsembleRetriever(BaseRetriever, BaseModel):
-    retrievers: List[BaseRetriever]
-    weights: List[float]
-    k: int = 4
-    c: int = 60
-
-    class Config:
-        arbitrary_types_allowed = True
-
-    def _get_relevant_documents(self, query: str, *, run_manager=None) -> List[Document]:
-        lists = [r.invoke(query) for r in self.retrievers]
-        return weighted_rrf(lists, self.weights, top_k=self.k, c=self.c)
-
-    async def _aget_relevant_documents(self, query: str, *, run_manager=None) -> List[Document]:
-        lists = []
-        for r in self.retrievers:
-            try:
-                docs = await r.ainvoke(query)
-            except Exception:
-                docs = r.invoke(query)
-            lists.append(docs)
-        return weighted_rrf(lists, self.weights, top_k=self.k, c=self.c)
-
-# Load and split documents for BM25
-loader = PyMuPDFLoader(PDF_PATH)
-docs = loader.load()
-splitter = RecursiveCharacterTextSplitter(chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP)
-split_docs = splitter.split_documents(docs)
-
-# Prepare BM25 retriever
-texts_for_bm25 = [d.page_content for d in split_docs]
-bm25 = BM25Retriever.from_texts(texts_for_bm25, metadatas=[d.metadata for d in split_docs])
-bm25.k = 4
-
-# Dense retriever
-dense_retriever = vectorstore.as_retriever(search_kwargs={'k': 4})
-
-# Combine with ensemble (60% BM25, 40% dense for keyword-heavy queries)
-ensemble_retriever = SimpleEnsembleRetriever(
-    retrievers=[bm25, dense_retriever],
-    weights=[0.6, 0.4],
-    k=4
-)
-
-advanced_rag_prompt = ChatPromptTemplate.from_messages([
-    ("system",
-            """Tu es un professeur d'histoire-géographie expérimenté (20 ans d'enseignement).
-    Tu aides un élève en difficulté en expliquant clairement, sans jamais inventer d'informations.
-
-    PRIORITÉS (dans cet ordre) :
-    1. Exactitude : ne répondre qu'avec les informations présentes dans le contexte fourni.
-    2. Rigueur : si le contexte ne contient pas la réponse, dis-le explicitement.
-    3. Pertinence : si la question est hors programme ou sans lien avec le chapitre, indique-le clairement.
-    4. Style : réponses courtes, claires, structurées en paragraphes avec sauts de ligne si nécessaire.
-    5. Citations : TOUJOURS citer la page source sous forme [Page X] après chaque fait mentionné.
-
-    RÈGLES :
-    - N'utilise comme source que : (a) le contexte, (b) l'historique de conversation, uniquement pour le fil logique, jamais comme source factuelle.
-    - Ne mentionne jamais l'existence du contexte, de règles ou de contraintes.
-    - Pour l'élève, le contexte correspond simplement à son manuel "Le Grand Atlas".
-    - Si une information n'apparaît nulle part dans le contexte, invite l'élève à se référer à son professeur.
-    - Si l'élève fait une erreur factuelle, corrige-le avec bienveillance.
-    - Ton ton est encourageant mais professionnel : pas d'humour, pas de familiarité.
-    - Explique de manière fluide et pédagogique, en évitant les phrases trop longues.
-    - IMPORTANT : Cite systématiquement la page après chaque information factuelle en utilisant le format [Page X].
-      Le contexte fourni contient déjà les numéros de page sous forme [Page X] au début de chaque extrait.
-    - À la fin de ta réponse, ajoute une ligne CITES: Page: X,Y,... listant toutes les pages utilisées.
-
-    Chapitre du cours : {chapter_context}
-
-    Historique de conversation dans ce chapitre :
-    {history}
-
-
-    """),
-    ("human",
-     "Question: {question}\n\nContexte:\n{context}")
-])
-
-advanced_rag_chain = (
-    {
-        "context": ensemble_retriever | format_docs, 
-        "question": RunnablePassthrough(),
-        "chapter_context": lambda _: "Chapitre général",
-        "history": lambda _: "Aucune conversation précédente"
-    } 
-    | advanced_rag_prompt
-    | llm
-    | StrOutputParser()
-)
-
-def ask_advanced_rag(question: str) -> str:
-    """Ask using advanced RAG with ensemble retrieval."""
-    return advanced_rag_chain.invoke(question)
 
 # ============================================================================
 # JUDGE EVALUATION SYSTEM
@@ -835,7 +591,7 @@ FORMAT DE RÉPONSE: Réponds UNIQUEMENT avec un objet JSON valide (sans markdown
 """
 )
 
-judge_llm = ChatMistralAI(model="mistral-small-latest", temperature=0)
+judge_llm = ChatMistralAI(model="mistral-large-latest", temperature=0)
 judge_chain = judge_prompt | judge_llm | StrOutputParser()
 
 def parse_judge_scores(judge_output: str) -> dict:
@@ -892,51 +648,6 @@ def evaluate_answer(question: str, reference_answer: str, candidate_answer: str)
     })
     return parse_judge_scores(judge_output)
 
-# ============================================================================
-# REFERENCE ANSWERS
-# ============================================================================
-reference_answers = {
-    "Quels sont les principaux enjeux géopolitiques dans la région du Caucase ?":
-        "Le Caucase est une zone charnière entre Europe, Russie, Moyen-Orient et Asie centrale, marquée par des rivalités d'influence (Russie, Turquie, Iran, Occident), des conflits autour des frontières et des minorités, ainsi que par des enjeux énergétiques et de corridors de transport.",
-    "Décrivez les tensions actuelles autour de Taïwan et leurs implications régionales.":
-        "Les tensions autour de Taïwan opposent la Chine, qui revendique l'île, aux États-Unis et à leurs partenaires qui soutiennent de facto son autonomie, ce qui alimente une course aux armements en Asie de l'Est et renforce les alliances régionales de sécurité.",
-    "Quel est l'état actuel du conflit israélo-palestinien ?":
-        "Le conflit israélo-palestinien reste caractérisé par l'absence de solution politique négociée, la poursuite de la colonisation, des cycles récurrents de violences, et une crise humanitaire grave dans les territoires palestiniens.",
-    "Comment la guerre en Ukraine affecte-t-elle l'équilibre géopolitique mondial ?":
-        "La guerre en Ukraine a renforcé la cohésion des alliés occidentaux, accentué la confrontation avec la Russie, accéléré le réalignement énergétique européen et rapproché davantage Moscou de puissances non occidentales comme la Chine, ce qui recompose l'équilibre mondial.",
-    "Quelles sont les forces et faiblesses militaires de la Russie dans le conflit ukrainien ?":
-        "La Russie dispose d'un important arsenal, d'une base industrielle de défense et de la supériorité en artillerie, mais elle souffre de contraintes logistiques, de pertes humaines et matérielles élevées, de problèmes de commandement et de moral ainsi que d'une difficulté à mener des opérations combinées efficaces.",
-    "Comment l'Europe a-t-elle réagi face à l'invasion russe de l'Ukraine ?":
-        "L'Europe a répondu par des sanctions économiques massives contre la Russie, une aide militaire et financière significative à l'Ukraine, le renforcement de l'OTAN et une réorientation rapide de sa politique énergétique pour réduire sa dépendance aux hydrocarbures russes.",
-    "Quel est l'impact économique des sanctions contre la Russie ?":
-        "Les sanctions ont restreint l'accès de la Russie aux marchés, aux technologies et aux financements occidentaux, provoqué une réorientation forcée de ses exportations vers d'autres partenaires et entraîné des effets de contournement, tandis qu'elles ont aussi généré des coûts pour certaines économies européennes.",
-    "La Russie peut-elle gagner la guerre en Ukraine ?":
-        "L'issue du conflit reste incertaine et dépend de nombreux facteurs militaires, politiques et économiques, mais la Russie fait face à des contraintes structurelles et à une forte résistance ukrainienne soutenue par l'aide occidentale, ce qui rend improbable une victoire rapide et totale.",
-    "Pourquoi l'Indopacifique est-il devenu un théâtre majeur des rivalités mondiales ?":
-        "L'Indopacifique concentre une grande part de la population mondiale, du commerce maritime et des chaînes de valeur, et voit la montée en puissance de la Chine face aux États-Unis, ce qui en fait un espace clé de compétition stratégique, technologique et navale.",
-    "Quel est le rôle de la Chine dans la région indopacifique ?":
-        "La Chine cherche à y affirmer son statut de grande puissance, à sécuriser ses routes maritimes et ses approvisionnements, à projeter sa puissance militaire et à étendre son influence économique et diplomatique à travers des investissements et des partenariats.",
-    "Comment les États-Unis répondent-ils aux ambitions chinoises en Asie ?":
-        "Les États-Unis renforcent leurs alliances et partenariats (Japon, Corée du Sud, Australie, Inde, ASEAN), augmentent leur présence militaire, développent la coopération technologique et sécuritaire, et promeuvent des initiatives économiques alternatives pour contenir l'influence chinoise.",
-    "Quels sont les enjeux maritimes en mer de Chine méridionale ?":
-        "La mer de Chine méridionale concentre des voies maritimes essentielles, des ressources halieutiques et énergétiques, et fait l'objet de revendications territoriales concurrentes, notamment de la Chine, ce qui crée des tensions autour de la liberté de navigation et du droit international de la mer.",
-    "Pourquoi la Syrie est-elle considérée comme une guerre inachevée ?":
-        "Le régime a repris le contrôle d'une grande partie du territoire mais le pays reste fragmenté, avec des zones tenues par d'autres acteurs, une présence de forces étrangères, une crise humanitaire profonde et une absence de solution politique globale.",
-    "Quelle est la situation politique actuelle en Iran ?":
-        "L'Iran est dirigé par un régime théocratique qui fait face à des tensions internes récurrentes, à des sanctions internationales, à des difficultés économiques et à des rivalités régionales, tout en poursuivant une politique d'influence au Moyen-Orient.",
-    "Comment la Turquie sous Erdogan influence-t-elle la région ?":
-        "La Turquie mène une politique étrangère ambitieuse, combinant interventions militaires, soutien à certains groupes politiques, diplomatie énergétique et rôle de médiateur, ce qui lui permet de peser en Syrie, dans le Caucase, en Méditerranée orientale et au-delà.",
-    "Quels sont les défis géopolitiques au Moyen-Orient ?":
-        "La région est marquée par des rivalités entre puissances régionales, des conflits armés, la question palestinienne, les enjeux énergétiques, la fragmentation étatique et les tensions confessionnelles, le tout sur fond de transitions politiques inachevées.",
-    "L'instabilité gagne-t-elle l'Afrique et pourquoi ?":
-        "De nombreux pays africains connaissent des coups d'État, des insurrections armées et des tensions politiques, alimentés par la pauvreté, la faiblesse des institutions, la compétition pour les ressources et les ingérences extérieures.",
-    "Qu'est-ce que l'arc de crise sahélien ?":
-        "L'arc de crise sahélien désigne la bande allant du Sahel à la Corne de l'Afrique, marquée par l'insécurité, les groupes armés, le terrorisme, les trafics, la fragilité des États et les effets du changement climatique sur les sociétés.",
-    "Quel est le rôle du groupe Wagner en Afrique ?":
-        "Le groupe Wagner, ou ses structures successeures, agit comme instrument d'influence d'intérêts russes dans plusieurs pays africains en fournissant des services de sécurité, en soutenant certains régimes et en obtenant des contreparties minières ou politiques.",
-    "Quels sont les principaux conflits actuels en Afrique ?":
-        "On trouve des conflits armés ou insurrections notables au Sahel, en Afrique centrale, dans la Corne de l'Afrique et dans certaines régions côtières, souvent mêlant enjeux politiques, identitaires, économiques et environnementaux.",
-}
 
 # ============================================================================
 # COMPLETE EVALUATION RUNNER
@@ -958,9 +669,12 @@ def run_complete_evaluation():
     results = []
 
     configurations = {
-        'Simple Prompt': ask_simple,
-        'Basic RAG': ask_basic_rag,
-        'Advanced RAG': ask_advanced_rag
+        'Basic RAG (chunk 250)': ask_basic_rag_1,
+        'Basic RAG (chunk 500)': ask_basic_rag_2,
+        'Basic RAG (chunk 1000)': ask_basic_rag_3,
+        'Advanced RAG (chunk 250)': ask_advanced_rag_1,
+        'Advanced RAG (chunk 500)': ask_advanced_rag_2,
+        'Advanced RAG (chunk 1000)': ask_advanced_rag_3
     }
 
     total_evals = len(questions_to_eval) * len(configurations)
@@ -987,39 +701,42 @@ def run_complete_evaluation():
                 # Evaluate
                 scores = evaluate_answer(question, reference, candidate)
                 
-                # Store results
+                # Store only scores, topic, and configuration
                 results.append({
-                    'question': question,
                     'topic': topic,
                     'configuration': config_name,
-                    'reference_answer': reference,
-                    'candidate_answer': candidate,
-                    **scores
+                    'accuracy': scores['accuracy'],
+                    'completeness': scores['completeness'],
+                    'citation_quality': scores['citation_quality'],
+                    'relevance': scores['relevance'],
+                    'overall': scores['overall']
                 })
                 
                 time.sleep(0.5)  # Rate limiting
             except Exception as e:
                 print(f"  ERROR: {e}")
                 results.append({
-                    'question': question,
                     'topic': topic,
                     'configuration': config_name,
-                    'reference_answer': reference,
-                    'candidate_answer': f"ERROR: {str(e)}",
                     'accuracy': 0,
                     'completeness': 0,
                     'citation_quality': 0,
                     'relevance': 0,
-                    'overall': 0,
-                    'justification': f"Error: {str(e)}"
+                    'overall': 0
                 })
 
     # Create DataFrame
     df_results = pd.DataFrame(results)
+    
+    # Calculate averages by configuration and topic
+    df_summary = df_results.groupby(['configuration', 'topic'])[['accuracy', 'completeness', 
+                                                                   'citation_quality', 'relevance', 
+                                                                   'overall']].mean().reset_index()
+    
     print("\n✓ Evaluation complete!")
     print(f"Total evaluations: {len(df_results)}")
     
-    return df_results
+    return df_summary
 
 # ============================================================================
 # TEST
@@ -1032,32 +749,32 @@ if __name__ == "__main__":
     
     if run_full_eval:
         # Run complete evaluation on all questions
-        df_results = run_complete_evaluation()
+        df_summary = run_complete_evaluation()
         
         # Save results
-        df_results.to_csv('benchmark_results.csv', index=False)
-        print("\n✓ Results saved to 'benchmark_results.csv'")
+        df_summary.to_csv('benchmark_results_summary.csv', index=False)
+        print("\n✓ Results saved to 'benchmark_results_summary.csv'")
         
         # Print summary statistics
         print("\n" + "="*80)
         print("OVERALL PERFORMANCE BY CONFIGURATION")
         print("="*80)
         
-        summary = df_results.groupby('configuration')[['accuracy', 'completeness', 
-                                                        'citation_quality', 'relevance', 
-                                                        'overall']].mean()
-        print(summary.round(2))
+        overall_summary = df_summary.groupby('configuration')[['accuracy', 'completeness', 
+                                                                'citation_quality', 'relevance', 
+                                                                'overall']].mean()
+        print(overall_summary.round(2))
         print("\n")
         
         # Best configuration overall
-        best_config = summary['overall'].idxmax()
-        best_score = summary['overall'].max()
+        best_config = overall_summary['overall'].idxmax()
+        best_score = overall_summary['overall'].max()
         print(f"Best Configuration: {best_config} (Overall Score: {best_score:.2f})")
         
         print("\n" + "="*80)
         print("PERFORMANCE BY TOPIC")
         print("="*80)
-        topic_summary = df_results.groupby(['topic', 'configuration'])['overall'].mean().unstack()
+        topic_summary = df_summary.pivot_table(values='overall', index='topic', columns='configuration')
         print(topic_summary.round(2))
     else:
         # Run quick test on single question
@@ -1069,36 +786,37 @@ if __name__ == "__main__":
         print("="*80)
         
         print("\n" + "="*80)
-        print("TEST: Simple LLM (No RAG)")
+        print("TEST: Basic RAG (chunk 250)")
         print("="*80)
         print(f"Q: {test_q}")
-        simple_answer = ask_simple(test_q)
-        print(f"A: {simple_answer}")
+        answer_1 = ask_basic_rag_1(test_q)
+        print(f"A: {answer_1}")
         
         print("\n" + "="*80)
-        print("TEST: Basic RAG")
+        print("TEST: Basic RAG (chunk 500)")
         print("="*80)
         print(f"Q: {test_q}")
-        basic_answer = ask_basic_rag(test_q)
-        print(f"A: {basic_answer}")
+        answer_2 = ask_basic_rag_2(test_q)
+        print(f"A: {answer_2}")
         
         print("\n" + "="*80)
-        print("TEST: Advanced RAG (Ensemble)")
+        print("TEST: Advanced RAG (chunk 500)")
         print("="*80)
         print(f"Q: {test_q}")
-        advanced_answer = ask_advanced_rag(test_q)
+        advanced_answer = ask_advanced_rag_2(test_q)
         print(f"A: {advanced_answer}")
         
         # Test the judge evaluation
         if test_q in reference_answers:
             print("\n" + "="*80)
-            print("TEST: Judge Evaluation (Basic RAG)")
+            print("TEST: Judge Evaluation (Basic RAG chunk 500)")
             print("="*80)
             test_evaluation = evaluate_answer(
                 test_q,
                 reference_answers[test_q],
-                basic_answer
+                answer_2
             )
             print("Evaluation scores:")
             for key, value in test_evaluation.items():
                 print(f"  {key}: {value}")
+
