@@ -1,8 +1,10 @@
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from app.config.settings import CHUNK_SIZE, CHUNK_OVERLAP
+from app.config.settings import CHUNK_SIZE, CHUNK_OVERLAP, FAISS_QUESTIONS_PATH
 from langchain_mistralai import MistralAIEmbeddings
 from langchain_community.vectorstores import FAISS
+from langchain_community.docstore.document import Document
 from app.config.settings import EMBED_MODEL
+import os
 
 # Default splitter for main content
 splitter = RecursiveCharacterTextSplitter(
@@ -108,3 +110,136 @@ def get_retriever(all_docs, faiss_path, search_k=5):
         print(f"Built new FAISS index at {faiss_path}")
 
     return store.as_retriever(search_kwargs={"k": search_k})
+
+
+#-----------------------------------------QUESTIONS FAISS---------------------------------#
+
+
+def _build_questions_vectorstore(questions_data, faiss_path):
+    """
+    Internal function to build questions FAISS.
+    
+    Args:
+        questions_data: List[dict] with keys: question, expected_answer, key_points
+        faiss_path: Path to save the index
+    
+    Returns:
+        FAISS vectorstore
+    """
+    if not questions_data:
+        return None
+    
+    # Convert to Documents
+    documents = []
+    for q_data in questions_data:
+        doc = Document(
+            page_content=q_data['question'],
+            metadata={
+                'expected_answer': q_data.get('expected_answer', ''),
+                'key_points': q_data.get('key_points', [])
+            }
+        )
+        documents.append(doc)
+    
+    store = FAISS.from_documents(documents, embeddings)
+    store.save_local(faiss_path)
+    print(f"✅ Questions FAISS created with {len(documents)} questions")
+    return store
+
+
+
+def get_questions_retriever(similarity_threshold=0.85, k=1):
+    """
+    Get retriever for questions FAISS with automatic threshold filtering.
+    Creates the index automatically if it doesn't exist.
+    
+    Args:
+        similarity_threshold: float - Minimum similarity (0-1)
+        k: int - Max number of results
+    
+    Returns:
+        Retriever object or None if no questions exist
+    """
+    # Try to load existing index
+    if os.path.exists(FAISS_QUESTIONS_PATH):
+        try:
+            store = FAISS.load_local(
+                FAISS_QUESTIONS_PATH, 
+                embeddings, 
+                allow_dangerous_deserialization=True
+            )
+            print(f"✅ Loaded questions FAISS ({store.index.ntotal} questions)")
+            
+            # Return retriever with threshold
+            return store.as_retriever(
+                search_type='similarity_score_threshold',
+                search_kwargs={
+                    'score_threshold': similarity_threshold,
+                    'k': k
+                }
+            )
+        except Exception as e:
+            print(f"⚠️ Error loading questions FAISS: {e}")
+            return None
+    else:
+        # Try to initialize from database
+        from app.tools.database import get_all_test_questions
+        questions = get_all_test_questions()
+        
+        if questions and len(questions) >= 5:
+            print(f"🔄 Auto-initializing questions FAISS from {len(questions)} DB questions...")
+            store = _build_questions_vectorstore(questions, FAISS_QUESTIONS_PATH)
+            
+            if store:
+                return store.as_retriever(
+                    search_type='similarity_score_threshold',
+                    search_kwargs={
+                        'score_threshold': similarity_threshold,
+                        'k': k
+                    }
+                )
+        
+        print("ℹ️ No questions FAISS index yet (need 5+ questions in DB)")
+        return None
+    
+
+def add_question_to_faiss(question_data, faiss_path=FAISS_QUESTIONS_PATH):
+    """
+    Add a single question to questions FAISS.
+    Creates index if doesn't exist.
+    
+    Args:
+        question_data: dict with keys: question, expected_answer, key_points
+        faiss_path: Path to FAISS index
+    """
+    new_doc = Document(
+        page_content=question_data['question'],
+        metadata={
+            'expected_answer': question_data.get('expected_answer', ''),
+            'key_points': question_data.get('key_points', [])
+        }
+    )
+    
+    # Load or create store
+    if os.path.exists(faiss_path):
+        try:
+            store = FAISS.load_local(
+                faiss_path, 
+                embeddings, 
+                allow_dangerous_deserialization=True
+            )
+            store.add_documents([new_doc])
+            print(f"➕ Added question to FAISS (now {store.index.ntotal} questions)")
+        except Exception as e:
+            print(f"⚠️ Error adding to FAISS: {e}")
+            # Fallback: create new store
+            store = FAISS.from_documents([new_doc], embeddings)
+            print(f"✨ Created new FAISS with 1 question")
+    else:
+        # Create new store
+        store = FAISS.from_documents([new_doc], embeddings)
+        print(f"✨ Created new FAISS with 1 question")
+    
+    # Save
+    store.save_local(faiss_path)
+    print(f"💾 FAISS saved to {faiss_path}")

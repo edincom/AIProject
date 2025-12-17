@@ -1,10 +1,9 @@
 from langchain_mistralai import ChatMistralAI
 from langchain_core.prompts import ChatPromptTemplate
 from app.config.settings import LLM_MODEL
+from app.tools.eco_mistral import EcoMistralChat
 
-
-streaming_llm = ChatMistralAI(model=LLM_MODEL, temperature=0, streaming=True)
-
+streaming_llm = EcoMistralChat(model=LLM_MODEL, temperature=1, streaming=True)
 
 persona_prompt = ChatPromptTemplate.from_messages([
     ("system",

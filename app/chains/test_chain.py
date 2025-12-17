@@ -1,8 +1,10 @@
 from langchain_mistralai import ChatMistralAI
 from langchain_core.prompts import ChatPromptTemplate
 from app.config.settings import LLM_MODEL
+from app.tools.eco_mistral import EcoMistralChat
 
-llm = ChatMistralAI(model=LLM_MODEL, temperature=1)
+
+llm = EcoMistralChat(model=LLM_MODEL, temperature=1)
 
 # Chain for generating test questions (fixed: literal JSON uses doubled braces)
 generate_question_prompt = ChatPromptTemplate.from_messages([

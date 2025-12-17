@@ -1,7 +1,7 @@
 # app.py
 from flask import Flask, render_template, request, redirect, url_for, jsonify, Response, stream_with_context
 from app.backend.ai import ai_answer_stream, generate_test_question, grade_answer
-from app.tools.database import get_user_history
+from app.tools.database import get_question_retest, get_user_history
 import json
 from app.tools.database import get_student_chapter_interactions_grouped
 
@@ -179,25 +179,14 @@ def retest():
         qid = request.args.get('question_id')
         if not username or not qid:
             return jsonify({"error": "Missing username or question_id parameter"}), 400
+        item = get_question_retest(username, qid)
 
-        # Récupère l'historique complet et cherche l'élément
-        try:
-            history_data = get_user_history(username)
-        except TypeError:
-            history_data = get_user_history(username)
-
-        # question_id peut être stocké comme int ou str ; on compare en str pour être safe
-        item = next((it for it in history_data if str(it.get("id")) == str(qid)), None)
-        if item is None:
-            return jsonify({"error": "Question not found"}), 404
-
+        print(f"Retest item for user {username}, question_id {qid}: {item}")
         # Retourne la question textuelle (tu peux ajouter d'autres champs si besoin)
         return jsonify({
-            "question": item.get("question"),
-            "answer": item.get("answer"),
-            "grade": item.get("grade"),
-            "advice": item.get("advice"),
-            "id": item.get("id")
+            "question": item[0],
+            "expected_answer": item[1],
+            "key_points": item[2]
         })
     except Exception as e:
         print("Error in /retest:", e)
@@ -205,7 +194,20 @@ def retest():
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
 
-
+@app.route('/eco_stats', methods=['GET'])
+def eco_stats():
+    """Affiche les statistiques environnementales"""
+    from app.chains.persona_chain import streaming_llm
+    from app.chains.test_chain import llm as test_llm
+    from app.chains.theme_chain import theme_llm
+    
+    stats = {
+        "persona_chain": streaming_llm.get_stats_summary(),
+        "test_chain": test_llm.get_stats_summary(),
+        "theme_chain": theme_llm.get_stats_summary()
+    }
+    
+    return jsonify(stats)
 
 if __name__ == '__main__':
     app.run(debug=True, threaded=True)
