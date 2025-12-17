@@ -3,11 +3,12 @@ CHUNK_SIZE = 500
 CHUNK_OVERLAP = 50
 
 
-#LLM_MODEL = "mistral-small-latest"      Context = 128k
-LLM_MODEL = "mistral-large-latest"      #Context = 256k
+LLM_MODEL = "mistral-small-latest"      #Context = 128k
+#LLM_MODEL = "mistral-large-latest"      #Context = 256k
 
 VISION_MODEL = "pixtral-12b-2409"
 EMBED_MODEL = "mistral-embed"
 
 FAISS_PATH = "faiss_index"
 
+CONTEXT_LENGTH = 10

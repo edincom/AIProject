@@ -9,9 +9,9 @@ from app.tools.rag import get_retriever
 from app.tools.loaders import load_pdf
 from app.tools.loaders import caption_images
 from app.tools.rag import split_docs
-from app.chains.persona_chain import streaming_persona_chain, persona_prompt
+from app.chains.persona_chain import streaming_persona_chain
 from app.chains.test_chain import generate_question_chain, test_chain
-from app.config.settings import FAISS_PATH
+from app.config.settings import FAISS_PATH, CONTEXT_LENGTH
 from app.chains.theme_chain import theme_llm
 from app.tools.database import save_teach_interaction
 from langchain_core.prompts import ChatPromptTemplate
@@ -252,7 +252,7 @@ def ai_answer_stream(inputs, username="Guest", chapter=None):
         
         if is_followup and history:
             # Accumulate all questions in the conversation chain
-            all_questions = " ".join([h[2] for h in reversed(history)])
+            all_questions = " ".join([h[2] for h in reversed(history[:CONTEXT_LENGTH])])
             rag_query = f"{all_questions} {question}"
             print(f"🔗 Follow-up detected! Enhanced RAG query: '{rag_query}'")
         
@@ -260,7 +260,7 @@ def ai_answer_stream(inputs, username="Guest", chapter=None):
         context = format_docs(docs)
         
         # Step 2: Format conversation history
-        history_text = "\n".join([f"Q: {h[2]}\nA: {h[3]}" for h in history[-5:]])  # Last 5 interactions
+        history_text = "\n".join([f"Q: {h[2]}\nA: {h[3]}" for h in history[-CONTEXT_LENGTH:]])
         
         # Step 3: Stream the LLM response with context
         stream_inputs = {
