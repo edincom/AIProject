@@ -9,5 +9,5 @@ LLM_MODEL = "mistral-small-latest"
 VISION_MODEL = "pixtral-12b-2409"
 EMBED_MODEL = "mistral-embed"
 
-FAISS_PATH = "faiss_index"
+FAISS_PATH = "faiss_index_chunk500"
 
